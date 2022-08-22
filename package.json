@@ -47,7 +47,7 @@
       "last 1 safari version"
     ]
   },
-  "proxy": {
+  "proxies": {
     "/api": {
       "target": "https://gherald-backend.herokuapp.com",
       "ws": true
