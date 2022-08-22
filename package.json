@@ -46,11 +46,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "proxies": {
-    "/api": {
-      "target": "https://gherald-backend.herokuapp.com",
-      "ws": true
-    }
   }
 }
