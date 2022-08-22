@@ -30,7 +30,7 @@ function ChangeDetail(props) {
     const history = useHistory();
 
     useEffect(() => {
-        fetch(`https://gherald-backend.herokuapp.com/api/changes/${changeId}`)
+        fetch(`/api/changes/${changeId}`)
             .then(results => results.json())
             .then(data => {
                 setChange(data);

@@ -51,7 +51,7 @@ function Questionnaire() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        fetch('https://gherald-backend.herokuapp.com/api/questionnaire', {
+        fetch('/api/questionnaire', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
