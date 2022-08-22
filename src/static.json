@@ -5,7 +5,7 @@
   },
   "proxies": {
     "/api/": {
-      "origin": "https://gherald-backend.herokuapp.com/api"
+      "origin": "https://gherald-backend.herokuapp.com/"
     }
   }
 }
