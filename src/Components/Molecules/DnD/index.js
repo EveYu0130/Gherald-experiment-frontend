@@ -81,7 +81,7 @@ function DnD({ data, practice }) {
             const reviewTime = timerRef.current.seconds;
             console.log(reviewTime);
             timerRef.current.resetTime();
-            fetch('/api/risk-assessment', {
+            fetch('https://gherald-backend.herokuapp.com/api/risk-assessment', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

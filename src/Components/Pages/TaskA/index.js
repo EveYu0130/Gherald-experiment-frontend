@@ -43,7 +43,7 @@ function TaskA(props) {
     let auth = useAuth();
 
     useEffect(() => {
-        fetch(`/api/participants/${auth.user.id}`)
+        fetch(`https://gherald-backend.herokuapp.com/api/participants/${auth.user.id}`)
             .then(results => results.json())
             .then(data => {
                 setLoading(false);

@@ -110,7 +110,7 @@ function CodeReview({ reviews, practice }) {
             timerRef.current.resetTime();
             const codeInspections = data.map(({file, line, comment}) => ({file, line, comment}));
             setData(initialData);
-            fetch('/api/code-review', {
+            fetch('https://gherald-backend.herokuapp.com/api/code-review', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
