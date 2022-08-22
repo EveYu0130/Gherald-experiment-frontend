@@ -9,7 +9,7 @@ app.use(express.static(path.join(__dirname, 'build')));
 app.use(
     '/api',
     createProxyMiddleware({
-        target: 'https://gherald-backend.herokuapp.com',
+        target: process.env.NODE_ENV === "production" ? 'https://gherald-backend.herokuapp.com' : "http://localhost:8080",
         changeOrigin: true
     })
 );
