@@ -36,16 +36,19 @@ function useProvideAuth() {
             if  (response.status === 200) {
                 return response.json();
             } else {
-                throw response;
+                throw "Invalid Participant ID.";
             }
         }).then(data => {
+            if (data.completed) {
+                throw "You already participated.";
+            }
             setUser({
                 id: data.id,
                 group: data.tool
             })
         }).catch(error => {
             console.log(error);
-            setError("Invalid Participant ID");
+            setError(error);
         });
     };
 
