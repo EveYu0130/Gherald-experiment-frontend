@@ -24,6 +24,7 @@ export const useAuth = () => {
 
 function useProvideAuth() {
     const [user, setUser] = useState(null);
+    const [error, setError] = useState("");
 
     const signin = (id) => {
         fetch(`/api/participants/${id}`, {
@@ -32,7 +33,11 @@ function useProvideAuth() {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
         }).then(response => {
-            return response.json();
+            if  (response.status === 200) {
+                return response.json();
+            } else {
+                throw response;
+            }
         }).then(data => {
             setUser({
                 id: data.id,
@@ -40,6 +45,7 @@ function useProvideAuth() {
             })
         }).catch(error => {
             console.log(error);
+            setError("Invalid Participant ID");
         });
     };
 
@@ -49,6 +55,7 @@ function useProvideAuth() {
 
     return {
         user,
+        error,
         signin,
         signout
     };
