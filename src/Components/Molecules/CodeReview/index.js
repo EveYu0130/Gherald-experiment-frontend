@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import styled, { keyframes, css } from 'styled-components';
 import { useHistory } from "react-router-dom";
 import { Box, Button, Stepper, Step, StepLabel } from '@mui/material';
 import 'react-diff-view/style/index.css';
@@ -49,7 +48,7 @@ const Timer = forwardRef(({pause, handleResumeClick, handlePauseClick}, ref) => 
     );
 })
 
-function CodeReview({ reviews, practice }) {
+function CodeReview({ reviews, practice, onSubmit, setPracticed }) {
     const [activeStep, setActiveStep] = useState(0);
     const { id, change } = reviews[activeStep];
     const [pause, setPause] = useState(false);
@@ -96,10 +95,8 @@ function CodeReview({ reviews, practice }) {
         console.log(data);
         if (practice) {
             if (activeStep === reviews.length - 1) {
-                history.push({
-                    pathname: '/',
-                    state: { practiced: true }
-                });
+                setPracticed(true);
+                onSubmit();
             } else {
                 setActiveStep((prevActiveStep) => prevActiveStep + 1);
             }
@@ -119,8 +116,7 @@ function CodeReview({ reviews, practice }) {
             }).then(response => {
                 if  (response.status === 200) {
                     if (activeStep === reviews.length - 1) {
-                        history.push(`/questionnaire`);
-                        console.log(history);
+                        onSubmit();
                     } else {
                         setActiveStep((prevActiveStep) => prevActiveStep + 1);
                     }
@@ -135,14 +131,9 @@ function CodeReview({ reviews, practice }) {
     const handleSkip = () => {
         if (activeStep === reviews.length - 1) {
             if (practice) {
-                history.push({
-                    pathname: '/',
-                    state: { practiced: true }
-                });
-            } else {
-                history.push(`/questionnaire`);
+                setPracticed(true);
             }
-            console.log(history);
+            onSubmit();
         } else {
             setActiveStep((prevActiveStep) => prevActiveStep + 1);
         }

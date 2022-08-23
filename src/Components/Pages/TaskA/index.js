@@ -35,7 +35,7 @@ const Background = styled(Box)({
     opacity: 0.1,
 });
 
-function TaskA(props) {
+function TaskA({practice, onSubmit}) {
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState([]);
     const [ready, setReady] = useState(false);
@@ -93,7 +93,7 @@ function TaskA(props) {
                                 <p>
                                     You can examine the details of each change by clicking on the <b>Learn more</b> button.
                                 </p>
-                                {!props.practice &&
+                                {!practice &&
                                     <p>
                                         You can pause the experiment by clicking on the <b>Pause</b> button if you get a phone call or want to grab a coffee.
                                     </p>
@@ -121,7 +121,7 @@ function TaskA(props) {
                                     <CircularProgress size={100} />
                                 </Box>
                             ) : (
-                                <DnD data={data} practice={props.practice ? true : false}/>
+                                <DnD data={data} practice={practice} onSubmit={onSubmit}/>
                             )}
                         </Box>
                     )}

@@ -32,13 +32,10 @@ const Background = styled(Box)({
     opacity: 0.1,
 });
 
-function TaskB() {
+function TaskB({practice, onSubmit, setPracticed}) {
     const [loading, setLoading] = useState(true);
     const [reviews, setReviews] = useState([]);
     const [ready, setReady] = useState(false);
-
-    let location = useLocation();
-    let { practice } = location.state || false;
 
     let auth = useAuth();
 
@@ -102,7 +99,7 @@ function TaskB() {
                                     <CircularProgress size={100} />
                                 </Box>
                             ) : (
-                                <CodeReview reviews={reviews} practice={practice} />
+                                <CodeReview reviews={reviews} practice={practice} onSubmit={onSubmit} setPracticed={setPracticed} />
                             )}
                         </Box>
                     )}

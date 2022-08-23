@@ -38,15 +38,17 @@ const Background = styled(Box)({
     opacity: 0.1,
 });
 
-function MainPage() {
-    let location = useLocation();
-    let { practiced } = location.state || false;
-    const history = useHistory();
-
+function MainPage({practiced, onSubmit, setPractice}) {
     let auth = useAuth();
 
-    const handleStartClick = () => {
-        history.push(`/taskA`);
+    const handlePractice = () => {
+        setPractice(true);
+        onSubmit();
+    }
+
+    const handleExperiment = () => {
+        setPractice(false);
+        onSubmit();
     }
 
     return (
@@ -277,14 +279,12 @@ function MainPage() {
                     <Divider />
 
                     <Box sx={{ width: '100%', textAlign: 'center', px: '20%', py: '2%' }} >
-                        <Link to="/practice/taskA" style={{ textDecoration: 'none' }}>
-                            <Button  variant="contained" sx={{ mx: '2%', width: '200px' }}>
-                                Start Practice
-                            </Button>
-                        </Link>
+                        <Button  variant="contained" sx={{ mx: '2%', width: '200px' }} onClick={handlePractice}>
+                            Start Practice
+                        </Button>
                     </Box>
                     <Box sx={{ width: '100%', textAlign: 'center', px: '20%', pb: '5%' }}>
-                        <Button  variant="contained" sx={{ mx: '2%', width: '200px' }} onClick={handleStartClick} disabled={!practiced}>
+                        <Button  variant="contained" sx={{ mx: '2%', width: '200px' }} onClick={handleExperiment} disabled={!practiced}>
                             Start Experiment
                         </Button>
                     </Box>
