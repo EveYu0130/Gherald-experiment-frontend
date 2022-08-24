@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import styled, { keyframes, css } from 'styled-components';
 import {useParams, useLocation, useHistory} from "react-router-dom";
-import { Box, Paper, Grid, Typography, AppBar, Toolbar, TextField, Container, CssBaseline, Avatar, Button } from '@mui/material';
+import { Box, Paper, Grid, Typography, AppBar, Toolbar, TextField, Container, CssBaseline, Avatar, Button, FormLabel, FormHelperText } from '@mui/material';
 import 'react-diff-view/style/index.css';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -68,7 +68,7 @@ function Login() {
                     <Typography component="h1" variant="h5">
                         Sign in
                     </Typography>
-                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, width: '100%' }}>
                         <TextField
                             margin="normal"
                             required
@@ -79,6 +79,7 @@ function Login() {
                             autoComplete="id"
                             autoFocus
                         />
+                        {auth.error && <FormHelperText error color='error'>{auth.error}</FormHelperText>}
                         <Button
                             type="submit"
                             fullWidth

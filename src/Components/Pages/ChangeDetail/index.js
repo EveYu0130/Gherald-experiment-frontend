@@ -15,13 +15,12 @@ import {
 } from '@mui/material';
 import 'react-diff-view/style/index.css';
 
-import FileDiff from "../../Molecules/FileDiff";
-import AuthorPopover from "../../Atoms/AuthorPopover";
-import GheraldReport from "../../Molecules/GheraldReport";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import {ThemeProvider} from "@mui/material/styles";
 import ChangeInfo from "../../Molecules/ChangeInfo";
+import theme from '../../../theme';
 
-function ChangeDetail(props) {
+
+function ChangeDetail() {
     const { changeId } = useParams();
 
     const [loading, setLoading] = useState(true);
@@ -40,15 +39,17 @@ function ChangeDetail(props) {
     }, [])
 
     return (
-        <Box sx={{ px: '4%', pt: '2%', pb: '5%' }}>
-            {loading ? (
-                <Box sx={{ width: '100%', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                    <CircularProgress size={100} />
-                </Box>
-            ) : (
-                <ChangeInfo change={change}/>
-            )}
-        </Box>
+        <ThemeProvider theme={theme}>
+            <Box sx={{ px: '4%', pt: '2%', pb: '5%' }}>
+                {loading ? (
+                    <Box sx={{ width: '100%', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                        <CircularProgress size={100} />
+                    </Box>
+                ) : (
+                    <ChangeInfo change={change}/>
+                )}
+            </Box>
+        </ThemeProvider>
     );
 }
 

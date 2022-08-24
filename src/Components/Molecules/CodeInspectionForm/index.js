@@ -40,6 +40,7 @@ const TableSelectInput = props => {
         label="File"
         onChange={onChange}
         fullWidth
+        sx={{ fontSize: 12 }}
     >
         {selectOptions.map((file, index) => (
             <MenuItem key={'file-' + index} value={file}>{file}</MenuItem>
@@ -51,7 +52,7 @@ const TableInput = props => {
     // console.log("TableInput", props);
     const { column, row, cell, updateData } = props;
     const onChange = e => updateData(row.index, column.id, e.target.value);
-    return <TextField variant="outlined" value={cell.value || ""} onChange={onChange} fullWidth />;
+    return <TextField variant="outlined" value={cell.value || ""} onChange={onChange} fullWidth multiline InputProps={{ style: { fontSize: 12 } }} />;
     // return <input type="number" value={cell.value} onChange={onChange} />;
 };
 
@@ -88,7 +89,7 @@ function CodeInspectionForm({ data, updateData, deleteData, addData, selectOptio
             <Box sx={{ flexGrow: 1, textAlign: 'center' }}>
                 <AppBar position="static" color='transparent' sx={{ bgcolor: 'secondary.main' }}>
                     <Toolbar>
-                        <Typography component="div" sx={{ width: '100%', flexShrink: 0 }}>
+                        <Typography component="div" sx={{ width: '100%', flexShrink: 0, fontWeight: 'Medium' }}>
                             Code Inspection Form
                         </Typography>
                     </Toolbar>

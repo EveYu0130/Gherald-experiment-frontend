@@ -54,7 +54,7 @@ const Timer = forwardRef(({pause, handleResumeClick, handlePauseClick}, ref) => 
     );
 })
 
-function DnD({ data, practice }) {
+function DnD({ data, practice, onSubmit }) {
     const [changeList, updateChangeList] = useState(data.changeReviews);
     const history = useHistory();
     const [pause, setPause] = useState(false);
@@ -73,10 +73,7 @@ function DnD({ data, practice }) {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (practice) {
-            history.push({
-                pathname: '/practice/taskB',
-                state: { practice: true }
-            });
+            onSubmit();
         } else {
             const reviewTime = timerRef.current.seconds;
             console.log(reviewTime);
@@ -88,8 +85,8 @@ function DnD({ data, practice }) {
                 },
                 body: JSON.stringify({...data, taskATime: reviewTime, changeReviews: changeList})
             }).then(response => {
-                history.push('/taskB')
                 console.log(response);
+                onSubmit();
             }).catch(error => {
                 console.log(error);
             });
@@ -167,11 +164,9 @@ function DnD({ data, practice }) {
                     )}
                 </Droppable>
                 <Box sx={{ width: '100%', textAlign: 'center', py: '3%' }}>
-                    <Link to={{pathname: practice ? "/practice/taskB" : "/taskB", state: { practice: practice }}} style={{ textDecoration: 'none' }}>
-                        <Button  variant="contained" sx={{ mx: '2%', my: '2%', width: '200px' }}>
-                            Skip
-                        </Button>
-                    </Link>
+                    <Button  variant="contained" sx={{ mx: '2%', my: '2%', width: '200px' }} onClick={onSubmit}>
+                        Skip
+                    </Button>
                     <Button  variant="contained" sx={{ mx: '2%', my: '2%', width: '200px' }} onClick={handleSubmit}>
                         Submit
                     </Button>

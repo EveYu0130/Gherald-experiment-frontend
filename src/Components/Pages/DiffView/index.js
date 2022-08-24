@@ -61,7 +61,7 @@ const getWidgets = (hunks, modifiedLines, modifiedMethods, userGroup) => {
                         <Alert severity="warning" icon={<SvgIcon component={GheraldIcon} inheritViewBox/>}>
                             {/*<AlertTitle>GHERALD line risk score: {lines[change.lineNumber]["riskScore"]}</AlertTitle>*/}
                             {/*This line is risky — check it out!*/}
-                            LINE: risk score {lines[change.lineNumber]["riskScore"]} — check it out!
+                            LINE {change.lineNumber}: this line contains tokens occurred in {lines[change.lineNumber]["riskScore"]} prior bugs — check it out!
                         </Alert>
                         :
                         (change.oldLineNumber in methods && methods[change.oldLineNumber]["delete_only"]) ?
