@@ -89,7 +89,7 @@ function CodeInspectionForm({ data, updateData, deleteData, addData, selectOptio
             <Box sx={{ flexGrow: 1, textAlign: 'center' }}>
                 <AppBar position="static" color='transparent' sx={{ bgcolor: 'secondary.main' }}>
                     <Toolbar>
-                        <Typography component="div" sx={{ width: '100%', flexShrink: 0 }}>
+                        <Typography component="div" sx={{ width: '100%', flexShrink: 0, fontWeight: 'Medium' }}>
                             Code Inspection Form
                         </Typography>
                     </Toolbar>

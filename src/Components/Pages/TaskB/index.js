@@ -76,6 +76,9 @@ function TaskB({practice, onSubmit, setPracticed}) {
                             <p>
                                 Please focus on identifying <b>only</b> functional defects; please ignore any other flaws you might notice in the code, such as those relating to style or documentation.
                             </p>
+                            <p>
+                                For the completeness of comprehension, we provide all types of files (e.g., .xml, testing files) that have been modified in the commit. However, you <b>only</b> need to identify defects in the main functional files (.java files).
+                            </p>
                             {!practice &&
                                 <p>
                                     You can pause the experiment by clicking on the <b>Pause</b> button if you get a phone call or want to grab a coffee.
@@ -83,6 +86,7 @@ function TaskB({practice, onSubmit, setPracticed}) {
                             }
                             {!ready && <p>To start the task, click on the <b>I'm ready for Task B</b> button below.</p>}
                             {ready && <p>The source code can be accessed by clicking on the <b>Source code</b> <OpenInNewIcon /> button below. Feel free to download it if needed.</p>}
+                            {ready && <p>Note: Since the functions are truncated into chunks in code diff and are not completely displayed , some lines may be mistakenly highlighted as comments. This will be fixed if you expand the code to show the complete function.</p>}
                         </Typography>
                     </Box>
 

@@ -78,7 +78,7 @@ function TaskA({practice, onSubmit}) {
                                     Your job is to rank the changes from most to least risky, where we defined risk as "likelihood of a defect in the code that will need to be fixed later".
                                 </p>
                                 <p>
-                                    To perform the ranking, just drag and drop the changes to the order you think is right, with the most risky change at the top.
+                                    To perform the ranking, just <b>drag and drop</b> the changes to the order you think is right, with the most risky change at the top.
                                 </p>
                                 <p>
                                     To start the task, click on the <b>I'm ready for Task A</b> button below.
@@ -88,7 +88,7 @@ function TaskA({practice, onSubmit}) {
                             <Typography component="div"  text-align="center">
                                 <p>
                                     Below are three sets of code changes to an existing software systems (i.e., proposed commits).
-                                    Your task is to rearrange the ranking below by the amount of risk you perceive in the changes.  (1 = Most risky, 3 = Least risky).
+                                    Your task is to rearrange the ranking below by the amount of risk you perceive in the changes. To perform the ranking, just <b>drag and drop</b> the changes to the order you think is right. (1 = Most risky, 3 = Least risky).
                                 </p>
                                 <p>
                                     You can examine the details of each change by clicking on the <b>Learn more</b> button.
