@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import styled, { keyframes, css } from 'styled-components';
 import { useHistory } from "react-router-dom";
 import { Box, Button, Stepper, Step, StepLabel } from '@mui/material';
 import 'react-diff-view/style/index.css';
@@ -49,7 +48,7 @@ const Timer = forwardRef(({pause, handleResumeClick, handlePauseClick}, ref) => 
     );
 })
 
-function CodeReview({ reviews, practice }) {
+function CodeReview({ reviews, practice, onSubmit, setPracticed }) {
     const [activeStep, setActiveStep] = useState(0);
     const { id, change } = reviews[activeStep];
     const [pause, setPause] = useState(false);
@@ -96,10 +95,8 @@ function CodeReview({ reviews, practice }) {
         console.log(data);
         if (practice) {
             if (activeStep === reviews.length - 1) {
-                history.push({
-                    pathname: '/',
-                    state: { practiced: true }
-                });
+                setPracticed(true);
+                onSubmit();
             } else {
                 setActiveStep((prevActiveStep) => prevActiveStep + 1);
             }
@@ -119,8 +116,7 @@ function CodeReview({ reviews, practice }) {
             }).then(response => {
                 if  (response.status === 200) {
                     if (activeStep === reviews.length - 1) {
-                        history.push(`/questionnaire`);
-                        console.log(history);
+                        onSubmit();
                     } else {
                         setActiveStep((prevActiveStep) => prevActiveStep + 1);
                     }
@@ -135,14 +131,9 @@ function CodeReview({ reviews, practice }) {
     const handleSkip = () => {
         if (activeStep === reviews.length - 1) {
             if (practice) {
-                history.push({
-                    pathname: '/',
-                    state: { practiced: true }
-                });
-            } else {
-                history.push(`/questionnaire`);
+                setPracticed(true);
             }
-            console.log(history);
+            onSubmit();
         } else {
             setActiveStep((prevActiveStep) => prevActiveStep + 1);
         }
@@ -177,7 +168,7 @@ function CodeReview({ reviews, practice }) {
                 <Box  sx={{ width: '100%', px: '5%' }} >
                     <ChangeInfo change={change} number={activeStep+1} />
 
-                    <CodeInspectionForm data={data} updateData={updateData} deleteData={deleteData} addData={addData} selectOptions={change.project === 'qt' ? change.files.slice(1).map(file => file.filename) : change.files.map(file => file.filename)}/>
+                    <CodeInspectionForm data={data} updateData={updateData} deleteData={deleteData} addData={addData} selectOptions={change.project === 'qt' ? change.files.slice(1).map(file => file.filename) : change.files.map(file => file.filename).filter(file => file.split(".").pop() === "java" && !file.split("/").includes("test"))}/>
 
                     <Box sx={{ width: '100%', textAlign: 'center' }}>
                         <Button  variant="contained" sx={{ mx: '2%', my: '2%', width: '200px' }} onClick={handleSkip}>

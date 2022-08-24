@@ -21,7 +21,7 @@ const Background = styled(Box)({
     opacity: 0.1,
 });
 
-function Questionnaire() {
+function Questionnaire({onSubmit}) {
     const [state, setState] = useState({
         understandability: null,
         difficulty: null,
@@ -59,8 +59,7 @@ function Questionnaire() {
             body: JSON.stringify({...state, participantId: auth.user.id})
         }).then(response => {
             if  (response.status === 200) {
-                history.push(`/end`);
-                console.log(history);
+                onSubmit();
             }
             console.log(response);
         }).catch(error => {

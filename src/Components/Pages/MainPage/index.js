@@ -38,15 +38,17 @@ const Background = styled(Box)({
     opacity: 0.1,
 });
 
-function MainPage() {
-    let location = useLocation();
-    let { practiced } = location.state || false;
-    const history = useHistory();
-
+function MainPage({practiced, onSubmit, setPractice}) {
     let auth = useAuth();
 
-    const handleStartClick = () => {
-        history.push(`/taskA`);
+    const handlePractice = () => {
+        setPractice(true);
+        onSubmit();
+    }
+
+    const handleExperiment = () => {
+        setPractice(false);
+        onSubmit();
     }
 
     return (
@@ -122,7 +124,7 @@ function MainPage() {
                                 <Card sx={{ display: 'flex', height: '100%' }}>
                                     <CardContent sx={{ flex: 1 }}>
                                         <Typography component="h2" variant="h6">
-                                            Task A [x~ minutes to complete]
+                                            Task A [5~ minutes to complete]
                                         </Typography>
                                         <Typography variant="subtitle1" color="text.secondary">
                                             Rank the changes by risk
@@ -145,7 +147,7 @@ function MainPage() {
                                 <Card sx={{ display: 'flex', height: '100%' }}>
                                     <CardContent sx={{ flex: 1 }}>
                                         <Typography component="h2" variant="h6">
-                                            Task B [x~ minutes to complete]
+                                            Task B [60~ minutes to complete]
                                         </Typography>
                                         <Typography variant="subtitle1" color="text.secondary">
                                             Conduct Code Reviews
@@ -199,9 +201,9 @@ function MainPage() {
                                             </p>
                                             <p>
                                                 In a nutshell, Gherald is a risk assessment technique we implemented based on historical analysis.
-                                                During the tasks, you will be provided with Gherald risk assessment results regarding the riskiness of change and its relevant author, files, methods.
-                                                Specifically, you will be presented with a risk score of change and the prior defect information of its author, files, and methods.
-                                                Moreover, Gherald will alert your of the risky lines that are prone to defects when you are reviewing the code diff.
+                                                During the tasks, you will be provided with Gherald risk assessment results regarding the riskiness of change and its relevant author, files, and methods.
+                                                Specifically, you will be presented with a risk score of change and the historical statistics of its author, files, and methods.
+                                                Moreover, Gherald will alert you of the risky lines that are prone to defects when you are reviewing the code diff.
                                             </p>
                                             <p>
                                                 Please feel free to use Gherald as a complementary tool to help with your manual code reviews.
@@ -277,14 +279,12 @@ function MainPage() {
                     <Divider />
 
                     <Box sx={{ width: '100%', textAlign: 'center', px: '20%', py: '2%' }} >
-                        <Link to="/practice/taskA" style={{ textDecoration: 'none' }}>
-                            <Button  variant="contained" sx={{ mx: '2%', width: '200px' }}>
-                                Start Practice
-                            </Button>
-                        </Link>
+                        <Button  variant="contained" sx={{ mx: '2%', width: '200px' }} onClick={handlePractice}>
+                            Start Practice
+                        </Button>
                     </Box>
                     <Box sx={{ width: '100%', textAlign: 'center', px: '20%', pb: '5%' }}>
-                        <Button  variant="contained" sx={{ mx: '2%', width: '200px' }} onClick={handleStartClick} disabled={!practiced}>
+                        <Button  variant="contained" sx={{ mx: '2%', width: '200px' }} onClick={handleExperiment} disabled={!practiced}>
                             Start Experiment
                         </Button>
                     </Box>

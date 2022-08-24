@@ -47,7 +47,7 @@ function DynamicTable({ columns, data, updateData, deleteData, addData, selectOp
                 {rows.map((row, i) => {
                     prepareRow(row)
                     return (
-                        <TableRow {...row.getRowProps()}>
+                        <TableRow {...row.getRowProps()} sx={{ verticalAlign: "top"}}>
                             {row.cells.map(cell => {
                                 return <TableCell sx={{ width: setColumnWidth(cell.column.id) }} {...cell.getCellProps()}>{cell.render('Cell')}</TableCell>
                             })}

@@ -24,6 +24,7 @@ export const useAuth = () => {
 
 function useProvideAuth() {
     const [user, setUser] = useState(null);
+    const [error, setError] = useState("");
 
     const signin = (id) => {
         fetch(`/api/participants/${id}`, {
@@ -32,14 +33,22 @@ function useProvideAuth() {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
         }).then(response => {
-            return response.json();
+            if  (response.status === 200) {
+                return response.json();
+            } else {
+                throw "Invalid Participant ID.";
+            }
         }).then(data => {
+            if (data.completed) {
+                throw "You already participated.";
+            }
             setUser({
                 id: data.id,
                 group: data.tool
             })
         }).catch(error => {
             console.log(error);
+            setError(error);
         });
     };
 
@@ -49,6 +58,7 @@ function useProvideAuth() {
 
     return {
         user,
+        error,
         signin,
         signout
     };
