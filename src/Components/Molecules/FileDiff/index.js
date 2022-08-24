@@ -32,7 +32,7 @@ const FileDiff = ({ file, userGroup }) => {
                     {file.status ? "" : "-" + file.deletions}
                 </Typography>
             </AccordionSummary>
-            {userGroup === "gherald" &&
+            {userGroup === "gherald" && file.filename.split(".").pop() === "java" && !file.filename.split("/").includes("test") &&
                 <Alert severity="warning" icon={<SvgIcon component={GheraldIcon} inheritViewBox/>}>
                     {/*<AlertTitle>GHERALD file risk: there have been {file.priorBugs} prior bugs among {file.priorChanges} changes in this file</AlertTitle>*/}
                     FILE: there have been {file.priorBugs} prior bugs among {file.priorChanges} changes in this file

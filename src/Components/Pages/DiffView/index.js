@@ -45,7 +45,7 @@ const getWidgets = (hunks, modifiedLines, modifiedMethods, userGroup) => {
         }
     })
     methods = Object.assign({}, ...methods.map((x) => ({[x.labelled_line]: {...x}})));
-    const warning = userGroup === "" ? [] :
+    const warning = userGroup != "gherald" ? [] :
         changes.filter((change) =>
             (change.type === "insert" && change.lineNumber in lines && lines[change.lineNumber]["riskScore"] > 0)
             || (change.type === "normal" && change.newLineNumber in methods && !methods[change.newLineNumber]["delete_only"])
