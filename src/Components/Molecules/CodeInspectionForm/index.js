@@ -48,7 +48,22 @@ const TableSelectInput = props => {
     </Select>);
 };
 
-const TableInput = props => {
+const TableInputLine = props => {
+    // console.log("TableInput", props);
+    const { column, row, cell, updateData } = props;
+    const onChange = e => updateData(row.index, column.id, e.target.value);
+    return <TextField variant="outlined"
+                      type="number"
+                      value={cell.value || ""}
+                      onChange={onChange}
+                      fullWidth
+                      multiline
+                      InputProps={{ style: { fontSize: 12 } }}
+                      error={cell.value && !parseInt(cell.value)}
+                      helperText={cell.value && !parseInt(cell.value) ? "Must be a number" : ""}/>;
+};
+
+const TableInputComment = props => {
     // console.log("TableInput", props);
     const { column, row, cell, updateData } = props;
     const onChange = e => updateData(row.index, column.id, e.target.value);
@@ -73,12 +88,12 @@ function CodeInspectionForm({ data, updateData, deleteData, addData, selectOptio
             {
                 Header: "Line",
                 accessor: "line",
-                Cell: TableInput
+                Cell: TableInputLine
             },
             {
                 Header: "Comment",
                 accessor: "comment",
-                Cell: TableInput
+                Cell: TableInputComment
             }
         ],
         []
