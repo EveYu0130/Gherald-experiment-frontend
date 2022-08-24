@@ -55,7 +55,8 @@ const Timer = forwardRef(({pause, handleResumeClick, handlePauseClick}, ref) => 
 })
 
 function DnD({ data, practice, onSubmit }) {
-    const [changeList, updateChangeList] = useState(data.changeReviews.map((item, index) => ({...item, riskLevel: index+1})));
+    const changes = practice ? data.changeReviews.slice(0, 3) : data.changeReviews.slice(3, 6)
+    const [changeList, updateChangeList] = useState(changes.map((item, index) => ({...item, riskLevel: index+1})));
     const history = useHistory();
     const [pause, setPause] = useState(false);
     const timerRef = useRef();

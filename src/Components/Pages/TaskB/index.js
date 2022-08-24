@@ -44,7 +44,7 @@ function TaskB({practice, onSubmit, setPracticed}) {
             .then(results => results.json())
             .then(data => {
                 setLoading(false);
-                setReviews(data.changeReviews);
+                setReviews(practice ? data.changeReviews.slice(0, 3) : data.changeReviews.slice(3, 6));
             })
     }, [])
 
