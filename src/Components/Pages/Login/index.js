@@ -43,8 +43,10 @@ function Login() {
         });
     };
 
-    if (auth.user || auth.error) {
-        setLoading(false);
+    if (loading) {
+        if (auth.user || auth.error) {
+            setLoading(false);
+        }
     }
 
     if (auth.user) {
