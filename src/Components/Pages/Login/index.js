@@ -43,8 +43,11 @@ function Login() {
         });
     };
 
-    if (auth.user) {
+    if (auth.user || auth.error) {
         setLoading(false);
+    }
+
+    if (auth.user) {
         history.replace(from);
     }
 
