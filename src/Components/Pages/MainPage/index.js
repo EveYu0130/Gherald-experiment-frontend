@@ -203,7 +203,7 @@ function MainPage({practiced, onSubmit, setPractice}) {
                                                 In a nutshell, Gherald is a risk assessment technique we implemented based on historical analysis.
                                                 During the tasks, you will be provided with Gherald risk assessment results regarding the riskiness of change and its relevant author, files, and methods.
                                                 Specifically, you will be presented with a risk score of change and the historical statistics of its author, files, and methods.
-                                                Moreover, Gherald will alert you of the risky lines that are prone to defects when you are reviewing the code diff.
+                                                Moreover, in some cases, Gherald will alert you of the risky lines that are prone to defects when you are reviewing the code diff.
                                             </p>
                                             <p>
                                                 Please feel free to use Gherald as a complementary tool to help with your manual code reviews.
