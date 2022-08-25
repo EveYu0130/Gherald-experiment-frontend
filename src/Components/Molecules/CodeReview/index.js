@@ -179,6 +179,9 @@ function CodeReview({ reviews, practice, onSubmit, setPracticed }) {
                     {report && <CodeInspectionForm data={data} updateData={updateData} deleteData={deleteData} addData={addData} selectOptions={change.project === 'qt' ? change.files.slice(1).map(file => file.filename) : change.files.map(file => file.filename).filter(file => file.split(".").pop() === "java" && !file.split("/").includes("test"))}/>}
 
                     <Box sx={{ width: '100%', textAlign: 'center' }}>
+                        <Button  variant="contained" sx={{ mx: '2%', my: '2%', width: '200px' }} onClick={handleSkip}>
+                            Skip
+                        </Button>
                         {!report &&
                             <Button  variant="contained" sx={{ mx: '2%', my: '2%', width: '200px' }} onClick={handleNext}>
                                 No defect to report
@@ -194,9 +197,6 @@ function CodeReview({ reviews, practice, onSubmit, setPracticed }) {
                                 Submit
                             </Button>
                         }
-                        <Button  variant="contained" sx={{ mx: '2%', my: '2%', width: '200px' }} onClick={handleSkip}>
-                            Skip
-                        </Button>
                     </Box>
                 </Box>
             </Box>}
