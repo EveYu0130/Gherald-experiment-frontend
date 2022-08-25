@@ -59,8 +59,8 @@ const TableInputLine = props => {
                       fullWidth
                       multiline
                       InputProps={{ style: { fontSize: 12 } }}
-                      error={cell.value && !parseInt(cell.value)}
-                      helperText={cell.value && !parseInt(cell.value) ? "Must be a number" : ""}/>;
+                      error={!!cell.value && !parseInt(cell.value)}
+                      helperText={!!cell.value && !parseInt(cell.value) ? "Must be a number" : ""}/>;
 };
 
 const TableInputComment = props => {
