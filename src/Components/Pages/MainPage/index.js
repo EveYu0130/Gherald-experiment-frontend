@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {Link, useHistory, useLocation} from 'react-router-dom';
 import {
@@ -16,13 +16,23 @@ import {
     Card,
     CardContent,
     CardActions,
-    CardMedia
+    CardMedia, DialogTitle, DialogActions, Dialog, DialogContent, DialogContentText, SvgIcon
 } from '@mui/material';
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import {useAuth} from "../../../auth";
 import taskA from '../../../images/task-a.jpg';
 import taskB from '../../../images/task-b.jpg';
 import theme from '../../../theme';
+import gheraldScoreTip from "../../../images/gherald-score.png";
+import gheraldAuthorTip from "../../../images/gherald-author.png";
+import gheraldFileTip from "../../../images/gherald-file.png";
+import gheraldMethodTip from "../../../images/gherald-method.png";
+import gheraldLineTip from "../../../images/gherald-line.png";
+import pauseTip from "../../../images/pause-a.png";
+import submitTip from "../../../images/submit.png";
+import skipTip from "../../../images/skip.png";
+import {ReactComponent as GheraldIcon} from "../../../icons/gherald.svg";
+import GheraldTips from "../../Molecules/GheraldTips";
 
 const backgroundImage = 'https://images.unsplash.com/photo-1482062364825-616fd23b8fc1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80';
 
@@ -40,6 +50,32 @@ const Background = styled(Box)({
 
 function MainPage({practiced, onSubmit, setPractice}) {
     let auth = useAuth();
+    const [tip, setTip] = useState(false);
+    const [scrollPosition, setScrollPosition] = useState(0);
+    const { innerWidth: width, innerHeight: height } = window;
+
+    // if (auth.user.group === "gherald") {
+    //     // let elem = document.getElementById('gherald-info');
+    //     // console.log(elem);
+    //     // let rect = elem.getBoundingClientRect();
+    //     // console.log(rect);
+    // }
+    if (document.getElementById('gherald-info')) {
+        let rect = document.getElementById('gherald-info').getBoundingClientRect();
+        console.log(innerHeight);
+        console.log(rect);
+        console.log(scrollPosition);
+    }
+
+    useEffect(() => {
+        const updatePosition = () => {
+            setScrollPosition(window.pageYOffset);
+        }
+        window.addEventListener("scroll", updatePosition);
+        updatePosition();
+        return () => window.removeEventListener("scroll", updatePosition);
+    }, []);
+
 
     const handlePractice = () => {
         setPractice(true);
@@ -50,6 +86,10 @@ function MainPage({practiced, onSubmit, setPractice}) {
         setPractice(false);
         onSubmit();
     }
+
+    const handleTipOpen = () => {
+        setTip(true);
+    };
 
     return (
         <ThemeProvider theme={theme}>
@@ -192,7 +232,7 @@ function MainPage({practiced, onSubmit, setPractice}) {
                             <Typography variant="h5" component="div" sx={{ fontWeight: '600' }}>
                                 Tools
                             </Typography>
-                            <Box sx={{ py: '20px' }}>
+                            <Box sx={{ py: '20px' }} id="gherald-info">
                                 <Card sx={{ minWidth: 275}}>
                                     <CardContent>
                                         <Typography variant="subtitle1" paragraph>
@@ -210,8 +250,12 @@ function MainPage({practiced, onSubmit, setPractice}) {
                                             </p>
                                         </Typography>
                                     </CardContent>
+                                    <CardActions>
+                                        <Button onClick={handleTipOpen}>Tips for Gherald</Button>
+                                    </CardActions>
                                 </Card>
                             </Box>
+                            <GheraldTips tip={tip} setTip={setTip}/>
                         </Box>
                     }
 

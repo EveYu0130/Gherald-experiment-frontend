@@ -8,7 +8,7 @@ import CodeInspectionForm from "../CodeInspectionForm";
 import AccessAlarmsIcon from "@mui/icons-material/AccessAlarms";
 import { forwardRef, useRef, useImperativeHandle } from "react"
 
-const Timer = forwardRef(({pause, handleResumeClick, handlePauseClick}, ref) => {
+const Timer = forwardRef(({pause, practice, handleResumeClick, handlePauseClick}, ref) => {
     const [seconds, setSeconds] = useState(0);
 
     useImperativeHandle(ref, () => ({
@@ -20,26 +20,28 @@ const Timer = forwardRef(({pause, handleResumeClick, handlePauseClick}, ref) => 
     // const [pause, setPause] = useState(false);
 
     useEffect(() => {
-        let interval = null;
-        if (!pause) {
-            interval = setInterval(() => {
-                setSeconds(seconds => seconds + 1);
-            }, 1000);
-        } else if (seconds > 0) {
-            clearInterval(interval);
+        if (!practice) {
+            let interval = null;
+            if (!pause) {
+                interval = setInterval(() => {
+                    setSeconds(seconds => seconds + 1);
+                }, 1000);
+            } else if (seconds > 0) {
+                clearInterval(interval);
+            }
+            return () => clearInterval(interval);
         }
-        return () => clearInterval(interval);
     }, [seconds, pause])
 
     return (
         <Box sx={{ width: '100%', textAlign: 'center' }}>
             {pause ? (
-                <Button  variant="contained" sx={{ mx: '2%', my: '2%', width: '200px' }} onClick={handleResumeClick}>
+                <Button  variant="contained" sx={{ mx: '2%', my: '1%', width: '200px' }} onClick={handleResumeClick}>
                     <AccessAlarmsIcon sx={{mr: '5px'}}/>
                     Resume
                 </Button>
             ) : (
-                <Button  variant="contained" sx={{ mx: '2%', my: '2%', width: '200px' }} onClick={handlePauseClick}>
+                <Button  variant="contained" sx={{ mx: '2%', my: '1%', width: '200px' }} onClick={handlePauseClick}>
                     <AccessAlarmsIcon sx={{mr: '5px'}}/>
                     Pause
                 </Button>
@@ -159,9 +161,7 @@ function CodeReview({ reviews, practice, onSubmit, setPracticed }) {
 
     return (
         <div style={{ width: '100%' }}>
-            {!practice &&
-                <Timer pause={pause} handleResumeClick={handleResumeClick} handlePauseClick={handlePauseClick} ref={timerRef} />
-            }
+            <Timer pause={pause} practice={practice} handleResumeClick={handleResumeClick} handlePauseClick={handlePauseClick} ref={timerRef} />
             {!pause && <Box sx={{ width: '100%', p: '1%' }}>
                 <Box>
                     <Stepper activeStep={activeStep} alternativeLabel>
