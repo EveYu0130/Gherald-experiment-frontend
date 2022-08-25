@@ -51,6 +51,7 @@ const Background = styled(Box)({
 function MainPage({practiced, onSubmit, setPractice}) {
     let auth = useAuth();
     const [tip, setTip] = useState(false);
+    const [tipShown, setTipShown] = useState(false);
     const [scrollPosition, setScrollPosition] = useState(0);
     const { innerWidth: width, innerHeight: height } = window;
 
@@ -64,7 +65,10 @@ function MainPage({practiced, onSubmit, setPractice}) {
         let rect = document.getElementById('gherald-info').getBoundingClientRect();
         console.log(innerHeight);
         console.log(rect);
-        console.log(scrollPosition);
+        if (rect.y < innerHeight / 3 && !tipShown) {
+            setTip(true);
+            setTipShown(true);
+        }
     }
 
     useEffect(() => {
