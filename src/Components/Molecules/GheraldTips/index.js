@@ -7,52 +7,53 @@ import gheraldAuthorTip from "../../../images/gherald-author.png";
 import gheraldFileTip from "../../../images/gherald-file.png";
 import gheraldMethodTip from "../../../images/gherald-method.png";
 import gheraldLineTip from "../../../images/gherald-line.png";
-import MainPage from "../../Pages/MainPage";
 
 const tips = [
     (<DialogContent>
         <DialogContentText id="alert-dialog-description" sx={{py: 2}}>
             You are provided with a tool called <b>Gherald</b> to assist your completion of tasks. The Gherald risk assessment results are indicated by a&nbsp; <SvgIcon component={GheraldIcon} inheritViewBox/> &nbsp;icon.
-            Please find the related icon during your completion of tasks.
+            Please find the relevant icon during your completion of tasks.
         </DialogContentText>
     </DialogContent>),
     (<DialogContent>
         <DialogContentText id="alert-dialog-description" sx={{py: 2}}>
-            Gherald estimates an overall risk score based on the historical stats of changes and defects.
+            Gherald estimates an overall risk score based on the historical statistics of changes and defects.
         </DialogContentText>
         <img src={gheraldScoreTip} alt="gheraldScoreTip"/>
     </DialogContent>),
     (<DialogContent>
         <DialogContentText id="alert-dialog-description" sx={{py: 2}}>
-            Gherald provides an analysis of author experience (i.e., number of prior changes) and estimates a risk score based on the author's historical stats of changes and defects.
-            This information can be accessed when you <b>hover</b> on the icon.
+            Gherald provides an analysis of author experience (i.e., the number of prior changes) and estimates a risk score based on the historical statistics of author's prior changes and defects. <br/>
+            This information can be accessed when you <b>hover</b> over the icon.
         </DialogContentText>
         <img src={gheraldAuthorTip} alt="gheraldAuthorTip"/>
     </DialogContent>),
     (<DialogContent>
         <DialogContentText id="alert-dialog-description" sx={{py: 2}}>
-            Gherald provides the historical stats of changes and defects for files in change.
+            Gherald provides a risk analysis for each file in change based on the historical statistics of changes and defects. <br/>
+            For each file being modified, an info alert will be displayed.
         </DialogContentText>
         <img src={gheraldFileTip} alt="gheraldFileTip"/>
     </DialogContent>),
     (<DialogContent>
         <DialogContentText id="alert-dialog-description" sx={{py: 2}}>
-            Gherald provides the historical stats of changes and defects for methods in change. For each method being modified, an info alert will be displayed above that method.
+            Gherald provides a risk analysis for each method in change based on the historical statistics of changes and defects. <br/>
+            For each method being modified, an info alert will be displayed above that method.
         </DialogContentText>
         <img src={gheraldMethodTip} alt="gheraldMethodTip"/>
     </DialogContent>),
     (<DialogContent>
         <DialogContentText id="alert-dialog-description" sx={{py: 2}}>
-            Gherald provides an analysis of the riskiness of each line in change based on the historical defect stats of the tokens in that line.
+            Gherald provides an risk analysis for each line in change based on the historical defect statistics of the tokens in that line. <br/>
             For line containing tokens that were edited in prior bug fixes, a warning alert will be displayed below that risky line.
         </DialogContentText>
         <img src={gheraldLineTip} alt="gheraldLineTip" />
     </DialogContent>),
-    (<DialogContent>
-        <DialogContentText id="alert-dialog-description" sx={{py: 2}}>
-            Please note that since Gherald is
-        </DialogContentText>
-    </DialogContent>)
+    // (<DialogContent>
+    //     <DialogContentText id="alert-dialog-description" sx={{py: 2}}>
+    //         Please note that since Gherald is
+    //     </DialogContentText>
+    // </DialogContent>)
 ]
 
 function GheraldTips({tip, setTip}) {

@@ -55,17 +55,12 @@ function MainPage({practiced, onSubmit, setPractice}) {
     const [scrollPosition, setScrollPosition] = useState(0);
     const { innerWidth: width, innerHeight: height } = window;
 
-    // if (auth.user.group === "gherald") {
-    //     // let elem = document.getElementById('gherald-info');
-    //     // console.log(elem);
-    //     // let rect = elem.getBoundingClientRect();
-    //     // console.log(rect);
-    // }
+    let rectY = innerHeight;
     if (document.getElementById('gherald-info')) {
-        let rect = document.getElementById('gherald-info').getBoundingClientRect();
+        rectY = document.getElementById('gherald-info').getBoundingClientRect().y;
         console.log(innerHeight);
-        console.log(rect);
-        if (rect.y < innerHeight / 3 && !tipShown) {
+        console.log(rectY);
+        if (!practiced && rectY < innerHeight / 3 && !tipShown) {
             setTip(true);
             setTipShown(true);
         }
@@ -76,8 +71,10 @@ function MainPage({practiced, onSubmit, setPractice}) {
             setScrollPosition(window.pageYOffset);
         }
         window.addEventListener("scroll", updatePosition);
-        updatePosition();
         return () => window.removeEventListener("scroll", updatePosition);
+        if (!tipShown) {
+
+        }
     }, []);
 
 
@@ -251,6 +248,9 @@ function MainPage({practiced, onSubmit, setPractice}) {
                                             </p>
                                             <p>
                                                 Please feel free to use Gherald as a complementary tool to help with your manual code reviews.
+                                            </p>
+                                            <p>
+                                                You can learn more details of Gherald by clicking on the <b>Tips for Gherald</b> button.
                                             </p>
                                         </Typography>
                                     </CardContent>

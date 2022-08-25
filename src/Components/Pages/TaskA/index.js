@@ -12,7 +12,7 @@ import {
     Divider,
     Button,
     Container,
-    CssBaseline, CircularProgress, DialogContent, DialogContentText, DialogTitle, DialogActions, Dialog
+    CssBaseline, CircularProgress, DialogContent, DialogContentText, DialogTitle, DialogActions, Dialog, SvgIcon
 } from '@mui/material';
 import ChangeDetail from "../ChangeDetail";
 import DnD from "../../Molecules/DnD";
@@ -28,6 +28,10 @@ import submitTip from "../../../images/submit.png";
 import skipTip from "../../../images/skip.png";
 import pauseTip from '../../../images/pause-a.png';
 import TipsAndUpdatesIcon from '@mui/icons-material/TipsAndUpdates';
+import GheraldTips from "../../Molecules/GheraldTips";
+import gheraldAuthorTip from "../../../images/gherald-author.png";
+import {ReactComponent as GheraldIcon} from "../../../icons/gherald.svg";
+import TaskTips from "../../Molecules/TaskTips";
 
 const backgroundImage = 'https://images.unsplash.com/photo-1482062364825-616fd23b8fc1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80';
 
@@ -80,8 +84,8 @@ function TaskA({practice, onSubmit}) {
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState([]);
     const [ready, setReady] = useState(false);
-    const [tip, setTip] = useState(true);
-    const [currentTip, setCurrentTip] = useState(0);
+    const [taskTip, setTaskTip] = useState(practice);
+    const [gheraldTip, setGheraldTip] = useState(false);
 
     let auth = useAuth();
 
@@ -98,21 +102,12 @@ function TaskA({practice, onSubmit}) {
         setReady(true);
     }
 
-    const handleTipOpen = () => {
-        setTip(true);
+    const handleGheraldTipOpen = () => {
+        setGheraldTip(true);
     };
 
-    const handleTipClose = () => {
-        setTip(false);
-        setCurrentTip(0);
-    };
-
-    const handleTipNext = () => {
-        setCurrentTip(currentTip + 1);
-    };
-
-    const handleTipPrevious = () => {
-        setCurrentTip(currentTip - 1);
+    const handleTaskTipOpen = () => {
+        setTaskTip(true);
     };
 
     return (
@@ -128,19 +123,41 @@ function TaskA({practice, onSubmit}) {
                     </Box>
                     <Divider />
                     <Box sx={{ width: '100%', px: '10%', pt: '30px' }}>
-                        <Grid container spacing={2}>
-                            <Grid item xs={10}>
-                                <Typography variant="h6">
-                                    Task Description
-                                </Typography>
+                        {auth.user.group === "gherald" ?
+                            <Grid container >
+                                <Grid item xs={8}>
+                                    <Typography variant="h6">
+                                        Task Description
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={2}>
+                                    <Button variant="outlined" onClick={handleTaskTipOpen}>
+                                        <TipsAndUpdatesIcon sx={{mr: '5px'}}/>
+                                        Tips for Task A
+                                    </Button>
+                                </Grid>
+                                <Grid item xs={2}>
+                                    <Button variant="outlined" onClick={handleGheraldTipOpen}>
+                                        <SvgIcon component={GheraldIcon} inheritViewBox sx={{mr: '5px'}}/>
+                                        Tips for Gherald
+                                    </Button>
+                                </Grid>
+                            </Grid> :
+                            <Grid container spacing={2}>
+                                <Grid item xs={10}>
+                                    <Typography variant="h6">
+                                        Task Description
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={2}>
+                                    <Button variant="outlined" onClick={handleTaskTipOpen}>
+                                        <TipsAndUpdatesIcon sx={{mr: '5px'}}/>
+                                        Tips for Task A
+                                    </Button>
+                                </Grid>
                             </Grid>
-                            <Grid item xs={2}>
-                                <Button variant="outlined" onClick={handleTipOpen}>
-                                    <TipsAndUpdatesIcon sx={{mr: '5px'}}/>
-                                    Tips for Task A
-                                </Button>
-                            </Grid>
-                        </Grid>
+                        }
+
                         {!ready ? (
                             <Typography component="div"  text-align="center">
                                 <p>
@@ -184,25 +201,8 @@ function TaskA({practice, onSubmit}) {
                             )}
                         </Box>
                     )}
-                    <Dialog
-                        open={tip}
-                        onClose={handleTipClose}
-                        maxWidth="md"
-                        aria-labelledby="alert-dialog-title"
-                        aria-describedby="alert-dialog-description"
-                    >
-                        <DialogTitle id="alert-dialog-title">
-                            Tips for Task A
-                        </DialogTitle>
-                        {tips[currentTip]}
-                        <DialogActions>
-                            <Button onClick={handleTipPrevious} disabled={currentTip === 0}>Previous Tip</Button>
-                            <Button onClick={handleTipNext} disabled={currentTip === tips.length - 1}>Next Tip</Button>
-                            <Button onClick={handleTipClose} autoFocus>
-                                Close
-                            </Button>
-                        </DialogActions>
-                    </Dialog>
+                    <TaskTips tips={tips} tip={taskTip} setTip={setTaskTip} task={"A"}/>
+                    <GheraldTips tip={gheraldTip} setTip={setGheraldTip}/>
                 </Box>
             </Container>
         </ThemeProvider>

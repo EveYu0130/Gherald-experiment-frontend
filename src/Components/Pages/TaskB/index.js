@@ -24,8 +24,11 @@ import filesTip from '../../../images/files.png';
 import sourcecodeTip from '../../../images/sourcecode.png';
 import noDefectTip from '../../../images/no-defect.png';
 import reportDefectTip from '../../../images/report-defect.png';
+import highlightTip from '../../../images/highlight.png';
 import TipsAndUpdatesIcon from "@mui/icons-material/TipsAndUpdates";
 import {ReactComponent as GheraldIcon} from "../../../icons/gherald.svg";
+import TaskTips from "../../Molecules/TaskTips";
+import GheraldTips from "../../Molecules/GheraldTips";
 
 
 const backgroundImage = 'https://images.unsplash.com/photo-1482062364825-616fd23b8fc1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80';
@@ -51,8 +54,8 @@ const tips = [
     </DialogContent>),
     (<DialogContent>
         <DialogContentText id="alert-dialog-description" sx={{py: 2}}>
-            For the completeness of comprehension, we provide all types of files (e.g., .xml, testing files) that have been modified in the commit.
-            However, you <b>only</b> need to identify defects in the main functional files (.java files).
+            For the completeness of comprehension, we provide all types of files (e.g., <b>*.xml</b>, <b>*Test.java</b>) that have been modified in the commit.
+            However, you <b>only</b> need to identify defects in the main functional files (<b>*.java</b>).
         </DialogContentText>
         <img src={filesTip} alt="filesTip"/>
     </DialogContent>),
@@ -81,20 +84,21 @@ const tips = [
             Please focus on identifying <b>only</b> functional defects; please ignore any other flaws you might notice in the code, such as those relating to style or documentation.
         </DialogContentText>
     </DialogContent>),
-    // (<DialogContent>
-    //     <DialogContentText id="alert-dialog-description">
-    //         Note: Since the functions are truncated into chunks in code diff and are not completely displayed, some lines may be mistakenly highlighted as comments.
-    //         This will be fixed if you expand the code to show the complete function.
-    //     </DialogContentText>
-    // </DialogContent>)
+    (<DialogContent>
+        <DialogContentText id="alert-dialog-description" sx={{py: 2}}>
+            Note: Since the functions are truncated into chunks in code diff and are not completely displayed, some lines may be mistakenly highlighted as comments.
+            This will be corrected if you expand the code to show the complete function.
+        </DialogContentText>
+        <img src={highlightTip} alt="highlightTip"/>
+    </DialogContent>)
 ]
 
 function TaskB({practice, onSubmit, setPracticed}) {
     const [loading, setLoading] = useState(true);
     const [reviews, setReviews] = useState([]);
     const [ready, setReady] = useState(false);
-    const [tip, setTip] = useState(true);
-    const [currentTip, setCurrentTip] = useState(0);
+    const [taskTip, setTaskTip] = useState(practice);
+    const [gheraldTip, setGheraldTip] = useState(false);
 
     let auth = useAuth();
 
@@ -111,21 +115,12 @@ function TaskB({practice, onSubmit, setPracticed}) {
         setReady(true);
     }
 
-    const handleTipOpen = () => {
-        setTip(true);
+    const handleGheraldTipOpen = () => {
+        setGheraldTip(true);
     };
 
-    const handleTipClose = () => {
-        setTip(false);
-        setCurrentTip(0);
-    };
-
-    const handleTipNext = () => {
-        setCurrentTip(currentTip + 1);
-    };
-
-    const handleTipPrevious = () => {
-        setCurrentTip(currentTip - 1);
+    const handleTaskTipOpen = () => {
+        setTaskTip(true);
     };
 
     return (
@@ -141,19 +136,40 @@ function TaskB({practice, onSubmit, setPracticed}) {
                     </Box>
                     <Divider />
                     <Box sx={{ width: '100%', px: '10%', pt: '30px' }}>
-                        <Grid container spacing={2}>
-                            <Grid item xs={10}>
-                                <Typography variant="h6">
-                                    Task Description
-                                </Typography>
+                        {auth.user.group === "gherald" ?
+                            <Grid container >
+                                <Grid item xs={8}>
+                                    <Typography variant="h6">
+                                        Task Description
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={2}>
+                                    <Button variant="outlined" onClick={handleTaskTipOpen}>
+                                        <TipsAndUpdatesIcon sx={{mr: '5px'}}/>
+                                        Tips for Task B
+                                    </Button>
+                                </Grid>
+                                <Grid item xs={2}>
+                                    <Button variant="outlined" onClick={handleGheraldTipOpen}>
+                                        <SvgIcon component={GheraldIcon} inheritViewBox sx={{mr: '5px'}}/>
+                                        Tips for Gherald
+                                    </Button>
+                                </Grid>
+                            </Grid> :
+                            <Grid container spacing={2}>
+                                <Grid item xs={10}>
+                                    <Typography variant="h6">
+                                        Task Description
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={2}>
+                                    <Button variant="outlined" onClick={handleTaskTipOpen}>
+                                        <TipsAndUpdatesIcon sx={{mr: '5px'}}/>
+                                        Tips for Task B
+                                    </Button>
+                                </Grid>
                             </Grid>
-                            <Grid item xs={2}>
-                                <Button variant="outlined" onClick={handleTipOpen}>
-                                    <TipsAndUpdatesIcon sx={{mr: '5px'}}/>
-                                    Tips for Task B
-                                </Button>
-                            </Grid>
-                        </Grid>
+                        }
                         <Typography component="div"  text-align="center">
                             <p>
                                 In this task, you will be provided with the same three sets of changes that you saw in task A.
@@ -183,25 +199,8 @@ function TaskB({practice, onSubmit, setPracticed}) {
                             )}
                         </Box>
                     )}
-                    <Dialog
-                        open={tip}
-                        onClose={handleTipClose}
-                        maxWidth="md"
-                        aria-labelledby="alert-dialog-title"
-                        aria-describedby="alert-dialog-description"
-                    >
-                        <DialogTitle id="alert-dialog-title">
-                            Tips for Task B
-                        </DialogTitle>
-                        {tips[currentTip]}
-                        <DialogActions>
-                            <Button onClick={handleTipPrevious} disabled={currentTip === 0}>Previous Tip</Button>
-                            <Button onClick={handleTipNext} disabled={currentTip === tips.length - 1}>Next Tip</Button>
-                            <Button onClick={handleTipClose} autoFocus>
-                                Close
-                            </Button>
-                        </DialogActions>
-                    </Dialog>
+                    <TaskTips tips={tips} tip={taskTip} setTip={setTaskTip} task={"B"} />
+                    <GheraldTips tip={gheraldTip} setTip={setGheraldTip}/>
                 </Box>
             </Container>
         </ThemeProvider>
