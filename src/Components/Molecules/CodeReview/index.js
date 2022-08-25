@@ -52,6 +52,7 @@ function CodeReview({ reviews, practice, onSubmit, setPracticed }) {
     const [activeStep, setActiveStep] = useState(0);
     const { id, change } = reviews[activeStep];
     const [pause, setPause] = useState(false);
+    const [report, setReport] = useState(false);
 
     const history = useHistory();
 
@@ -101,11 +102,12 @@ function CodeReview({ reviews, practice, onSubmit, setPracticed }) {
                 setActiveStep((prevActiveStep) => prevActiveStep + 1);
             }
             setData(initialData);
+            setReport(false);
         } else {
             const reviewTime = timerRef.current.seconds;
             console.log(reviewTime);
             timerRef.current.resetTime();
-            const codeInspections = data.map(({file, line, comment}) => ({file, line, comment}));
+            const codeInspections = data.filter(({file, line, comment}) => file || line || comment).map(({file, line, comment}) => ({file, line, comment}));
             setData(initialData);
             fetch('/api/code-review', {
                 method: 'POST',
@@ -121,6 +123,7 @@ function CodeReview({ reviews, practice, onSubmit, setPracticed }) {
                         setActiveStep((prevActiveStep) => prevActiveStep + 1);
                     }
                 }
+                setReport(false);
                 console.log(response);
             }).catch(error => {
                 console.log(error);
@@ -137,6 +140,11 @@ function CodeReview({ reviews, practice, onSubmit, setPracticed }) {
         } else {
             setActiveStep((prevActiveStep) => prevActiveStep + 1);
         }
+        setReport(false);
+    };
+
+    const handleReport = () => {
+        setReport(true);
     };
 
     const handlePauseClick = () => {
@@ -168,14 +176,26 @@ function CodeReview({ reviews, practice, onSubmit, setPracticed }) {
                 <Box  sx={{ width: '100%', px: '5%' }} >
                     <ChangeInfo change={change} number={activeStep+1} />
 
-                    <CodeInspectionForm data={data} updateData={updateData} deleteData={deleteData} addData={addData} selectOptions={change.project === 'qt' ? change.files.slice(1).map(file => file.filename) : change.files.map(file => file.filename).filter(file => file.split(".").pop() === "java" && !file.split("/").includes("test"))}/>
+                    {report && <CodeInspectionForm data={data} updateData={updateData} deleteData={deleteData} addData={addData} selectOptions={change.project === 'qt' ? change.files.slice(1).map(file => file.filename) : change.files.map(file => file.filename).filter(file => file.split(".").pop() === "java" && !file.split("/").includes("test"))}/>}
 
                     <Box sx={{ width: '100%', textAlign: 'center' }}>
+                        {!report &&
+                            <Button  variant="contained" sx={{ mx: '2%', my: '2%', width: '200px' }} onClick={handleNext}>
+                                No defect to report
+                            </Button>
+                        }
+                        {!report &&
+                            <Button  variant="contained" sx={{ mx: '2%', my: '2%', width: '200px' }} onClick={handleReport}>
+                                Report a defect
+                            </Button>
+                        }
+                        {report &&
+                            <Button  variant="contained" sx={{ mx: '2%', my: '2%', width: '200px' }} onClick={handleNext}>
+                                Submit
+                            </Button>
+                        }
                         <Button  variant="contained" sx={{ mx: '2%', my: '2%', width: '200px' }} onClick={handleSkip}>
                             Skip
-                        </Button>
-                        <Button  variant="contained" sx={{ mx: '2%', my: '2%', width: '200px' }} onClick={handleNext}>
-                            {activeStep === reviews.length - 1 ? 'Finish' : 'Next'}
                         </Button>
                     </Box>
                 </Box>
