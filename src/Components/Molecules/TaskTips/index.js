@@ -38,8 +38,8 @@ function TaskTips({tips, tip, setTip, task}) {
             {tips[currentTip]}
             <DialogActions>
                 <Button onClick={handleTipPrevious} disabled={currentTip === 0}>Previous Tip</Button>
-                <Button onClick={handleTipNext} disabled={currentTip === tips.length - 1}>Next Tip</Button>
-                <Button onClick={handleTipClose} autoFocus>
+                <Button onClick={handleTipNext} disabled={currentTip === tips.length - 1} autoFocus>Next Tip</Button>
+                <Button onClick={handleTipClose}>
                     Close
                 </Button>
             </DialogActions>
