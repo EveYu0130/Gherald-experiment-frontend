@@ -165,11 +165,11 @@ function DnD({ data, practice, onSubmit }) {
                     )}
                 </Droppable>
                 <Box sx={{ width: '100%', textAlign: 'center', py: '3%' }}>
-                    <Button  variant="contained" sx={{ mx: '2%', my: '2%', width: '200px' }} onClick={handleSubmit}>
-                        Submit
-                    </Button>
                     <Button  variant="contained" sx={{ mx: '2%', my: '2%', width: '200px' }} onClick={onSubmit}>
                         Skip
+                    </Button>
+                    <Button  variant="contained" sx={{ mx: '2%', my: '2%', width: '200px' }} onClick={handleSubmit}>
+                        Submit
                     </Button>
                 </Box>
             </DragDropContext>}
