@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {Typography, Container, CssBaseline, Avatar, Box, TextField, Button} from '@mui/material';
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import styled from "styled-components";
 import theme from '../../../theme';
+import {useAuth} from "../../../auth";
 
 const backgroundImage = 'https://images.unsplash.com/photo-1482062364825-616fd23b8fc1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80';
 
@@ -21,6 +22,12 @@ const Background = styled(Box)({
 });
 
 function EndPage() {
+    let auth = useAuth();
+
+    useEffect(() => {
+        localStorage.clear();
+    }, []);
+
     return (
         <ThemeProvider theme={theme}>
             <Container component="main"  maxWidth="false" disableGutters>

@@ -32,6 +32,17 @@ function Login() {
     let { from } = location.state || { from: { pathname: "/" } };
     const [loading, setLoading] = useState(false);
 
+    useEffect(() => {
+        const loggedInUser = localStorage.getItem("user");
+        if (loggedInUser) {
+            const foundUser = JSON.parse(loggedInUser);
+            console.log(foundUser);
+            auth.setUser({
+                id: foundUser.id,
+                group: foundUser.tool
+            });
+        }
+    }, []);
 
     const handleSubmit = (e) => {
         e.preventDefault();
