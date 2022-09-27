@@ -29,6 +29,7 @@ import TipsAndUpdatesIcon from "@mui/icons-material/TipsAndUpdates";
 import {ReactComponent as GheraldIcon} from "../../../icons/gherald.svg";
 import TaskTips from "../../Molecules/TaskTips";
 import GheraldTips from "../../Molecules/GheraldTips";
+import {Link} from "react-router-dom";
 
 
 const backgroundImage = 'https://images.unsplash.com/photo-1482062364825-616fd23b8fc1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80';
@@ -106,8 +107,17 @@ function TaskB({practice, onSubmit, setPracticed}) {
         fetch(`/api/participants/${auth.user.id}`)
             .then(results => results.json())
             .then(data => {
+                let practiceReviews = [];
+                let experimentReviews = []
+                data.changeReviews.forEach(review => {
+                    if (review.change.practice) {
+                        practiceReviews.push(review)
+                    } else {
+                        experimentReviews.push(review)
+                    }
+                })
                 setLoading(false);
-                setReviews(practice ? data.changeReviews.slice(0, 3) : data.changeReviews.slice(3, 6));
+                setReviews(practice ? practiceReviews : experimentReviews);
             })
     }, [])
 

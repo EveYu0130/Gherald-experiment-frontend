@@ -25,6 +25,7 @@ export const useAuth = () => {
 function useProvideAuth() {
     const [user, setUser] = useState(null);
     const [error, setError] = useState("");
+    // localStorage.clear();
 
     const signin = (id) => {
         fetch(`/api/participants/${id}`, {
@@ -46,6 +47,8 @@ function useProvideAuth() {
                 id: data.id,
                 group: data.tool
             })
+            localStorage.setItem("user", JSON.stringify(data));
+            console.log(JSON.stringify(data));
         }).catch(error => {
             console.log(error);
             setError(error);
@@ -59,6 +62,7 @@ function useProvideAuth() {
     return {
         user,
         error,
+        setUser,
         signin,
         signout
     };
