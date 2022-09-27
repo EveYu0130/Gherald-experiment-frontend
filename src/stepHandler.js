@@ -46,7 +46,7 @@ const PracticeTimer = () => {
             <DialogContent>
                 <DialogContentText id="alert-dialog-description" sx={{py: 2}}>
                     Please note that the practice round is just for getting you familiar with the task workflow, the UI, and the problem space.
-                    Please do not spend too much time conducting real code reviews and inspecting the code changes.
+                    Please do not spend too much time in conducting real code reviews and inspecting the code changes.
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
