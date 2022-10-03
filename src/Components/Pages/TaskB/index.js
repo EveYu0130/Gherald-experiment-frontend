@@ -108,7 +108,8 @@ function TaskB({practice, onSubmit, setPracticed}) {
             .then(results => results.json())
             .then(data => {
                 let practiceReviews = [];
-                let experimentReviews = []
+                let experimentReviews = [];
+                const reviewOrder = data.reviewOrder;
                 data.changeReviews.forEach(review => {
                     if (review.change.practice) {
                         practiceReviews.push(review)
@@ -116,6 +117,13 @@ function TaskB({practice, onSubmit, setPracticed}) {
                         experimentReviews.push(review)
                     }
                 })
+                if (!practice) {
+                    if (reviewOrder === 1) { // high to low risk
+                        experimentReviews.sort((a,b) => a.riskLevel - b.riskLevel);
+                    } else if (reviewOrder === 2) { // low to high risk
+                        experimentReviews.sort((a,b) => b.riskLevel - a.riskLevel);
+                    }
+                }
                 setLoading(false);
                 setReviews(practice ? practiceReviews : experimentReviews);
             })
