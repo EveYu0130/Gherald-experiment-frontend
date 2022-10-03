@@ -18,6 +18,8 @@ const tips = [
     (<DialogContent>
         <DialogContentText id="alert-dialog-description" sx={{py: 2}}>
             Gherald estimates an overall risk score based on the historical statistics of changes and defects.
+            Please note that this score is a normalized score after some mathematical computation.
+            It cannot indicate the defects probability.
         </DialogContentText>
         <img src={gheraldScoreTip} alt="gheraldScoreTip"/>
     </DialogContent>),
