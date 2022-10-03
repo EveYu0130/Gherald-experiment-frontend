@@ -264,7 +264,7 @@ const DiffView = ({hunks, oldSource, linesCount, modifiedLines, modifiedMethods,
             if (currentEnd + 20 < linesCount) {
                 const expandDownElement = (
                     <ExpandDown
-                        key={'expand-down-' + hunk.oldStart + hunk.content}
+                        key={'expand-down-20-' + hunk.oldStart + hunk.content}
                         start={currentEnd}
                         end={currentEnd + 20}
                         onClick={expandRange}
