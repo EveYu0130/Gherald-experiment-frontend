@@ -156,7 +156,7 @@ function TaskB({practice, onSubmit, setPracticed}) {
                     <Box sx={{ width: '100%', px: '10%', pt: '30px' }}>
                         {auth.user.group === "gherald" ?
                             <Grid container >
-                                <Grid item xs={8}>
+                                <Grid item xs={7}>
                                     <Typography variant="h6">
                                         Task Description
                                     </Typography>
@@ -167,7 +167,7 @@ function TaskB({practice, onSubmit, setPracticed}) {
                                         Tips for Task B
                                     </Button>
                                 </Grid>
-                                <Grid item xs={2}>
+                                <Grid item xs={3}>
                                     <Button variant="outlined" onClick={handleGheraldTipOpen}>
                                         <SvgIcon component={GheraldIcon} inheritViewBox sx={{mr: '5px'}}/>
                                         Tips for Gherald
