@@ -182,11 +182,9 @@ function CodeReview({ reviews, practice, onSubmit, setPracticed }) {
                         <Button  variant="contained" sx={{ mx: '2%', my: '2%', width: '200px' }} onClick={handleSkip}>
                             Skip
                         </Button>
-                        {!report &&
-                            <Button  variant="contained" sx={{ mx: '2%', my: '2%', width: '200px' }} onClick={handleNext}>
-                                No defect to report
-                            </Button>
-                        }
+                        <Button  variant="contained" sx={{ mx: '2%', my: '2%', width: '200px' }} onClick={handleNext}>
+                            No defect to report
+                        </Button>
                         {!report &&
                             <Button  variant="contained" sx={{ mx: '2%', my: '2%', width: '200px' }} onClick={handleReport}>
                                 Report a defect
