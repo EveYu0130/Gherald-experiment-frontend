@@ -12,8 +12,7 @@ import { ReactComponent as GheraldIcon } from '../../../icons/gherald.svg';
 
 
 const FileDiff = ({ file, userGroup }) => {
-    const [fileDiff] = parseDiff(file.diff, {nearbySequences: 'zip'})
-    // const [fileDiff] = file.diff ? parseDiff(file.diff) : parseDiff(formatLines(diffLines(file.codeA, file.codeB), {context: 3}), {nearbySequences: 'zip'});
+    const [fileDiff] = file.diff ? parseDiff(file.diff, {nearbySequences: 'zip'}) : parseDiff(formatLines(diffLines(file.codeA, file.codeB), {context: 3}), {nearbySequences: 'zip'});
     const linesCount = file.codeA ? file.codeA.split('\n').length : 0;
     return (
         <Accordion key={file.filename} TransitionProps={{ unmountOnExit: true }}>

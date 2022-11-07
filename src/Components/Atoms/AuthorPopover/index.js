@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import Popover from '@mui/material/Popover';
-import Typography from '@mui/material/Typography';
 import {ReactComponent as GheraldIcon} from "../../../icons/gherald.svg";
-import {SvgIcon} from "@mui/material";
+import {Box, Popover, Typography, SvgIcon, Rating, Grid} from "@mui/material";
+import InfoIcon from "@mui/icons-material/Info";
 
-export default function AuthorPopover({author, authorPriorChanges, authorPriorBugs}) {
+
+export default function AuthorPopover({author, change}) {
     const [anchorEl, setAnchorEl] = useState(null);
 
     const handlePopoverOpen = (e) => {
@@ -16,11 +16,11 @@ export default function AuthorPopover({author, authorPriorChanges, authorPriorBu
     };
 
     const open = Boolean(anchorEl);
-    const riskScore = (1232 - authorPriorChanges) / 1231 * (authorPriorBugs + 1) / (authorPriorChanges + 1)
 
     return (
         <div>
-            <SvgIcon component={GheraldIcon} inheritViewBox onMouseEnter={handlePopoverOpen} onMouseLeave={handlePopoverClose}/>
+            {/*<SvgIcon component={GheraldIcon} inheritViewBox onMouseEnter={handlePopoverOpen} onMouseLeave={handlePopoverClose}/>*/}
+            <InfoIcon sx={{ fontSize: 'medium' }} onMouseEnter={handlePopoverOpen} onMouseLeave={handlePopoverClose}/>
             <Popover
                 id="mouse-over-popover"
                 sx={{
@@ -40,13 +40,35 @@ export default function AuthorPopover({author, authorPriorChanges, authorPriorBu
                 onClose={handlePopoverClose}
                 disableRestoreFocus
             >
-                <Typography variant="h6" sx={{ px: 3, pt: 2 }}>{author.name} — {author.email}</Typography>
-                <Typography variant="subtitle1" sx={{ px: 3, pt: 2 }}>
-                    The author has made {authorPriorChanges} prior changes in the current project.
-                </Typography>
-                <Typography variant="subtitle1" sx={{ px: 3, pb: 2 }}>
-                    AUTHOR risk score: {(riskScore * 100).toFixed(2)}%
-                </Typography>
+                {/*<Typography variant="h6" sx={{ px: 3, pt: 2 }}>{author.name} — {author.email}</Typography>*/}
+                {/*<Typography variant="subtitle1" sx={{ px: 3, pt: 2 }}>*/}
+                {/*    The author has made {change.authorPriorChanges} prior changes in the current project.*/}
+                {/*</Typography>*/}
+                <Box sx={{ px: 3, py: 2 }}>
+                    <Grid container spacing={2} sx={{ p: 2, width: 400}} >
+                        <Grid item xs={6}>Project experience</Grid>
+                        <Grid item xs={6}>
+                            <Rating name="read-only" value={change.authorPriorChangeScore * 5} readOnly precision={0.05}/>
+                        </Grid>
+                        <Grid item xs={6}>Recent activity</Grid>
+                        <Grid item xs={6}>
+                            <Rating name="read-only" value={change.authorRecentChangeScore * 5} readOnly precision={0.05}/>
+                        </Grid>
+                        <Grid item xs={6}>File expertise</Grid>
+                        <Grid item xs={6}>
+                            <Rating name="read-only" value={change.authorFileAwareness * 5} readOnly precision={0.05}/>
+                        </Grid>
+                    </Grid>
+                    {/*<Typography component="legend">Author prior changes</Typography>*/}
+                    {/*<Rating name="read-only" value={change.authorPriorChangeScore * 5} readOnly />*/}
+                    {/*<Typography component="legend">Author recent changes</Typography>*/}
+                    {/*<Rating name="read-only" value={change.authorRecentChangeScore * 5} readOnly />*/}
+                    {/*<Typography component="legend">Author file awareness</Typography>*/}
+                    {/*<Rating name="read-only" value={change.authorFileAwareness * 5} readOnly />*/}
+                </Box>
+                {/*<Typography variant="subtitle1" sx={{ px: 3, pb: 2 }}>*/}
+                {/*    AUTHOR risk score: {(riskScore * 100).toFixed(2)}%*/}
+                {/*</Typography>*/}
             </Popover>
         </div>
     );
