@@ -34,8 +34,10 @@ const FileDiff = ({ file, userGroup }) => {
             </AccordionSummary>
             {userGroup === "gherald" && file.filename.split(".").pop() === "java" && !file.filename.split("/").includes("test") &&
                 <Alert severity="warning" icon={<SvgIcon component={GheraldIcon} inheritViewBox/>}>
+                    {}
                     {/*<AlertTitle>GHERALD file risk: there have been {file.priorBugs} prior bugs among {file.priorChanges} changes in this file</AlertTitle>*/}
-                    FILE: there have been {file.priorBugs} prior bugs among {file.priorChanges} changes in this file
+                    FILE: This file has been modified in {file.priorChanges} prior changes. Among these changes, {file.priorBugs} {file.priorBugs > 1 ? "bugs have" : "bug has"} been found in this file.
+                    {/*FILE: there have been {file.priorBugs} prior bugs among {file.priorChanges} changes in this file*/}
                 </Alert>
             }
             <AccordionDetails>
