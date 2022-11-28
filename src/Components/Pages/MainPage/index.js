@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {Link, useHistory, useLocation} from 'react-router-dom';
 import {
@@ -16,13 +16,23 @@ import {
     Card,
     CardContent,
     CardActions,
-    CardMedia
+    CardMedia, DialogTitle, DialogActions, Dialog, DialogContent, DialogContentText, SvgIcon
 } from '@mui/material';
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import {useAuth} from "../../../auth";
 import taskA from '../../../images/task-a.jpg';
 import taskB from '../../../images/task-b.jpg';
 import theme from '../../../theme';
+import gheraldScoreTip from "../../../images/gherald-score.png";
+import gheraldAuthorTip from "../../../images/gherald-author.png";
+import gheraldFileTip from "../../../images/gherald-file.png";
+import gheraldMethodTip from "../../../images/gherald-method.png";
+import gheraldLineTip from "../../../images/gherald-line.png";
+import pauseTip from "../../../images/pause-a.png";
+import submitTip from "../../../images/submit.png";
+import skipTip from "../../../images/skip.png";
+import {ReactComponent as GheraldIcon} from "../../../icons/gherald.svg";
+import GheraldTips from "../../Molecules/GheraldTips";
 
 const backgroundImage = 'https://images.unsplash.com/photo-1482062364825-616fd23b8fc1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80';
 
@@ -38,16 +48,49 @@ const Background = styled(Box)({
     opacity: 0.1,
 });
 
-function MainPage() {
-    let location = useLocation();
-    let { practiced } = location.state || false;
-    const history = useHistory();
-
+function MainPage({practiced, onSubmit, setPractice}) {
     let auth = useAuth();
+    const [tip, setTip] = useState(false);
+    const [tipShown, setTipShown] = useState(false);
+    const [scrollPosition, setScrollPosition] = useState(0);
+    const { innerWidth: width, innerHeight: height } = window;
 
-    const handleStartClick = () => {
-        history.push(`/taskA`);
+    let rectY = innerHeight;
+    if (document.getElementById('gherald-info')) {
+        rectY = document.getElementById('gherald-info').getBoundingClientRect().y;
+        console.log(innerHeight);
+        console.log(rectY);
+        if (!practiced && rectY < innerHeight / 3 && !tipShown) {
+            setTip(true);
+            setTipShown(true);
+        }
     }
+
+    useEffect(() => {
+        const updatePosition = () => {
+            setScrollPosition(window.pageYOffset);
+        }
+        window.addEventListener("scroll", updatePosition);
+        return () => window.removeEventListener("scroll", updatePosition);
+        if (!tipShown) {
+
+        }
+    }, []);
+
+
+    const handlePractice = () => {
+        setPractice(true);
+        onSubmit();
+    }
+
+    const handleExperiment = () => {
+        setPractice(false);
+        onSubmit();
+    }
+
+    const handleTipOpen = () => {
+        setTip(true);
+    };
 
     return (
         <ThemeProvider theme={theme}>
@@ -122,7 +165,7 @@ function MainPage() {
                                 <Card sx={{ display: 'flex', height: '100%' }}>
                                     <CardContent sx={{ flex: 1 }}>
                                         <Typography component="h2" variant="h6">
-                                            Task A [x~ minutes to complete]
+                                            Task A [5~ minutes to complete]
                                         </Typography>
                                         <Typography variant="subtitle1" color="text.secondary">
                                             Rank the changes by risk
@@ -145,7 +188,7 @@ function MainPage() {
                                 <Card sx={{ display: 'flex', height: '100%' }}>
                                     <CardContent sx={{ flex: 1 }}>
                                         <Typography component="h2" variant="h6">
-                                            Task B [x~ minutes to complete]
+                                            Task B [60~ minutes to complete]
                                         </Typography>
                                         <Typography variant="subtitle1" color="text.secondary">
                                             Conduct Code Reviews
@@ -190,7 +233,7 @@ function MainPage() {
                             <Typography variant="h5" component="div" sx={{ fontWeight: '600' }}>
                                 Tools
                             </Typography>
-                            <Box sx={{ py: '20px' }}>
+                            <Box sx={{ py: '20px' }} id="gherald-info">
                                 <Card sx={{ minWidth: 275}}>
                                     <CardContent>
                                         <Typography variant="subtitle1" paragraph>
@@ -199,17 +242,24 @@ function MainPage() {
                                             </p>
                                             <p>
                                                 In a nutshell, Gherald is a risk assessment technique we implemented based on historical analysis.
-                                                During the tasks, you will be provided with Gherald risk assessment results regarding the riskiness of change and its relevant author, files, methods.
-                                                Specifically, you will be presented with a risk score of change and the prior defect information of its author, files, and methods.
-                                                Moreover, Gherald will alert your of the risky lines that are prone to defects when you are reviewing the code diff.
+                                                During the tasks, you will be provided with Gherald risk assessment results regarding the riskiness of change and its relevant author, files, and methods.
+                                                Specifically, you will be presented with a risk score of change and the historical statistics of its author, files, and methods.
+                                                Moreover, in some cases, Gherald will alert you of the risky lines that are prone to defects when you are reviewing the code diff.
                                             </p>
                                             <p>
                                                 Please feel free to use Gherald as a complementary tool to help with your manual code reviews.
                                             </p>
+                                            <p>
+                                                You can learn more details of Gherald by clicking on the <b>Tips for Gherald</b> button.
+                                            </p>
                                         </Typography>
                                     </CardContent>
+                                    <CardActions>
+                                        <Button onClick={handleTipOpen}>Tips for Gherald</Button>
+                                    </CardActions>
                                 </Card>
                             </Box>
+                            <GheraldTips tip={tip} setTip={setTip}/>
                         </Box>
                     }
 
@@ -277,14 +327,12 @@ function MainPage() {
                     <Divider />
 
                     <Box sx={{ width: '100%', textAlign: 'center', px: '20%', py: '2%' }} >
-                        <Link to="/practice/taskA" style={{ textDecoration: 'none' }}>
-                            <Button  variant="contained" sx={{ mx: '2%', width: '200px' }}>
-                                Start Practice
-                            </Button>
-                        </Link>
+                        <Button  variant="contained" sx={{ mx: '2%', width: '200px' }} onClick={handlePractice}>
+                            Start Practice
+                        </Button>
                     </Box>
                     <Box sx={{ width: '100%', textAlign: 'center', px: '20%', pb: '5%' }}>
-                        <Button  variant="contained" sx={{ mx: '2%', width: '200px' }} onClick={handleStartClick} disabled={!practiced}>
+                        <Button  variant="contained" sx={{ mx: '2%', width: '200px' }} onClick={handleExperiment} disabled={!practiced}>
                             Start Experiment
                         </Button>
                     </Box>

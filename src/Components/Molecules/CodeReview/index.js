@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import styled, { keyframes, css } from 'styled-components';
 import { useHistory } from "react-router-dom";
 import { Box, Button, Stepper, Step, StepLabel } from '@mui/material';
 import 'react-diff-view/style/index.css';
@@ -9,7 +8,7 @@ import CodeInspectionForm from "../CodeInspectionForm";
 import AccessAlarmsIcon from "@mui/icons-material/AccessAlarms";
 import { forwardRef, useRef, useImperativeHandle } from "react"
 
-const Timer = forwardRef(({pause, handleResumeClick, handlePauseClick}, ref) => {
+const Timer = forwardRef(({pause, practice, handleResumeClick, handlePauseClick}, ref) => {
     const [seconds, setSeconds] = useState(0);
 
     useImperativeHandle(ref, () => ({
@@ -21,26 +20,28 @@ const Timer = forwardRef(({pause, handleResumeClick, handlePauseClick}, ref) => 
     // const [pause, setPause] = useState(false);
 
     useEffect(() => {
-        let interval = null;
-        if (!pause) {
-            interval = setInterval(() => {
-                setSeconds(seconds => seconds + 1);
-            }, 1000);
-        } else if (seconds > 0) {
-            clearInterval(interval);
+        if (!practice) {
+            let interval = null;
+            if (!pause) {
+                interval = setInterval(() => {
+                    setSeconds(seconds => seconds + 1);
+                }, 1000);
+            } else if (seconds > 0) {
+                clearInterval(interval);
+            }
+            return () => clearInterval(interval);
         }
-        return () => clearInterval(interval);
     }, [seconds, pause])
 
     return (
         <Box sx={{ width: '100%', textAlign: 'center' }}>
             {pause ? (
-                <Button  variant="contained" sx={{ mx: '2%', my: '2%', width: '200px' }} onClick={handleResumeClick}>
+                <Button  variant="contained" sx={{ mx: '2%', my: '1%', width: '200px' }} onClick={handleResumeClick}>
                     <AccessAlarmsIcon sx={{mr: '5px'}}/>
                     Resume
                 </Button>
             ) : (
-                <Button  variant="contained" sx={{ mx: '2%', my: '2%', width: '200px' }} onClick={handlePauseClick}>
+                <Button  variant="contained" sx={{ mx: '2%', my: '1%', width: '200px' }} onClick={handlePauseClick}>
                     <AccessAlarmsIcon sx={{mr: '5px'}}/>
                     Pause
                 </Button>
@@ -49,10 +50,11 @@ const Timer = forwardRef(({pause, handleResumeClick, handlePauseClick}, ref) => 
     );
 })
 
-function CodeReview({ reviews, practice }) {
+function CodeReview({ reviews, practice, onSubmit, setPracticed }) {
     const [activeStep, setActiveStep] = useState(0);
     const { id, change } = reviews[activeStep];
     const [pause, setPause] = useState(false);
+    const [report, setReport] = useState(false);
 
     const history = useHistory();
 
@@ -96,19 +98,18 @@ function CodeReview({ reviews, practice }) {
         console.log(data);
         if (practice) {
             if (activeStep === reviews.length - 1) {
-                history.push({
-                    pathname: '/',
-                    state: { practiced: true }
-                });
+                setPracticed(true);
+                onSubmit();
             } else {
                 setActiveStep((prevActiveStep) => prevActiveStep + 1);
             }
             setData(initialData);
+            setReport(false);
         } else {
             const reviewTime = timerRef.current.seconds;
             console.log(reviewTime);
             timerRef.current.resetTime();
-            const codeInspections = data.map(({file, line, comment}) => ({file, line, comment}));
+            const codeInspections = data.filter(({file, line, comment}) => file || line || comment).map(({file, line, comment}) => ({file, line, comment}));
             setData(initialData);
             fetch('/api/code-review', {
                 method: 'POST',
@@ -119,12 +120,12 @@ function CodeReview({ reviews, practice }) {
             }).then(response => {
                 if  (response.status === 200) {
                     if (activeStep === reviews.length - 1) {
-                        history.push(`/questionnaire`);
-                        console.log(history);
+                        onSubmit();
                     } else {
                         setActiveStep((prevActiveStep) => prevActiveStep + 1);
                     }
                 }
+                setReport(false);
                 console.log(response);
             }).catch(error => {
                 console.log(error);
@@ -135,17 +136,17 @@ function CodeReview({ reviews, practice }) {
     const handleSkip = () => {
         if (activeStep === reviews.length - 1) {
             if (practice) {
-                history.push({
-                    pathname: '/',
-                    state: { practiced: true }
-                });
-            } else {
-                history.push(`/questionnaire`);
+                setPracticed(true);
             }
-            console.log(history);
+            onSubmit();
         } else {
             setActiveStep((prevActiveStep) => prevActiveStep + 1);
         }
+        setReport(false);
+    };
+
+    const handleReport = () => {
+        setReport(true);
     };
 
     const handlePauseClick = () => {
@@ -160,9 +161,7 @@ function CodeReview({ reviews, practice }) {
 
     return (
         <div style={{ width: '100%' }}>
-            {!practice &&
-                <Timer pause={pause} handleResumeClick={handleResumeClick} handlePauseClick={handlePauseClick} ref={timerRef} />
-            }
+            <Timer pause={pause} practice={practice} handleResumeClick={handleResumeClick} handlePauseClick={handlePauseClick} ref={timerRef} />
             {!pause && <Box sx={{ width: '100%', p: '1%' }}>
                 <Box>
                     <Stepper activeStep={activeStep} alternativeLabel>
@@ -177,15 +176,25 @@ function CodeReview({ reviews, practice }) {
                 <Box  sx={{ width: '100%', px: '5%' }} >
                     <ChangeInfo change={change} number={activeStep+1} />
 
-                    <CodeInspectionForm data={data} updateData={updateData} deleteData={deleteData} addData={addData} selectOptions={change.project === 'qt' ? change.files.slice(1).map(file => file.filename) : change.files.map(file => file.filename)}/>
+                    {report && <CodeInspectionForm data={data} updateData={updateData} deleteData={deleteData} addData={addData} selectOptions={change.project === 'qt' ? change.files.slice(1).map(file => file.filename) : change.files.map(file => file.filename).filter(file => file.split(".").pop() === "java" && !file.split("/").includes("test"))}/>}
 
                     <Box sx={{ width: '100%', textAlign: 'center' }}>
                         <Button  variant="contained" sx={{ mx: '2%', my: '2%', width: '200px' }} onClick={handleSkip}>
                             Skip
                         </Button>
                         <Button  variant="contained" sx={{ mx: '2%', my: '2%', width: '200px' }} onClick={handleNext}>
-                            {activeStep === reviews.length - 1 ? 'Finish' : 'Next'}
+                            No defect to report
                         </Button>
+                        {!report &&
+                            <Button  variant="contained" sx={{ mx: '2%', my: '2%', width: '200px' }} onClick={handleReport}>
+                                Report a defect
+                            </Button>
+                        }
+                        {report &&
+                            <Button  variant="contained" sx={{ mx: '2%', my: '2%', width: '200px' }} onClick={handleNext}>
+                                Submit
+                            </Button>
+                        }
                     </Box>
                 </Box>
             </Box>}

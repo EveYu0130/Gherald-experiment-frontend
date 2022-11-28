@@ -45,7 +45,7 @@ const getWidgets = (hunks, modifiedLines, modifiedMethods, userGroup) => {
         }
     })
     methods = Object.assign({}, ...methods.map((x) => ({[x.labelled_line]: {...x}})));
-    const warning = userGroup === "" ? [] :
+    const warning = userGroup != "gherald" ? [] :
         changes.filter((change) =>
             (change.type === "insert" && change.lineNumber in lines && lines[change.lineNumber]["riskScore"] > 0)
             || (change.type === "normal" && change.newLineNumber in methods && !methods[change.newLineNumber]["delete_only"])
@@ -61,20 +61,22 @@ const getWidgets = (hunks, modifiedLines, modifiedMethods, userGroup) => {
                         <Alert severity="warning" icon={<SvgIcon component={GheraldIcon} inheritViewBox/>}>
                             {/*<AlertTitle>GHERALD line risk score: {lines[change.lineNumber]["riskScore"]}</AlertTitle>*/}
                             {/*This line is risky — check it out!*/}
-                            LINE: risk score {lines[change.lineNumber]["riskScore"]} — check it out!
+                            LINE {change.lineNumber}: the tokens in this line were contained in {lines[change.lineNumber]["riskScore"]} prior buggy {lines[change.lineNumber]["riskScore"] > 1 ? "lines" : "line"}.
                         </Alert>
                         :
                         (change.oldLineNumber in methods && methods[change.oldLineNumber]["delete_only"]) ?
                             <Alert severity="warning" icon={<SvgIcon component={GheraldIcon} inheritViewBox/>}>
                                 {/*<AlertTitle>GHERALD method risk: there have been {methods[change.oldLineNumber]["priorBugs"]} prior bugs among {methods[change.oldLineNumber]["priorChanges"]} changes</AlertTitle>*/}
                                 {/*Method: {methods[change.oldLineNumber]["name"]}*/}
-                                METHOD: there have been {methods[change.oldLineNumber]["priorBugs"]} prior bugs among {methods[change.oldLineNumber]["priorChanges"]} changes in method {methods[change.oldLineNumber]["name"]}
+                                METHOD: This method [{methods[change.oldLineNumber]["name"]}] has been modified in {methods[change.oldLineNumber]["priorChanges"]} prior changes. Among these changes, {methods[change.oldLineNumber]["priorBugs"]} {methods[change.oldLineNumber]["priorBugs"] > 1 ? "bugs have" : "bug has"} been found in this method.
+                                {/*METHOD: there have been {methods[change.oldLineNumber]["priorBugs"]} prior bugs among {methods[change.oldLineNumber]["priorChanges"]} changes in method {methods[change.oldLineNumber]["name"]}*/}
                             </Alert>
                             :
                             <Alert severity="warning" icon={<SvgIcon component={GheraldIcon} inheritViewBox/>}>
                                 {/*<AlertTitle>GHERALD method risk: there have been {methods[change.newLineNumber]["priorBugs"]} prior bugs among {methods[change.newLineNumber]["priorChanges"]} changes</AlertTitle>*/}
                                 {/*Method: {methods[change.newLineNumber]["name"]}*/}
-                                METHOD: there have been {methods[change.newLineNumber]["priorBugs"]} prior bugs among {methods[change.newLineNumber]["priorChanges"]} changes in method {methods[change.newLineNumber]["name"]}
+                                METHOD: This method [{methods[change.newLineNumber]["name"]}] has been modified in {methods[change.newLineNumber]["priorChanges"]} prior changes. Among these changes {methods[change.newLineNumber]["priorBugs"]} {methods[change.newLineNumber]["priorBugs"] > 1 ? "bugs have" : "bug has"} been found in this method.
+                                {/*METHOD: there have been {methods[change.newLineNumber]["priorBugs"]} prior bugs among {methods[change.newLineNumber]["priorChanges"]} changes in method {methods[change.newLineNumber]["name"]}*/}
                             </Alert>
             };
         },
@@ -262,7 +264,7 @@ const DiffView = ({hunks, oldSource, linesCount, modifiedLines, modifiedMethods,
             if (currentEnd + 20 < linesCount) {
                 const expandDownElement = (
                     <ExpandDown
-                        key={'expand-down-' + hunk.oldStart + hunk.content}
+                        key={'expand-down-20-' + hunk.oldStart + hunk.content}
                         start={currentEnd}
                         end={currentEnd + 20}
                         onClick={expandRange}

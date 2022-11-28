@@ -65,19 +65,19 @@ function ChangeInfo({ change, number }) {
                 </Typography>
             </Box>
             {auth.user.group === "gherald" &&
-                <Grid container spacing={2} sx={{ py: 2 }}>
+                <Grid container spacing={2} sx={{ pt: 2 }}>
                     <Grid item>
                         <SvgIcon component={GheraldIcon} inheritViewBox/>
                     </Grid>
                     <Grid item>
-                        <Typography variant="subtitle1">
+                        <Typography variant="subtitle1" sx={{ fontWeight: 'Medium' }}>
                             RISK SCORE: {change.riskScore}
                         </Typography>
                     </Grid>
                 </Grid>
             }
 
-            <Box>
+            <Box sx={{ pt: 2 }}>
                 <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
                     <Grid item xs={2}>Author</Grid>
                     <Grid item xs={4}>
@@ -106,7 +106,7 @@ function ChangeInfo({ change, number }) {
                     <Grid item xs={6} />
                     <Grid item xs={2}>Created</Grid>
                     <Grid item xs={4}>
-                        <Item>{change.updated.substring(0,19)}</Item>
+                        <Item>{change.updated.substring(0,10)}</Item>
                     </Grid>
                     <Grid item xs={6} />
                     <Grid item xs={6}>
@@ -146,13 +146,13 @@ function ChangeInfo({ change, number }) {
                 <Box sx={{ flexGrow: 1 }}>
                     <AppBar position="static" color='secondary'>
                         <Toolbar>
-                            <Typography component="div" sx={{ width: '77%', flexShrink: 0 }}>
+                            <Typography component="div" sx={{ width: '77%', flexShrink: 0, fontWeight: 'Medium' }}>
                                 File
                             </Typography>
-                            <Typography component="div" sx={{ width: '10%', flexShrink: 0 }}>
+                            <Typography component="div" sx={{ width: '10%', flexShrink: 0, fontWeight: 'Medium' }}>
                                 Additions
                             </Typography>
-                            <Typography component="div" sx={{ width: '13%', flexShrink: 0 }}>
+                            <Typography component="div" sx={{ width: '13%', flexShrink: 0, fontWeight: 'Medium' }}>
                                 Deletions
                             </Typography>
                         </Toolbar>
