@@ -19,7 +19,7 @@ import StepHandler from "./stepHandler";
 function App() {
   return (
       <ProvideAuth>
-          <BrowserRouter basename="gherald">
+          <BrowserRouter basename='/gherald'>
               <Switch>
                   <PrivateRoute exact path="/" component={StepHandler} />
                   <Route exact path="/login" component={Login} />
