@@ -21,8 +21,8 @@ function App() {
       <ProvideAuth>
           <BrowserRouter>
               <Switch>
-                  <PrivateRoute path="/gherald" component={StepHandler} />
-                  <Route path="/gherald/login" component={Login} />
+                  <PrivateRoute exact path="/" component={StepHandler} />
+                  <Route exact path="/login" component={Login} />
                   <PrivateRoute path="/changes/:changeId" component={ChangeDetail}>
                   </PrivateRoute>
               </Switch>
