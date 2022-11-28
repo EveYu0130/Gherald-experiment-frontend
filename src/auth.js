@@ -28,7 +28,7 @@ function useProvideAuth() {
     // localStorage.clear();
 
     const signin = (id) => {
-        fetch(`/api/participants/${id}`, {
+        fetch(`https://gherald-backend.herokuapp.com/api/participants/${id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
