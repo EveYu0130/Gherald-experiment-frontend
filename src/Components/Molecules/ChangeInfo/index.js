@@ -6,8 +6,10 @@ import {
     AppBar,
     Toolbar,
     SvgIcon,
-    Grid
+    Grid,
+    Rating,
 } from '@mui/material';
+import styled from "styled-components";
 import AuthorPopover from "../../Atoms/AuthorPopover";
 import GheraldReport from "../GheraldReport";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
@@ -16,7 +18,28 @@ import FileDiff from "../FileDiff";
 import { ReactComponent as GheraldIcon } from '../../../icons/gherald.svg';
 import InfoPopover from "../../Atoms/InfoPopover";
 import {useAuth} from "../../../auth";
+import WarningIcon from '@mui/icons-material/Warning';
+import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 
+const StyledRating = styled(Rating)({
+    '& .MuiRating-iconFilled': {
+        color: '#ff3d47',
+    }
+});
+
+function RiskRating(props) {
+    const value = props.value;
+    return (
+        <StyledRating
+            name="customized-color"
+            value={value}
+            precision={0.05}
+            readOnly
+            icon={<WarningIcon fontSize="inherit" />}
+            emptyIcon={<WarningAmberIcon fontSize="inherit" />}
+        />
+    )
+}
 
 function Item(props) {
     const { sx, ...other } = props;
@@ -65,16 +88,7 @@ function ChangeInfo({ change, number }) {
                 </Typography>
             </Box>
             {auth.user.group === "gherald" &&
-                <Grid container spacing={2} sx={{ pt: 2 }}>
-                    <Grid item>
-                        <SvgIcon component={GheraldIcon} inheritViewBox/>
-                    </Grid>
-                    <Grid item>
-                        <Typography variant="subtitle1" sx={{ fontWeight: 'Medium' }}>
-                            RISK SCORE: {change.riskScore}
-                        </Typography>
-                    </Grid>
-                </Grid>
+                <GheraldReport change={change} />
             }
 
             <Box sx={{ pt: 2 }}>
@@ -84,11 +98,6 @@ function ChangeInfo({ change, number }) {
                         <Item>
                             <Grid container spacing={2}>
                                 <Grid item item xs={10}>{change.author.name}</Grid>
-                                {auth.user.group === "gherald" &&
-                                    <Grid item>
-                                        <AuthorPopover author={change.author} authorPriorChanges={change.authorPriorChanges} authorPriorBugs={change.authorPriorBugs} />
-                                    </Grid>
-                                }
                             </Grid>
                         </Item>
 

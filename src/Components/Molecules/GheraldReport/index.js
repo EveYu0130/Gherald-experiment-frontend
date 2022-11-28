@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Box, Card, CardContent, Grid, Typography} from "@mui/material";
+import {Box, Card, CardContent, Grid, Rating, SvgIcon, Typography} from "@mui/material";
 import styled from "styled-components";
 import LinearProgress, {linearProgressClasses} from "@mui/material/LinearProgress";
 import {makeStyles} from "@mui/styles";
@@ -7,6 +7,30 @@ import {createTheme} from "@mui/material/styles";
 import {useEffect} from "react";
 import InfoIcon from '@mui/icons-material/Info';
 import InfoPopover from "../../Atoms/InfoPopover";
+import {ReactComponent as GheraldIcon} from "../../../icons/gherald.svg";
+import AuthorPopover from "../../Atoms/AuthorPopover";
+import WarningIcon from "@mui/icons-material/Warning";
+import WarningAmberIcon from "@mui/icons-material/WarningAmber";
+
+const StyledRating = styled(Rating)({
+    '& .MuiRating-iconFilled': {
+        color: '#ff3d47',
+    }
+});
+
+function RiskRating(props) {
+    const value = props.value;
+    return (
+        <StyledRating
+            name="customized-color"
+            value={value}
+            precision={0.05}
+            readOnly
+            icon={<WarningIcon fontSize="inherit" />}
+            emptyIcon={<WarningAmberIcon fontSize="inherit" />}
+        />
+    )
+}
 
 function change(value) {
     return gradient(value/100,'#ffab91','#dd2c00');
@@ -74,15 +98,20 @@ function ProgressWithLabel({ value, theme }) {
     const [progress, setProgress] = React.useState(0);
 
     useEffect(() => {
-        const timer = setInterval(() => {
-            if (progress < value) {
-                setProgress((prevProgress) => (value > prevProgress ? prevProgress + 1 : value));
-            }
-        }, 10);
-        return () => {
-            clearInterval(timer);
-        };
-    }, [])
+        let interval = null;
+        if (progress != value) {
+            interval = setInterval(() => {
+                if (progress > value) {
+                    setProgress((prevProgress) => (value < prevProgress - 1 ? prevProgress - 1 : value));
+                } else {
+                    setProgress((prevProgress) => (value > prevProgress + 1 ? prevProgress + 1 : value));
+                }
+            }, 10);
+        } else {
+            clearInterval(interval);
+        }
+        return () => clearInterval(interval);
+    }, [progress, value])
 
     return (
         <LinearProgressWithLabel value={progress} theme={theme} />
@@ -91,59 +120,122 @@ function ProgressWithLabel({ value, theme }) {
 
 const theme = createTheme();
 
-function GheraldReport() {
-
+function GheraldReport({ change }) {
     return (
-        <Box sx={{ width: '50%' }} padding='20px'>
+        <Box sx={{ width: '50%', py: '20px' }}>
             <Card sx={{ minWidth: 275 }}>
                 <CardContent>
-                    <Typography variant="h6" component="div" sx={{ fontWeight: '700', mb: 1.5 }}>
-                        Gherald risk assessment
-                    </Typography>
-                    <Typography variant="body1" component="div" sx={{ fontWeight: '600' }}>
-                        Risk score: 65%
-                    </Typography>
-                    <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                        This change is 65% likely to cause defects.
-                    </Typography>
-                    <Typography variant="body1" component="div" sx={{ fontWeight: '600' }}>
-                        Risk indicators:
-                    </Typography>
+                    <Grid container spacing={2}>
+                        <Grid item>
+                            <SvgIcon component={GheraldIcon} inheritViewBox/>
+                        </Grid>
+                        <Grid item>
+                            <Typography variant="subtitle1" sx={{ fontWeight: 'Medium' }}>
+                                RISK ASSESSMENT:
+                            </Typography>
+                        </Grid>
+                    </Grid>
+                    {/*<Typography variant="h6" component="div" sx={{ fontWeight: '700', mb: 1.5 }}>*/}
+                    {/*    Gherald risk assessment*/}
+                    {/*</Typography>*/}
+                    {/*<Typography variant="body1" component="div" sx={{ fontWeight: '600', my: 1.5 }}>*/}
+                    {/*    Risk score: {change.riskScore}*/}
+                    {/*</Typography>*/}
+                    {/*<Typography sx={{ mb: 1.5 }} color="text.secondary">*/}
+                    {/*    This change is 65% likely to cause defects.*/}
+                    {/*</Typography>*/}
+                    {/*<Typography variant="body1" component="div" sx={{ fontWeight: '600' }}>*/}
+                    {/*    Risk indicators:*/}
+                    {/*</Typography>*/}
                     <Grid container spacing={2} sx={{ p: 2}}>
                         <Grid item xs={4}>
-                            <Typography variant="body2">Size</Typography>
+                            <Typography variant="body2">Author risk</Typography>
                         </Grid>
                         <Grid item xs={7}>
-                            <ProgressWithLabel value={35} theme={theme}/>
+                            <ProgressWithLabel value={change.authorRiskScore * 100} theme={theme}/>
                         </Grid>
                         <Grid item xs={1}>
-                            <InfoPopover text1={"The size of change is large, which increase the riskiness of change by 35%."}
-                                         text2={"Please consider asking the author to split the change into smaller ones."}/>
+                            <AuthorPopover author={change.author} change={change} />
                         </Grid>
                         <Grid item xs={4}>
-                            <Typography variant="body2">Author prior changes</Typography>
+                            <Typography variant="body2">File risk</Typography>
                         </Grid>
                         <Grid item xs={7}>
-                            <ProgressWithLabel value={15} theme={theme}/>
+                            <ProgressWithLabel value={change.fileRiskScore * 100} theme={theme}/>
                         </Grid>
                         <Grid item xs={1}>
-                            <InfoPopover text1={"The author has a relatively low number of prior changes in this project, which increase the riskiness of change by 15%."}
-                                         text2={"Please consider having an experienced developer reviewing this change."}/>
+                            <InfoPopover text1={"The file risk score (percentage) indicates the relative likelihood of introducing defects in the files of change compared to the other files."}/>
                         </Grid>
                         <Grid item xs={4}>
-                            <Typography variant="body2"># of developers</Typography>
+                            <Typography variant="body2">Method risk</Typography>
                         </Grid>
                         <Grid item xs={7}>
-                            <ProgressWithLabel value={10} theme={theme}/>
+                            <ProgressWithLabel value={change.methodRiskScore * 100} theme={theme}/>
                         </Grid>
                         <Grid item xs={1}>
-                            <InfoPopover text1={"The files in change have been modified by a relatively large number developers, which increase the riskiness of change by 10%."}
-                                         text2={"Please consider having develops who recently modified these files reviewing this change."}/>
+                            <InfoPopover text1={"The method risk score (percentage) indicates the relative likelihood of introducing defects in the methods of change compared to the other methods."}/>
                         </Grid>
                     </Grid>
                 </CardContent>
             </Card>
         </Box>
+        // <Box sx={{ width: '30%', py: '20px' }}>
+        //     <Card sx={{ minWidth: 275 }}>
+        //         <CardContent>
+        //             <Grid container spacing={2}>
+        //                 <Grid item>
+        //                     <SvgIcon component={GheraldIcon} inheritViewBox/>
+        //                 </Grid>
+        //                 <Grid item>
+        //                     <Typography variant="subtitle1" sx={{ fontWeight: 'Medium' }}>
+        //                         RISK ASSESSMENT:
+        //                     </Typography>
+        //                 </Grid>
+        //             </Grid>
+        //             {/*<Typography variant="h6" component="div" sx={{ fontWeight: '700', mb: 1.5 }}>*/}
+        //             {/*    Gherald risk assessment*/}
+        //             {/*</Typography>*/}
+        //             <Typography variant="body1" component="div" sx={{ fontWeight: '600', my: 1.5 }}>
+        //                 Risk score: {change.riskScore}
+        //             </Typography>
+        //             {/*<Typography sx={{ mb: 1.5 }} color="text.secondary">*/}
+        //             {/*    This change is 65% likely to cause defects.*/}
+        //             {/*</Typography>*/}
+        //             <Typography variant="body1" component="div" sx={{ fontWeight: '600' }}>
+        //                 Risk indicators:
+        //             </Typography>
+        //             <Grid container spacing={2} sx={{ p: 2}}>
+        //                 <Grid item xs={5}>
+        //                     <Typography variant="body2">Author risk</Typography>
+        //                 </Grid>
+        //                 <Grid item xs={6}>
+        //                     <RiskRating value={change.authorRiskScore * 5}/>
+        //                 </Grid>
+        //                 <Grid item xs={1}>
+        //                     <AuthorPopover author={change.author} change={change} />
+        //                 </Grid>
+        //                 <Grid item xs={5}>
+        //                     <Typography variant="body2">File risk</Typography>
+        //                 </Grid>
+        //                 <Grid item xs={6}>
+        //                     <RiskRating value={change.fileRiskScore * 5}/>
+        //                 </Grid>
+        //                 <Grid item xs={1}>
+        //                     <InfoPopover text1={"The risk score is calculated based on the commit activity, defect history, and complexity of the files in change."}/>
+        //                 </Grid>
+        //                 <Grid item xs={5}>
+        //                     <Typography variant="body2">Method risk</Typography>
+        //                 </Grid>
+        //                 <Grid item xs={6}>
+        //                     <RiskRating value={change.methodRiskScore * 5}/>
+        //                 </Grid>
+        //                 <Grid item xs={1}>
+        //                     <InfoPopover text1={"The risk score is calculated based on the commit activity, defect history, and complexity of the methods in change."}/>
+        //                 </Grid>
+        //             </Grid>
+        //         </CardContent>
+        //     </Card>
+        // </Box>
     );
 }
 
