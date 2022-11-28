@@ -17,6 +17,6 @@ app.get("*", (req, res) => {
     res.sendFile(path.resolve(__dirname, "build", "index.html"));
 });
 
-app.listen(port, () => {
+app.listen(9000, () => {
     console.log(`Server is up on port ${port}!`);
 });
