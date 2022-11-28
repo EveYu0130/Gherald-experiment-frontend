@@ -157,7 +157,7 @@ function DnD({ data, practice, onSubmit }) {
                                                             {/*    }*/}
                                                             {/*</CardContent>*/}
                                                             <CardActions>
-                                                                <Link to={`/changes/${change.id}`} target="_blank" style={{ textDecoration: 'none' }}>
+                                                                <Link to={`/gherald/changes/${change.id}`} target="_blank" style={{ textDecoration: 'none' }}>
                                                                     <Button>Learn More</Button>
                                                                 </Link>
                                                             </CardActions>

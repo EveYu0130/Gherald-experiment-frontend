@@ -29,7 +29,7 @@ function Login() {
     const history = useHistory();
     let location = useLocation();
     let auth = useAuth();
-    let { from } = location.state || { from: { pathname: "/" } };
+    let { from } = location.state || { from: { pathname: "/gherlad" } };
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
