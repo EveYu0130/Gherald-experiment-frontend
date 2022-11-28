@@ -38,9 +38,9 @@ export default function InfoPopover({text1, text2}) {
                 onClose={handlePopoverClose}
                 disableRestoreFocus
             >
-                <Typography variant="body2" sx={{ px: 3, py: 2 }}>{text1}</Typography>
-                <Typography variant="body1" sx={{ px: 3 }}>To mitigate the risk:</Typography>
-                <Typography variant="body2" sx={{ px: 3, pb: 2 }}>{text2}</Typography>
+                <Typography variant="body2" sx={{ px: 3, py: 3 }}>{text1}</Typography>
+                {/*<Typography variant="body1" sx={{ px: 3 }}>To mitigate the risk:</Typography>*/}
+                {/*<Typography variant="body2" sx={{ px: 3, pb: 2 }}>{text2}</Typography>*/}
             </Popover>
         </div>
     );
