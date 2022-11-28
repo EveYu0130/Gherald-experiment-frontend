@@ -3,7 +3,8 @@ const express = require('express');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const app = express();
-const port = process.env.PORT || 3000;
+// const port = process.env.PORT || 3000;
+const port = process.env.PORT || 9000;
 app.use(express.static(path.join(__dirname, 'build')));
 app.use(
     '/api',
@@ -17,6 +18,6 @@ app.get("*", (req, res) => {
     res.sendFile(path.resolve(__dirname, "build", "index.html"));
 });
 
-app.listen(9000, () => {
+app.listen(port, () => {
     console.log(`Server is up on port ${port}!`);
 });
