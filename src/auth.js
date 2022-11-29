@@ -29,7 +29,6 @@ function useProvideAuth() {
 
     const signin = (id) => {
         fetch(`https://gherald-backend.herokuapp.com/api/participants/${id}`, {
-            mode: 'cors',
             method: 'GET',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
