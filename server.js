@@ -5,7 +5,7 @@ const app = express();
 const port = process.env.PORT || 9000;
 app.use(express.static(path.join(__dirname, 'build')));
 
-app.get('/*', (req, res) => {
+app.get('*', (req, res) => {
     res.set('Access-Control-Allow-Origin', '*');
 })
 
