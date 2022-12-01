@@ -1,5 +1,5 @@
 import './index.css';
-import {Diff, Decoration, Hunk, withSourceExpansion, getChangeKey, tokenize, useSourceExpansion} from 'react-diff-view';
+import {Diff, Decoration, Hunk, withSourceExpansion, getChangeKey, tokenize, useSourceExpansion, markEdits} from 'react-diff-view';
 import {IconButton, Typography, Box, Alert, AlertTitle, SvgIcon} from "@mui/material";
 import React, {useMemo, useState} from "react";
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
@@ -32,50 +32,88 @@ const getWidgets = (hunks, modifiedLines, modifiedMethods, userGroup) => {
                 insert_start = Math.min(insert_start, change.lineNumber)
             }
             if (change.type === "delete" && change.lineNumber >= method.startLine && change.lineNumber <= method.endLine) {
-                delete_start = Math.min(insert_start, change.lineNumber)
+                delete_start = Math.min(delete_start, change.lineNumber)
             }
         })
         // const labelled_line = insert_start > method.endLine ? delete_start - 1 : insert_start - 1;
         const labelled_line = method.startLine - 1;
         const delete_only = insert_start > method.endLine;
+        const insert_only = delete_start > method.endLine;
         return {
             ...method,
             labelled_line,
-            delete_only
+            delete_only,
+            insert_only
         }
     })
     methods = Object.assign({}, ...methods.map((x) => ({[x.labelled_line]: {...x}})));
     const warning = userGroup != "gherald" ? [] :
         changes.filter((change) =>
-            (change.type === "insert" && change.lineNumber in lines && lines[change.lineNumber]["riskScore"] > 0)
-            || (change.type === "normal" && change.newLineNumber in methods && !methods[change.newLineNumber]["delete_only"])
-            || (change.type === "normal" && change.oldLineNumber in methods && methods[change.oldLineNumber]["delete_only"]));
+            (change.type === "insert" && change.lineNumber in lines && lines[change.lineNumber]["riskScore"] > 10)
+            || (change.type === "normal" && change.newLineNumber in methods && methods[change.newLineNumber]["insert_only"] && methods[change.newLineNumber]["priorChanges"] > 0)
+            || (change.type === "normal" && change.oldLineNumber in methods && !methods[change.oldLineNumber]["insert_only"] && methods[change.oldLineNumber]["priorChanges"] > 0));
     return warning.reduce(
         (widgets, change) => {
             const changeKey = getChangeKey(change);
+            const tokens = change.type === "insert" ? lines[change.lineNumber]["riskTokens"].split("&") : [];
+            let multiTokenText = ""
+            if (tokens.length > 1) {
+                tokens.forEach(token => {
+                    multiTokenText += `${token.split("=")[0]}(${token.split("=")[1]}), `;
+                })
+                multiTokenText = multiTokenText.slice(0,-2);
+            }
 
             return {
                 ...widgets,
                 [changeKey]:
                     change.type === "insert" ?
                         <Alert severity="warning" icon={<SvgIcon component={GheraldIcon} inheritViewBox/>}>
-                            {/*<AlertTitle>GHERALD line risk score: {lines[change.lineNumber]["riskScore"]}</AlertTitle>*/}
-                            {/*This line is risky — check it out!*/}
-                            LINE {change.lineNumber}: the tokens in this line were contained in {lines[change.lineNumber]["riskScore"]} prior buggy {lines[change.lineNumber]["riskScore"] > 1 ? "lines" : "line"}.
+                            {tokens.length > 1 ?
+                                <span>
+                                    LINE {change.lineNumber}: the tokens <b>{multiTokenText}</b> in this line were contained in more than <b>10</b> prior buggy lines.
+                                </span> :
+                                <span>
+                                    LINE {change.lineNumber}: the token <b>{tokens[0].split("=")[0]}</b> in this line were
+                                    contained in <b>{tokens[0].split("=")[1]}</b> prior buggy lines.
+                                </span>
+                            }
+
+                            {/*LINE {change.lineNumber}: the tokens in this line were contained in {lines[change.lineNumber]["riskScore"]} prior buggy {lines[change.lineNumber]["riskScore"] > 1 ? "lines" : "line"}.*/}
+                            {/*{tokens.length > 1 ? `LINE ${change.lineNumber}: thlineNumbere tokens <b>${multiTokenText}</b> in this line were contained in more than <b>10</b> prior buggy lines.` : `LINE ${change.lineNumber}: the token <b>${tokens[0].split("=")[0]}</b> in this line were contained in <b>${tokens[0].split("=")[1]}</b> prior buggy lines.`}*/}
+                            {/*LINE {change.lineNumber}: the tokens in this line were contained in more than 10 prior buggy lines.*/}
                         </Alert>
                         :
-                        (change.oldLineNumber in methods && methods[change.oldLineNumber]["delete_only"]) ?
+                        (change.oldLineNumber in methods && !methods[change.oldLineNumber]["insert_only"]) ?
                             <Alert severity="warning" icon={<SvgIcon component={GheraldIcon} inheritViewBox/>}>
-                                {/*<AlertTitle>GHERALD method risk: there have been {methods[change.oldLineNumber]["priorBugs"]} prior bugs among {methods[change.oldLineNumber]["priorChanges"]} changes</AlertTitle>*/}
-                                {/*Method: {methods[change.oldLineNumber]["name"]}*/}
-                                METHOD: This method [{methods[change.oldLineNumber]["name"]}] has been modified in {methods[change.oldLineNumber]["priorChanges"]} prior changes. Among these changes, {methods[change.oldLineNumber]["priorBugs"]} {methods[change.oldLineNumber]["priorBugs"] > 1 ? "bugs have" : "bug has"} been found in this method.
+                                {methods[change.oldLineNumber]["priorChanges"] > 1 ?
+                                    <span>
+                                        METHOD: This method [<b>{methods[change.oldLineNumber]["name"]}</b>] has been modified in <b>{methods[change.oldLineNumber]["priorChanges"]}</b> prior changes.
+                                        Among these changes, <b>{methods[change.oldLineNumber]["priorBugs"] > 1 ? methods[change.oldLineNumber]["priorBugs"] : "no"}</b>
+                                        {methods[change.oldLineNumber]["priorBugs"] > 1 ? " bugs have" : " bug has"} been found in this method.
+                                    </span> :
+                                    <span>
+                                        METHOD: This method [<b>{methods[change.oldLineNumber]["name"]}</b>] has been modified in <b>1</b> prior change and <b>no</b> bug has been found.
+                                    </span>
+                                }
+                                {/*METHOD: This method [{methods[change.oldLineNumber]["name"]}] has been modified in {methods[change.oldLineNumber]["priorChanges"]} prior changes. Among these changes, {methods[change.oldLineNumber]["priorBugs"]} {methods[change.oldLineNumber]["priorBugs"] > 1 ? "bugs have" : "bug has"} been found in this method.*/}
                                 {/*METHOD: there have been {methods[change.oldLineNumber]["priorBugs"]} prior bugs among {methods[change.oldLineNumber]["priorChanges"]} changes in method {methods[change.oldLineNumber]["name"]}*/}
                             </Alert>
                             :
                             <Alert severity="warning" icon={<SvgIcon component={GheraldIcon} inheritViewBox/>}>
-                                {/*<AlertTitle>GHERALD method risk: there have been {methods[change.newLineNumber]["priorBugs"]} prior bugs among {methods[change.newLineNumber]["priorChanges"]} changes</AlertTitle>*/}
-                                {/*Method: {methods[change.newLineNumber]["name"]}*/}
-                                METHOD: This method [{methods[change.newLineNumber]["name"]}] has been modified in {methods[change.newLineNumber]["priorChanges"]} prior changes. Among these changes {methods[change.newLineNumber]["priorBugs"]} {methods[change.newLineNumber]["priorBugs"] > 1 ? "bugs have" : "bug has"} been found in this method.
+                                {methods[change.oldLineNumber]["priorChanges"] > 1 ?
+                                    <span>
+                                        METHOD: This method [<b>{methods[change.newLineNumber]["name"]}</b>] has been modified in <b>{methods[change.newLineNumber]["priorChanges"]}</b> prior changes.
+                                        Among these changes, <b>{methods[change.newLineNumber]["priorBugs"] > 1 ? methods[change.newLineNumber]["priorBugs"]: "no"}</b>
+                                        {methods[change.newLineNumber]["priorBugs"] > 1 ? " bugs have" : " bug has"} been found in this method.
+                                    </span> :
+                                    <span>
+                                        METHOD: This method [<b>{methods[change.newLineNumber]["name"]}</b>] has been modified in <b>1</b> prior change and <b>no</b> bug has been found.
+                                    </span>
+
+                                }
+
+                                {/*METHOD: This method [{methods[change.newLineNumber]["name"]}] has been modified in {methods[change.newLineNumber]["priorChanges"]} prior changes. Among these changes {methods[change.newLineNumber]["priorBugs"]} {methods[change.newLineNumber]["priorBugs"] > 1 ? "bugs have" : "bug has"} been found in this method.*/}
                                 {/*METHOD: there have been {methods[change.newLineNumber]["priorBugs"]} prior bugs among {methods[change.newLineNumber]["priorChanges"]} changes in method {methods[change.newLineNumber]["name"]}*/}
                             </Alert>
             };
@@ -174,11 +212,12 @@ const DiffView = ({hunks, oldSource, linesCount, modifiedLines, modifiedMethods,
         refractor: refractor,
         highlight: true,
         // oldSource: oldSource,
-        language: 'java',
-        // enhancers: [
-        //     markEdits(hunks)
-        //     // markEdits(hunks, {type: 'block'})
-        // ],
+        // apache: language: 'cpp',
+        language: 'cpp',
+        enhancers: [
+            markEdits(renderingHunks)
+            // markEdits(renderingHunks, {type: 'block'})
+        ],
     };
     const tokens = tokenize(renderingHunks, options);
     // console.log(hunks);
