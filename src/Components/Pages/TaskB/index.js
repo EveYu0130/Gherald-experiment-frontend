@@ -53,13 +53,13 @@ const tips = [
         </DialogContentText>
         <img src={pauseTip} alt="pauseTip"/>
     </DialogContent>),
-    (<DialogContent>
-        <DialogContentText id="alert-dialog-description" sx={{py: 2}}>
-            For the completeness of comprehension, we provide all types of files (e.g., <b>*.xml</b>, <b>*Test.java</b>) that have been modified in the commit.
-            However, you <b>only</b> need to identify defects in the main functional files (<b>*.java</b>).
-        </DialogContentText>
-        <img src={filesTip} alt="filesTip"/>
-    </DialogContent>),
+    // (<DialogContent>
+    //     <DialogContentText id="alert-dialog-description" sx={{py: 2}}>
+    //         For the completeness of comprehension, we provide all types of files (e.g., <b>*.xml</b>, <b>*Test.java</b>) that have been modified in the commit.
+    //         However, you <b>only</b> need to identify defects in the main functional files (<b>*.java</b>).
+    //     </DialogContentText>
+    //     <img src={filesTip} alt="filesTip"/>
+    // </DialogContent>),
     (<DialogContent>
         <DialogContentText id="alert-dialog-description" sx={{py: 2}}>
             The source code can be accessed by clicking on the <b>Source code</b> <OpenInNewIcon /> button below. Feel free to download it if needed.
@@ -80,18 +80,18 @@ const tips = [
         </DialogContentText>
         <img src={reportDefectTip} alt="reportDefectTip"/>
     </DialogContent>),
-    (<DialogContent>
-        <DialogContentText id="alert-dialog-description" sx={{py: 2}}>
-            Please focus on identifying <b>only</b> functional defects; please ignore any other flaws you might notice in the code, such as those relating to style or documentation.
-        </DialogContentText>
-    </DialogContent>),
-    (<DialogContent>
-        <DialogContentText id="alert-dialog-description" sx={{py: 2}}>
-            Note: Since the functions are truncated into chunks in code diff and are not completely displayed, some lines may be mistakenly highlighted as comments.
-            This will be corrected if you expand the code to show the complete function.
-        </DialogContentText>
-        <img src={highlightTip} alt="highlightTip"/>
-    </DialogContent>)
+    // (<DialogContent>
+    //     <DialogContentText id="alert-dialog-description" sx={{py: 2}}>
+    //         Please focus on identifying <b>only</b> functional defects; please ignore any other flaws you might notice in the code, such as those relating to style or documentation.
+    //     </DialogContentText>
+    // </DialogContent>),
+    // (<DialogContent>
+    //     <DialogContentText id="alert-dialog-description" sx={{py: 2}}>
+    //         Note: Since the functions are truncated into chunks in code diff and are not completely displayed, some lines may be mistakenly highlighted as comments.
+    //         This will be corrected if you expand the code to show the complete function.
+    //     </DialogContentText>
+    //     <img src={highlightTip} alt="highlightTip"/>
+    // </DialogContent>)
 ]
 
 function TaskB({practice, onSubmit, setPracticed}) {
@@ -191,10 +191,13 @@ function TaskB({practice, onSubmit, setPracticed}) {
                         <Typography component="div"  text-align="center">
                             <p>
                                 In this task, you will be provided with the same three sets of changes that you saw in task A.
+                            </p>
                             <p>
                                 Taking each set one at a time, your job will be to identify as many defects in the commit as you can,
                                 and then log them in a code inspection form.
                             </p>
+                            <p>
+                                Please focus on identifying <b>only</b> functional defects; please ignore any other flaws you might notice in the code, such as those relating to style or documentation.
                             </p>
                             {!ready && <p>To start the task, click on the <b>I'm ready for Task B</b> button below.</p>}
                         </Typography>

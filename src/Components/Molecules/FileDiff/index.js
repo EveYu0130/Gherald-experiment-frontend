@@ -31,11 +31,19 @@ const FileDiff = ({ file, userGroup }) => {
                     {file.status ? "" : "-" + file.deletions}
                 </Typography>
             </AccordionSummary>
-            {userGroup === "gherald" && file.filename.split(".").pop() === "java" && !file.filename.split("/").includes("test") &&
+            {/*Apache : userGroup === "gherald" && file.filename.split(".").pop() === "java" && !file.filename.split("/").includes("test")*/}
+            {userGroup === "gherald" && file.priorChanges > 0 &&
                 <Alert severity="warning" icon={<SvgIcon component={GheraldIcon} inheritViewBox/>}>
-                    {}
+                    {file.priorChanges > 1 ?
+                        <span>
+                            FILE: This file has been modified in <b>{file.priorChanges}</b> prior changes.
+                            Among these changes, <b>{file.priorBugs > 1 ? file.priorBugs: "no"}</b> {file.priorBugs > 1 ? " bugs have" : " bug has"} been found in this file.
+                        </span> :
+                        <span>
+                            FILE: This file has been modified in <b>1</b> prior change and no bug has been found.
+                        </span>
+                    }
                     {/*<AlertTitle>GHERALD file risk: there have been {file.priorBugs} prior bugs among {file.priorChanges} changes in this file</AlertTitle>*/}
-                    FILE: This file has been modified in {file.priorChanges} prior changes. Among these changes, {file.priorBugs} {file.priorBugs > 1 ? "bugs have" : "bug has"} been found in this file.
                     {/*FILE: there have been {file.priorBugs} prior bugs among {file.priorChanges} changes in this file*/}
                 </Alert>
             }

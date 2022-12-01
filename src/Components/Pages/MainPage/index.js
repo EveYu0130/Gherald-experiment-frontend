@@ -177,7 +177,7 @@ function MainPage({practiced, onSubmit, setPractice}) {
                                             sx={{mt: '12px'}}>
                                             <Typography variant="subtitle1" paragraph sx={{ fontSize: "12px", pr: '10px' }}>
                                                 In this task, you will be provided with three sets of code changes (i.e., proposed commits to an existing software system).
-                                                Your job is to rank the changes from most to least risky, where we define risk as "the likelihood of a defect in the code that will need to be fixed later".
+                                                Your job is to rank the changes from most to least risky, where we define risk as "the likelihood of a functional defect in the code that will need to be fixed later".
                                             </Typography>
                                             <img src={taskA} alt="taskA" width={150} height={150} className={"taskA"} />
                                         </Box>
@@ -200,7 +200,7 @@ function MainPage({practiced, onSubmit, setPractice}) {
                                             sx={{mt: '12px'}}>
                                             <Typography variant="subtitle1" paragraph sx={{ fontSize: "12px", pr: '10px' }}>
                                                 In this task, you will be provided with the same three sets of changes that you saw in task A.
-                                                Your job will be to identify all of the defects in the commit and log them (file name, line number, description of defect) in a report.
+                                                Your job will be to identify all of the functional defects in the commit and log them (file name, line number, description of defect) in a report.
                                             </Typography>
                                             <img src={taskB} alt="taskB" width={150} height={150} className={"taskB"} />
                                         </Box>
@@ -243,8 +243,8 @@ function MainPage({practiced, onSubmit, setPractice}) {
                                             <p>
                                                 In a nutshell, Gherald is a risk assessment technique we implemented based on historical analysis.
                                                 During the tasks, you will be provided with Gherald risk assessment results regarding the riskiness of change and its relevant author, files, and methods.
-                                                Specifically, you will be presented with a risk score of change and the historical statistics of its author, files, and methods.
-                                                Moreover, in some cases, Gherald will alert you of the risky lines that are prone to defects when you are reviewing the code diff.
+                                                Specifically, you will be presented with an overall risk assessment in percentage/ratings regarding the author, files, and methods of the change.
+                                                Moreover, Gherald will provide you the historical statistics of files and methods and alert you of the risky lines that are prone to defects when you are reviewing the code diff.
                                             </p>
                                             <p>
                                                 Please feel free to use Gherald as a complementary tool to help with your manual code reviews.
