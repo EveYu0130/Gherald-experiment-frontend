@@ -164,7 +164,7 @@ function GheraldReport({ change }) {
                             <ProgressWithLabel value={change.fileRiskScore * 100} theme={theme}/>
                         </Grid>
                         <Grid item xs={1}>
-                            <InfoPopover text1={"The file risk score (percentage) indicates the relative likelihood of introducing defects in the files of change compared to the other files."}/>
+                            <InfoPopover text1={"The file risk score (percentage) indicates the relative likelihood of introducing functional defects in the files of change compared to the other files."}/>
                         </Grid>
                         <Grid item xs={4}>
                             <Typography variant="body2">Method risk</Typography>
@@ -173,7 +173,7 @@ function GheraldReport({ change }) {
                             <ProgressWithLabel value={change.methodRiskScore * 100} theme={theme}/>
                         </Grid>
                         <Grid item xs={1}>
-                            <InfoPopover text1={"The method risk score (percentage) indicates the relative likelihood of introducing defects in the methods of change compared to the other methods."}/>
+                            <InfoPopover text1={"The method risk score (percentage) indicates the relative likelihood of introducing functional defects in the methods of change compared to the other methods."}/>
                         </Grid>
                     </Grid>
                 </CardContent>
