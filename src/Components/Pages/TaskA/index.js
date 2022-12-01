@@ -162,7 +162,7 @@ function TaskA({practice, onSubmit}) {
                             <Typography component="div"  text-align="center">
                                 <p>
                                     You will be provided with three sets of code changes to an existing software system (i.e., proposed commits).
-                                    Your job is to rank the changes from most to least risky, where we defined risk as "likelihood of a defect in the code that will need to be fixed later".
+                                    Your job is to rank the changes from most to least risky, where we defined risk as "likelihood of a functional defect in the code that will need to be fixed later".
                                 </p>
                                 <p>
                                     To perform the ranking, just <b>drag and drop</b> the changes to the order you think is right. (1 = Most risky, 3 = Least risky).

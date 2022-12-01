@@ -115,7 +115,7 @@ function ChangeInfo({ change, number }) {
                     <Grid item xs={6} />
                     <Grid item xs={2}>Created</Grid>
                     <Grid item xs={4}>
-                        <Item>{change.updated.substring(0,10)}</Item>
+                        <Item>{change.updated.substring(0,19)}</Item>
                     </Grid>
                     <Grid item xs={6} />
                     <Grid item xs={6}>
