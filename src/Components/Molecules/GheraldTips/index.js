@@ -27,6 +27,7 @@ const tips = [
         <DialogContentText id="alert-dialog-description" sx={{py: 2}}>
             Gherald also provides an author-specific risk analysis that assesses the the author's project experience (i.e., how many changes the author has committed), recent activity (i.e., how many changes the author has recently committed), and file expertise (i.e., how many changes the author has committed to the files in change).
             <p>The rating indicates the relative value compared to the other authors. </p>
+            This information can be accessed when you <b>hover</b> over the info icon.
         </DialogContentText>
         <img src={gheraldAuthorTip} alt="gheraldAuthorTip"/>
     </DialogContent>),
