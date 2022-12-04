@@ -48,7 +48,6 @@ function useProvideAuth() {
                 group: data.tool
             })
             localStorage.setItem("user", JSON.stringify(data));
-            console.log(JSON.stringify(data));
         }).catch(error => {
             console.log(error);
             setError(error);

@@ -73,7 +73,6 @@ function DnD({ data, practice, onSubmit }) {
     const timerRef = useRef();
 
     const handleOnDragEnd = (result) => {
-        console.log(result)
         if (!result.destination) return;
         let items = [...changeList];
         const [reorderedItem] = items.splice(result.source.index, 1);
@@ -88,7 +87,6 @@ function DnD({ data, practice, onSubmit }) {
             onSubmit();
         } else {
             const reviewTime = timerRef.current.seconds;
-            console.log(reviewTime);
             timerRef.current.resetTime();
             fetch('https://gherald-backend.herokuapp.com/api/risk-assessment', {
                 method: 'POST',
@@ -97,7 +95,6 @@ function DnD({ data, practice, onSubmit }) {
                 },
                 body: JSON.stringify({...data, taskATime: reviewTime, changeReviews: changeList})
             }).then(response => {
-                console.log(response);
                 onSubmit();
             }).catch(error => {
                 console.log(error);
@@ -107,12 +104,10 @@ function DnD({ data, practice, onSubmit }) {
 
     const handlePauseClick = () => {
         setPause(true);
-        console.log(timerRef.current.seconds);
     }
 
     const handleResumeClick = () => {
         setPause(false);
-        console.log(timerRef.current.seconds);
     }
 
     const context = require.context("../../../images/", true, /.png$/);

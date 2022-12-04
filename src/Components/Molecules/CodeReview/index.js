@@ -94,8 +94,6 @@ function CodeReview({ reviews, practice, onSubmit, setPracticed }) {
     const addData = () => setData(old => [...old, { control: null, file: null, line: null, comment: null }]);
 
     const handleNext = () => {
-        console.log('Submit');
-        console.log(data);
         if (practice) {
             if (activeStep === reviews.length - 1) {
                 setPracticed(true);
@@ -107,7 +105,6 @@ function CodeReview({ reviews, practice, onSubmit, setPracticed }) {
             setReport(false);
         } else {
             const reviewTime = timerRef.current.seconds;
-            console.log(reviewTime);
             timerRef.current.resetTime();
             const codeInspections = data.filter(({file, line, comment}) => file || line || comment).map(({file, line, comment}) => ({file, line, comment}));
             setData(initialData);
@@ -126,7 +123,6 @@ function CodeReview({ reviews, practice, onSubmit, setPracticed }) {
                     }
                 }
                 setReport(false);
-                console.log(response);
             }).catch(error => {
                 console.log(error);
             });
@@ -151,12 +147,10 @@ function CodeReview({ reviews, practice, onSubmit, setPracticed }) {
 
     const handlePauseClick = () => {
         setPause(true);
-        console.log(timerRef.current.seconds);
     }
 
     const handleResumeClick = () => {
         setPause(false);
-        console.log(timerRef.current.seconds);
     }
 
     return (

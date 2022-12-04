@@ -61,7 +61,6 @@ function Questionnaire({onSubmit}) {
             if  (response.status === 200) {
                 onSubmit();
             }
-            console.log(response);
         }).catch(error => {
             console.log(error);
         });
