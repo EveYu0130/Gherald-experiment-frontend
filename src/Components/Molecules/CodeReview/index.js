@@ -170,7 +170,7 @@ function CodeReview({ reviews, practice, onSubmit, setPracticed }) {
                 <Box  sx={{ width: '100%', px: '5%' }} >
                     <ChangeInfo change={change} number={activeStep+1} />
 
-                    {report && <CodeInspectionForm data={data} updateData={updateData} deleteData={deleteData} addData={addData} selectOptions={change.project === 'qt' ? change.files.slice(1).map(file => file.filename) : change.files.map(file => file.filename).filter(file => file.split(".").pop() === "java" && !file.split("/").includes("test"))}/>}
+                    {report && <CodeInspectionForm data={data} updateData={updateData} deleteData={deleteData} addData={addData} selectOptions={change.project === 'qt' ? change.files.map(file => file.filename) : change.files.map(file => file.filename).filter(file => file.split(".").pop() === "java" && !file.split("/").includes("test"))}/>}
 
                     <Box sx={{ width: '100%', textAlign: 'center' }}>
                         <Button  variant="contained" sx={{ mx: '2%', my: '2%', width: '200px' }} onClick={handleSkip}>
