@@ -58,8 +58,6 @@ function MainPage({practiced, onSubmit, setPractice}) {
     let rectY = innerHeight;
     if (document.getElementById('gherald-info')) {
         rectY = document.getElementById('gherald-info').getBoundingClientRect().y;
-        console.log(innerHeight);
-        console.log(rectY);
         if (!practiced && rectY < innerHeight / 3 && !tipShown) {
             setTip(true);
             setTipShown(true);

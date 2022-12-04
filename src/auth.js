@@ -28,7 +28,7 @@ function useProvideAuth() {
     // localStorage.clear();
 
     const signin = (id) => {
-        fetch(`/api/participants/${id}`, {
+        fetch(`https://gherald-backend.herokuapp.com/api/participants/${id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -48,7 +48,6 @@ function useProvideAuth() {
                 group: data.tool
             })
             localStorage.setItem("user", JSON.stringify(data));
-            console.log(JSON.stringify(data));
         }).catch(error => {
             console.log(error);
             setError(error);

@@ -68,7 +68,7 @@ function AddParticipant() {
     const handleSubmit = (e) => {
         console.log('Participant added');
         e.preventDefault();
-        fetch('/api/participants/add', {
+        fetch('https://gherald-backend.herokuapp.com/api/participants/add', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',

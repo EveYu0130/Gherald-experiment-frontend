@@ -74,7 +74,7 @@ function ChangeList() {
     const [changes, setChanges] = useState([]);
 
     useEffect(() => {
-        fetch('/api/changes')
+        fetch('https://gherald-backend.herokuapp.com/api/changes')
             .then(results => results.json())
             .then(data => {
                 setLoading(false);
