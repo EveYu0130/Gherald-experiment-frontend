@@ -6,6 +6,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {useAuth} from "../../../auth";
 import {useHistory} from "react-router-dom";
 import theme from '../../../theme';
+import { useTranslation } from 'react-i18next';
 
 const backgroundImage = 'https://images.unsplash.com/photo-1482062364825-616fd23b8fc1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80';
 
@@ -34,6 +35,7 @@ function Questionnaire({onSubmit}) {
     });
     let auth = useAuth();
     const history = useHistory();
+    const { t } = useTranslation();
 
     const handleChange = (e) => {
         setState({
@@ -74,7 +76,7 @@ function Questionnaire({onSubmit}) {
                 <Box sx={{ width: '100%' }}>
                     <Box sx={{ width: '100%', textAlign: 'center', p: '4%' }}>
                         <Typography variant="h4" component="div" sx={{ fontWeight: '600' }}>
-                            Post-Experiment Questionnaire
+                            {t('questionnaire_title')}
                         </Typography>
                     </Box>
                     <Divider />
@@ -82,7 +84,7 @@ function Questionnaire({onSubmit}) {
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
                                 <Typography>
-                                    1. How well do you think you understood the provided source code changes?
+                                    1. {t('questionnaire_q1')}
                                 </Typography>
                                 <RadioGroup
                                     row
@@ -92,19 +94,19 @@ function Questionnaire({onSubmit}) {
                                     sx={{ justifyContent: 'space-evenly' }}
                                 >
                                     <Box sx={{ width: 200, height: 30}}>
-                                        <FormControlLabel value="Very well" control={<Radio />} label="Very well" />
+                                        <FormControlLabel value="Very well" control={<Radio />} label={t('questionnaire_q1_a1')} />
                                     </Box>
                                     <Box sx={{ width: 200, height: 30}}>
-                                        <FormControlLabel value="Somewhat" control={<Radio />} label="Somewhat" />
+                                        <FormControlLabel value="Somewhat" control={<Radio />} label={t('questionnaire_q1_a2')} />
                                     </Box>
                                     <Box sx={{ width: 200, height: 30}}>
-                                        <FormControlLabel value="Barely" control={<Radio />} label="Barely" />
+                                        <FormControlLabel value="Barely" control={<Radio />} label={t('questionnaire_q1_a3')} />
                                     </Box>
                                 </RadioGroup>
                             </Grid>
                             <Grid item xs={12}>
                                 <Typography>
-                                    2. How difficult did you find the assigned tasks?
+                                    2. {t('questionnaire_q2')}
                                 </Typography>
                                 <RadioGroup
                                     row
@@ -114,19 +116,19 @@ function Questionnaire({onSubmit}) {
                                     sx={{ justifyContent: 'space-evenly' }}
                                 >
                                     <Box sx={{ width: 200, height: 30}}>
-                                        <FormControlLabel value="Easy" control={<Radio />} label="Easy" />
+                                        <FormControlLabel value="Easy" control={<Radio />} label={t('questionnaire_q2_a1')} />
                                     </Box>
                                     <Box sx={{ width: 200, height: 30}}>
-                                        <FormControlLabel value="Moderate" control={<Radio />} label="Moderate" />
+                                        <FormControlLabel value="Moderate" control={<Radio />} label={t('questionnaire_q2_a1')} />
                                     </Box>
                                     <Box sx={{ width: 200, height: 30}}>
-                                        <FormControlLabel value="Very hard" control={<Radio />} label="Very hard" />
+                                        <FormControlLabel value="Very hard" control={<Radio />} label={t('questionnaire_q2_a3')} />
                                     </Box>
                                 </RadioGroup>
                             </Grid>
                             <Grid item xs={12}>
                                 <Typography>
-                                    3. How would you describe your enthusiasm and energy level during the experiment?
+                                    3. {t('questionnaire_q3')}
                                 </Typography>
                                 <RadioGroup
                                     row
@@ -136,20 +138,20 @@ function Questionnaire({onSubmit}) {
                                     sx={{ justifyContent: 'space-evenly' }}
                                 >
                                     <Box sx={{ width: 200, height: 30}}>
-                                        <FormControlLabel value="High" control={<Radio />} label="High" />
+                                        <FormControlLabel value="High" control={<Radio />} label={t('questionnaire_q3_a1')} />
                                     </Box>
                                     <Box sx={{ width: 200, height: 30}}>
-                                        <FormControlLabel value="Moderate" control={<Radio />} label="Moderate" />
+                                        <FormControlLabel value="Moderate" control={<Radio />} label={t('questionnaire_q3_a2')} />
                                     </Box>
                                     <Box sx={{ width: 200, height: 30}}>
-                                        <FormControlLabel value="Low" control={<Radio />} label="Low" />
+                                        <FormControlLabel value="Low" control={<Radio />} label={t('questionnaire_q3_a3')} />
                                     </Box>
                                 </RadioGroup>
                             </Grid>
                             {auth.user.group === "gherald" &&
                                 <Grid item xs={12}>
                                     <Typography>
-                                        4. How useful did you find the information provided by the tool?
+                                        4. {t('questionnaire_q4')}
                                     </Typography>
                                     <RadioGroup
                                         row
@@ -159,20 +161,20 @@ function Questionnaire({onSubmit}) {
                                         sx={{ justifyContent: 'space-evenly' }}
                                     >
                                         <Box sx={{ width: 200, height: 30}}>
-                                            <FormControlLabel value="Very useful" control={<Radio />} label="Very useful" />
+                                            <FormControlLabel value="Very useful" control={<Radio />} label={t('questionnaire_q4_a1')} />
                                         </Box>
                                         <Box sx={{ width: 200, height: 30}}>
-                                            <FormControlLabel value="Moderately useful" control={<Radio />} label="Moderately useful" />
+                                            <FormControlLabel value="Moderately useful" control={<Radio />} label={t('questionnaire_q4_a2')} />
                                         </Box>
                                         <Box sx={{ width: 200, height: 30}}>
-                                            <FormControlLabel value="Not useful" control={<Radio />} label="Not useful" />
+                                            <FormControlLabel value="Not useful" control={<Radio />} label={t('questionnaire_q4_a3')} />
                                         </Box>
                                     </RadioGroup>
                                 </Grid>
                             }
                             <Grid item xs={12}>
                                 <Typography>
-                                    {auth.user.group === "gherald" ? 5 : 4}. What, if any, additional tools or information sources did you use during the experiment to help in your decision making?
+                                    {auth.user.group === "gherald" ? 5 : 4}. {t('questionnaire_q5')}
                                 </Typography>
                                 <TextField
                                     required
@@ -187,7 +189,7 @@ function Questionnaire({onSubmit}) {
                             </Grid>
                             <Grid item xs={12}>
                                 <Typography>
-                                    {auth.user.group === "gherald" ? 6 : 5}. What, if any, problems did you encounter during the experiment?
+                                    {auth.user.group === "gherald" ? 6 : 5}. {t('questionnaire_q6')}
                                 </Typography>
                                 <TextField
                                     required
@@ -202,7 +204,7 @@ function Questionnaire({onSubmit}) {
                             </Grid>
                             <Grid item xs={12}>
                                 <Typography>
-                                    {auth.user.group === "gherald" ? 7 : 6}. Do you have any additional comments or feedback on the tasks you performed and the information you were provided with?
+                                    {auth.user.group === "gherald" ? 7 : 6}. {t('questionnaire_q7')}
                                 </Typography>
                                 <TextField
                                     required
@@ -220,7 +222,7 @@ function Questionnaire({onSubmit}) {
                                     control={
                                         <Checkbox name="allowInterview" color="primary" checked={state.allowInterview} onChange={handleCheckChange} />
                                     }
-                                    label="I am happy to be contacted by the research team for a follow-up interview."
+                                    label={t('questionnaire_allow_interview')}
                                 />
                             </Grid>
                         </Grid>
@@ -230,7 +232,7 @@ function Questionnaire({onSubmit}) {
                                 variant="contained"
                                 sx={{ mx: '2%', my: '3%', width: '200px' }}
                             >
-                                Submit
+                                {t('submit_btn')}
                             </Button>
                         </Box>
                     </Box>

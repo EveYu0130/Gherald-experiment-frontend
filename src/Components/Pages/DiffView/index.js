@@ -9,6 +9,7 @@ import * as refractor from "refractor";
 import 'prism-themes/themes/prism-vs.css';
 import styled from "styled-components";
 import { ReactComponent as GheraldIcon } from '../../../icons/gherald.svg';
+import { Trans } from 'react-i18next';
 
 
 const ExpandButton = styled(Box)({
@@ -63,6 +64,8 @@ const getWidgets = (hunks, modifiedLines, modifiedMethods, userGroup) => {
                 })
                 multiTokenText = multiTokenText.slice(0,-2);
             }
+            multiTokenText = multiTokenText.replaceAll("<" , "");
+            multiTokenText = multiTokenText.replaceAll(">" , "");
 
             return {
                 ...widgets,
@@ -71,11 +74,14 @@ const getWidgets = (hunks, modifiedLines, modifiedMethods, userGroup) => {
                         <Alert severity="warning" icon={<SvgIcon component={GheraldIcon} inheritViewBox/>}>
                             {tokens.length > 1 ?
                                 <span>
-                                    LINE {change.lineNumber}: the tokens <b>{multiTokenText}</b> in this line were contained in more than <b>10</b> prior buggy lines.
+                                    <Trans i18nKey="gherald_line_info_prior_bugs_greater_than_10">
+                                        LINE {{lineNumber: change.lineNumber}}: the tokens <b>{{multiTokenText}}</b> in this line were contained in more than <b>10</b> prior buggy lines.
+                                    </Trans>
                                 </span> :
                                 <span>
-                                    LINE {change.lineNumber}: the token <b>{tokens[0].split("=")[0]}</b> in this line were
-                                    contained in <b>{tokens[0].split("=")[1]}</b> prior buggy lines.
+                                    <Trans i18nKey="gherald_line_info_prior_bugs" priorBugs={tokens[0].split("=")[1]}>
+                                        LINE {{lineNumber: change.lineNumber}}: the token <b>{{token: tokens[0].split("=")[0]}}</b> in this line were contained in <b>{{priorBugs: tokens[0].split("=")[1]}}</b> prior buggy lines.
+                                    </Trans>
                                 </span>
                             }
 
@@ -88,12 +94,17 @@ const getWidgets = (hunks, modifiedLines, modifiedMethods, userGroup) => {
                             <Alert severity="warning" icon={<SvgIcon component={GheraldIcon} inheritViewBox/>}>
                                 {methods[change.oldLineNumber]["priorChanges"] > 1 ?
                                     <span>
-                                        METHOD: This method [<b>{methods[change.oldLineNumber]["name"]}</b>] has been modified in <b>{methods[change.oldLineNumber]["priorChanges"]}</b> prior changes.
-                                        Among these changes, <b>{methods[change.oldLineNumber]["priorBugs"] > 1 ? methods[change.oldLineNumber]["priorBugs"] : "no"}</b>
-                                        {methods[change.oldLineNumber]["priorBugs"] > 1 ? " bugs have" : " bug has"} been found in this method.
+                                        <Trans i18nKey="gherald_method_info_prior_change_plural" priorChanges={methods[change.oldLineNumber]["priorChanges"]}>
+                                            METHOD: This method [<b>{{method: methods[change.oldLineNumber]["name"].split("(")[0] + "()"}}</b>] has been modified in <b>{{priorChanges: methods[change.oldLineNumber]["priorChanges"]}}</b> prior changes.
+                                        </Trans>
+                                        <Trans i18nKey="gherald_method_info_prior_bug" priorBugs={methods[change.oldLineNumber]["priorBugs"]}>
+                                            Among these changes, <b>{{priorBugs: methods[change.oldLineNumber]["priorBugs"]}}</b> bugs have been found in this method.
+                                        </Trans>
                                     </span> :
                                     <span>
-                                        METHOD: This method [<b>{methods[change.oldLineNumber]["name"]}</b>] has been modified in <b>1</b> prior change and <b>no</b> bug has been found.
+                                        <Trans i18nKey="gherald_method_info_prior_change">
+                                            METHOD: This method [<b>{{method: methods[change.oldLineNumber]["name"]}}</b>] has been modified in <b>1</b> prior change and <b>{{priorBugs: methods[change.oldLineNumber]["priorBugs"]}}</b> bug has been found.
+                                        </Trans>
                                     </span>
                                 }
                                 {/*METHOD: This method [{methods[change.oldLineNumber]["name"]}] has been modified in {methods[change.oldLineNumber]["priorChanges"]} prior changes. Among these changes, {methods[change.oldLineNumber]["priorBugs"]} {methods[change.oldLineNumber]["priorBugs"] > 1 ? "bugs have" : "bug has"} been found in this method.*/}
@@ -101,14 +112,19 @@ const getWidgets = (hunks, modifiedLines, modifiedMethods, userGroup) => {
                             </Alert>
                             :
                             <Alert severity="warning" icon={<SvgIcon component={GheraldIcon} inheritViewBox/>}>
-                                {methods[change.oldLineNumber]["priorChanges"] > 1 ?
+                                {methods[change.newLineNumber]["priorChanges"] > 1 ?
                                     <span>
-                                        METHOD: This method [<b>{methods[change.newLineNumber]["name"]}</b>] has been modified in <b>{methods[change.newLineNumber]["priorChanges"]}</b> prior changes.
-                                        Among these changes, <b>{methods[change.newLineNumber]["priorBugs"] > 1 ? methods[change.newLineNumber]["priorBugs"]: "no"}</b>
-                                        {methods[change.newLineNumber]["priorBugs"] > 1 ? " bugs have" : " bug has"} been found in this method.
+                                        <Trans i18nKey="gherald_method_info_prior_change_plural" priorChanges={methods[change.newLineNumber]["priorChanges"]}>
+                                            METHOD: This method [<b>{{method: methods[change.newLineNumber]["name"].split("(")[0] + "()"}}</b>] has been modified in <b>{{priorChanges: methods[change.newLineNumber]["priorChanges"]}}</b> prior changes.
+                                        </Trans>
+                                        <Trans i18nKey="gherald_method_info_prior_bug" priorBugs={methods[change.newLineNumber]["priorBugs"]}>
+                                            Among these changes, <b>{{priorBugs: methods[change.newLineNumber]["priorBugs"]}}</b> bugs have been found in this method.
+                                        </Trans>
                                     </span> :
                                     <span>
-                                        METHOD: This method [<b>{methods[change.newLineNumber]["name"]}</b>] has been modified in <b>1</b> prior change and <b>no</b> bug has been found.
+                                        <Trans i18nKey="gherald_method_info_prior_change">
+                                            METHOD: This method [<b>{{method: methods[change.newLineNumber]["name"]}}</b>] has been modified in <b>1</b> prior change and <b>{{priorBugs: methods[change.newLineNumber]["priorBugs"]}}</b> bug has been found.
+                                        </Trans>
                                     </span>
 
                                 }

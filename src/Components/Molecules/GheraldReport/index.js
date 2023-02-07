@@ -11,6 +11,7 @@ import {ReactComponent as GheraldIcon} from "../../../icons/gherald.svg";
 import AuthorPopover from "../../Atoms/AuthorPopover";
 import WarningIcon from "@mui/icons-material/Warning";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
+import { useTranslation, Trans } from 'react-i18next';
 
 const StyledRating = styled(Rating)({
     '& .MuiRating-iconFilled': {
@@ -121,6 +122,7 @@ function ProgressWithLabel({ value, theme }) {
 const theme = createTheme();
 
 function GheraldReport({ change }) {
+    const { t } = useTranslation();
     return (
         <Box sx={{ width: '50%', py: '20px' }}>
             <Card sx={{ minWidth: 275 }}>
@@ -131,7 +133,7 @@ function GheraldReport({ change }) {
                         </Grid>
                         <Grid item>
                             <Typography variant="subtitle1" sx={{ fontWeight: 'Medium' }}>
-                                RISK ASSESSMENT:
+                                {t('gherald_report_title')}
                             </Typography>
                         </Grid>
                     </Grid>
@@ -149,7 +151,7 @@ function GheraldReport({ change }) {
                     {/*</Typography>*/}
                     <Grid container spacing={2} sx={{ p: 2}}>
                         <Grid item xs={4}>
-                            <Typography variant="body2">Author risk</Typography>
+                            <Typography variant="body2">{t('gherald_report_author_risk')}</Typography>
                         </Grid>
                         <Grid item xs={7}>
                             <ProgressWithLabel value={change.authorRiskScore * 100} theme={theme}/>
@@ -158,22 +160,22 @@ function GheraldReport({ change }) {
                             <AuthorPopover author={change.author} change={change} />
                         </Grid>
                         <Grid item xs={4}>
-                            <Typography variant="body2">File risk</Typography>
+                            <Typography variant="body2">{t('gherald_report_file_risk')}</Typography>
                         </Grid>
                         <Grid item xs={7}>
                             <ProgressWithLabel value={change.fileRiskScore * 100} theme={theme}/>
                         </Grid>
                         <Grid item xs={1}>
-                            <InfoPopover text1={"The file risk score (percentage) indicates the relative likelihood of introducing functional defects in the files of change compared to the other files."}/>
+                            <InfoPopover text1={t('gherald_report_file_risk_msg')}/>
                         </Grid>
                         <Grid item xs={4}>
-                            <Typography variant="body2">Method risk</Typography>
+                            <Typography variant="body2">{t('gherald_report_method_risk')}</Typography>
                         </Grid>
                         <Grid item xs={7}>
                             <ProgressWithLabel value={change.methodRiskScore * 100} theme={theme}/>
                         </Grid>
                         <Grid item xs={1}>
-                            <InfoPopover text1={"The method risk score (percentage) indicates the relative likelihood of introducing functional defects in the methods of change compared to the other methods."}/>
+                            <InfoPopover text1={t('gherald_report_method_risk_msg')}/>
                         </Grid>
                     </Grid>
                 </CardContent>

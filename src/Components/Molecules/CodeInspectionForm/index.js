@@ -3,6 +3,7 @@ import {AppBar, Box, TextField, Toolbar, Typography, MenuItem, Select, IconButto
 import DynamicTable from "../DynamicTable";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
+import { useTranslation } from 'react-i18next';
 
 
 const AddButton = props => {
@@ -72,6 +73,7 @@ const TableInputComment = props => {
 };
 
 function CodeInspectionForm({ data, updateData, deleteData, addData, selectOptions }) {
+    const { t } = useTranslation();
 
     const columns = useMemo(
         () => [
@@ -105,7 +107,7 @@ function CodeInspectionForm({ data, updateData, deleteData, addData, selectOptio
                 <AppBar position="static" color='transparent' sx={{ bgcolor: 'secondary.main' }}>
                     <Toolbar>
                         <Typography component="div" sx={{ width: '100%', flexShrink: 0, fontWeight: 'Medium' }}>
-                            Code Inspection Form
+                            {t('code_inspection_form')}
                         </Typography>
                     </Toolbar>
                 </AppBar>

@@ -7,9 +7,11 @@ import ChangeInfo from "../ChangeInfo";
 import CodeInspectionForm from "../CodeInspectionForm";
 import AccessAlarmsIcon from "@mui/icons-material/AccessAlarms";
 import { forwardRef, useRef, useImperativeHandle } from "react"
+import { useTranslation } from 'react-i18next';
 
 const Timer = forwardRef(({pause, practice, handleResumeClick, handlePauseClick}, ref) => {
     const [seconds, setSeconds] = useState(0);
+    const { t } = useTranslation();
 
     useImperativeHandle(ref, () => ({
         resetTime() {
@@ -38,12 +40,12 @@ const Timer = forwardRef(({pause, practice, handleResumeClick, handlePauseClick}
             {pause ? (
                 <Button  variant="contained" sx={{ mx: '2%', my: '1%', width: '200px' }} onClick={handleResumeClick}>
                     <AccessAlarmsIcon sx={{mr: '5px'}}/>
-                    Resume
+                    {t('resume_btn')}
                 </Button>
             ) : (
                 <Button  variant="contained" sx={{ mx: '2%', my: '1%', width: '200px' }} onClick={handlePauseClick}>
                     <AccessAlarmsIcon sx={{mr: '5px'}}/>
-                    Pause
+                    {t('pause_btn')}
                 </Button>
             )}
         </Box>
@@ -68,6 +70,7 @@ function CodeReview({ reviews, practice, onSubmit, setPracticed }) {
     ];
     const [data, setData] = useState(initialData);
     const timerRef = useRef();
+    const { t } = useTranslation();
 
     const updateData = (rowIndex, columnID, value) => {
         setData(oldData =>
@@ -170,23 +173,24 @@ function CodeReview({ reviews, practice, onSubmit, setPracticed }) {
                 <Box  sx={{ width: '100%', px: '5%' }} >
                     <ChangeInfo change={change} number={activeStep+1} />
 
-                    {report && <CodeInspectionForm data={data} updateData={updateData} deleteData={deleteData} addData={addData} selectOptions={change.project === 'qt' ? change.files.map(file => file.filename) : change.files.map(file => file.filename).filter(file => file.split(".").pop() === "java" && !file.split("/").includes("test"))}/>}
+                    {report && <CodeInspectionForm data={data} updateData={updateData} deleteData={deleteData} addData={addData} selectOptions={change.files.map(file => file.filename)}/>}
+                    {/*{report && <CodeInspectionForm data={data} updateData={updateData} deleteData={deleteData} addData={addData} selectOptions={change.project === 'qt' ? change.files.map(file => file.filename) : change.files.map(file => file.filename).filter(file => file.split(".").pop() === "java" && !file.split("/").includes("test"))}/>}*/}
 
                     <Box sx={{ width: '100%', textAlign: 'center' }}>
                         <Button  variant="contained" sx={{ mx: '2%', my: '2%', width: '200px' }} onClick={handleSkip}>
-                            Skip
+                            {t('skip_btn')}
                         </Button>
                         <Button  variant="contained" sx={{ mx: '2%', my: '2%', width: '200px' }} onClick={handleNext}>
-                            No defect to report
+                            {t('no_defect_btn')}
                         </Button>
                         {!report &&
                             <Button  variant="contained" sx={{ mx: '2%', my: '2%', width: '200px' }} onClick={handleReport}>
-                                Report a defect
+                                {t('defect_report_btn')}
                             </Button>
                         }
                         {report &&
                             <Button  variant="contained" sx={{ mx: '2%', my: '2%', width: '200px' }} onClick={handleNext}>
-                                Submit
+                                {t('submit_btn')}
                             </Button>
                         }
                     </Box>

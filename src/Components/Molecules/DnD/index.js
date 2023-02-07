@@ -7,6 +7,7 @@ import one from '../../../icons/one.png';
 import two from '../../../icons/two.png';
 import three from '../../../icons/three.png';
 import {forwardRef, useImperativeHandle, useRef} from "react";
+import { useTranslation } from 'react-i18next';
 
 const icons = [
     (<img src={one} alt="ONE" width={50} height={50} className={"one"} />),
@@ -16,6 +17,7 @@ const icons = [
 
 const Timer = forwardRef(({pause, practice, handleResumeClick, handlePauseClick}, ref) => {
     const [seconds, setSeconds] = useState(0);
+    const { t } = useTranslation();
 
     useImperativeHandle(ref, () => ({
         resetTime() {
@@ -44,12 +46,12 @@ const Timer = forwardRef(({pause, practice, handleResumeClick, handlePauseClick}
             {pause ? (
                 <Button  variant="contained" sx={{ mx: '2%', my: '1%', width: '200px' }} onClick={handleResumeClick}>
                     <AccessAlarmsIcon sx={{mr: '5px'}}/>
-                    Resume
+                    {t('resume_btn')}
                 </Button>
             ) : (
                 <Button  variant="contained" sx={{ mx: '2%', my: '1%', width: '200px' }} onClick={handlePauseClick}>
                     <AccessAlarmsIcon sx={{mr: '5px'}}/>
-                    Pause
+                    {t('pause_btn')}
                 </Button>
             )}
         </Box>
@@ -71,6 +73,7 @@ function DnD({ data, practice, onSubmit }) {
     const history = useHistory();
     const [pause, setPause] = useState(false);
     const timerRef = useRef();
+    const { t } = useTranslation();
 
     const handleOnDragEnd = (result) => {
         if (!result.destination) return;
@@ -153,7 +156,7 @@ function DnD({ data, practice, onSubmit }) {
                                                             {/*</CardContent>*/}
                                                             <CardActions>
                                                                 <Link to={`/changes/${change.id}`} target="_blank" style={{ textDecoration: 'none' }}>
-                                                                    <Button>Learn More</Button>
+                                                                    <Button>{t('learn_more_btn')}</Button>
                                                                 </Link>
                                                             </CardActions>
                                                         </Card>
@@ -170,10 +173,10 @@ function DnD({ data, practice, onSubmit }) {
                 </Droppable>
                 <Box sx={{ width: '100%', textAlign: 'center', py: '3%' }}>
                     <Button  variant="contained" sx={{ mx: '2%', my: '2%', width: '200px' }} onClick={onSubmit}>
-                        Skip
+                        {t('skip_btn')}
                     </Button>
                     <Button  variant="contained" sx={{ mx: '2%', my: '2%', width: '200px' }} onClick={handleSubmit}>
-                        Submit
+                        {t('submit_btn')}
                     </Button>
                 </Box>
             </DragDropContext>}
