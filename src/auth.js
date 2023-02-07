@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState } from "react";
+import { useTranslation } from 'react-i18next';
 
 // export const Auth = {
 //     isAuthenticated: false,
@@ -24,6 +25,7 @@ export const useAuth = () => {
 
 function useProvideAuth() {
     const [user, setUser] = useState(null);
+    const { t } = useTranslation();
     const [error, setError] = useState("");
     // localStorage.clear();
 
@@ -37,11 +39,11 @@ function useProvideAuth() {
             if  (response.status === 200) {
                 return response.json();
             } else {
-                throw "Invalid Participant ID.";
+                throw t('participant_id_invalid');
             }
         }).then(data => {
             if (data.completed) {
-                throw "You already participated.";
+                throw t('already_participated');
             }
             setUser({
                 id: data.id,

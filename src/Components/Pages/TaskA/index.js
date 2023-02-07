@@ -32,6 +32,7 @@ import GheraldTips from "../../Molecules/GheraldTips";
 import gheraldAuthorTip from "../../../images/gherald-author.png";
 import {ReactComponent as GheraldIcon} from "../../../icons/gherald.svg";
 import TaskTips from "../../Molecules/TaskTips";
+import { useTranslation, Trans } from 'react-i18next';
 
 const backgroundImage = 'https://images.unsplash.com/photo-1482062364825-616fd23b8fc1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80';
 
@@ -50,25 +51,33 @@ const Background = styled(Box)({
 const tips = [
     (<DialogContent>
         <DialogContentText id="alert-dialog-description" sx={{py: 2}}>
-            You can examine the details of each change by clicking on the <b>Learn more</b> button.
+            <Trans i18nKey="tips_task_a_content_p1">
+                You can examine the details of each change by clicking on the <b>Learn more</b> button.
+            </Trans>
         </DialogContentText>
         <img src={learnMoreTip} alt="learnMoreTip"/>
     </DialogContent>),
     (<DialogContent>
         <DialogContentText id="alert-dialog-description" sx={{py: 2}}>
-            You can pause the experiment by clicking on the <b>Pause</b> button if you get a phone call or want to grab a coffee.
+            <Trans i18nKey="tips_task_a_content_p2">
+                You can pause the experiment by clicking on the <b>Pause</b> button if you get a phone call or want to grab a coffee.
+            </Trans>
         </DialogContentText>
         <img src={pauseTip} alt="pauseTip"/>
     </DialogContent>),
     (<DialogContent>
         <DialogContentText id="alert-dialog-description" sx={{py: 2}}>
-            Once you are happy with your ranking, click on the <b>Submit</b> button.
+            <Trans i18nKey="tips_task_a_content_p3">
+                Once you are happy with your ranking, click on the <b>Submit</b> button.
+            </Trans>
         </DialogContentText>
         <img src={submitTip} alt="submitTip"/>
     </DialogContent>),
     (<DialogContent>
         <DialogContentText id="alert-dialog-description" sx={{py: 2}}>
-            If you feel unable to make a meaningful evaluation, you can click on the <b>Skip</b> button instead, and we'll advance you to the next one.
+            <Trans i18nKey="tips_task_a_content_p4">
+                If you feel unable to make a meaningful evaluation, you can click on the <b>Skip</b> button instead, and we'll advance you to the next one.
+            </Trans>
         </DialogContentText>
         <img src={skipTip} alt="skipTip"/>
     </DialogContent>),
@@ -86,6 +95,7 @@ function TaskA({practice, onSubmit}) {
     const [ready, setReady] = useState(false);
     const [taskTip, setTaskTip] = useState(practice);
     const [gheraldTip, setGheraldTip] = useState(false);
+    const { t } = useTranslation();
 
     let auth = useAuth();
 
@@ -118,7 +128,7 @@ function TaskA({practice, onSubmit}) {
                 <Box sx={{ width: '100%' }}>
                     <Box sx={{ width: '100%', textAlign: 'center', p: '4%' }}>
                         <Typography variant="h4" component="div" sx={{ fontWeight: '600' }}>
-                            Task A: Rank the Changes
+                            {t('task_a_title')}
                         </Typography>
                     </Box>
                     <Divider />
@@ -127,32 +137,32 @@ function TaskA({practice, onSubmit}) {
                             <Grid container >
                                 <Grid item xs={7}>
                                     <Typography variant="h6">
-                                        Task Description
+                                        {t('task_description')}
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={2}>
                                     <Button variant="outlined" onClick={handleTaskTipOpen}>
                                         <TipsAndUpdatesIcon sx={{mr: '5px'}}/>
-                                        Tips for Task A
+                                        {t('tips_task_a_title')}
                                     </Button>
                                 </Grid>
                                 <Grid item xs={3}>
                                     <Button variant="outlined" onClick={handleGheraldTipOpen}>
                                         <SvgIcon component={GheraldIcon} inheritViewBox sx={{mr: '5px'}}/>
-                                        Tips for Gherald
+                                        {t('tips_gherald_title')}
                                     </Button>
                                 </Grid>
                             </Grid> :
                             <Grid container spacing={2}>
                                 <Grid item xs={10}>
                                     <Typography variant="h6">
-                                        Task Description
+                                        {t('task_description')}
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={2}>
                                     <Button variant="outlined" onClick={handleTaskTipOpen}>
                                         <TipsAndUpdatesIcon sx={{mr: '5px'}}/>
-                                        Tips for Task A
+                                        {t('tips_task_a_title')}
                                     </Button>
                                 </Grid>
                             </Grid>
@@ -160,25 +170,25 @@ function TaskA({practice, onSubmit}) {
 
                         {!ready ? (
                             <Typography component="div"  text-align="center">
+                                <p>{t('task_a_content_p1')}</p>
                                 <p>
-                                    You will be provided with three sets of code changes to an existing software system (i.e., proposed commits).
-                                    Your job is to rank the changes from most to least risky, where we defined risk as "likelihood of a functional defect in the code that will need to be fixed later".
+                                    <Trans i18nKey="task_a_content_p2">
+                                        To perform the ranking, just <b>drag and drop</b> the changes to the order you think is right. (1 = Most risky, 3 = Least risky).
+                                    </Trans>
                                 </p>
                                 <p>
-                                    To perform the ranking, just <b>drag and drop</b> the changes to the order you think is right. (1 = Most risky, 3 = Least risky).
-                                </p>
-                                <p>
-                                    To start the task, click on the <b>I'm ready for Task A</b> button below.
+                                    <Trans i18nKey="task_a_content_p3">
+                                        To start the task, click on the <b>I'm ready for Task A</b> button below.
+                                    </Trans>
                                 </p>
                             </Typography>
                         ) : (
                             <Typography component="div"  text-align="center">
+                                <p>{t('task_a_content_p4')}</p>
                                 <p>
-                                    Below are three sets of code changes to an existing software systems (i.e., proposed commits).
-                                    Your task is to rearrange the ranking below by the amount of risk you perceive in the changes.
-                                </p>
-                                <p>
-                                    To perform the ranking, just <b>drag and drop</b> the changes to the order you think is right. (1 = Most risky, 3 = Least risky).
+                                    <Trans i18nKey="task_a_content_p2">
+                                        To perform the ranking, just <b>drag and drop</b> the changes to the order you think is right. (1 = Most risky, 3 = Least risky).
+                                    </Trans>
                                 </p>
                             </Typography>
                         )}
@@ -187,7 +197,7 @@ function TaskA({practice, onSubmit}) {
                     {!ready ? (
                         <Box sx={{ width: '100%', textAlign: 'center' }}>
                             <Button  variant="contained" sx={{ mx: '2%', my: '1%', width: '200px' }} onClick={handleReadyClick}>
-                                I'm ready for Task A
+                                {t('task_a_ready_btn')}
                             </Button>
                         </Box>
                     ) : (

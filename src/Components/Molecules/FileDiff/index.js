@@ -9,6 +9,7 @@ import {parseDiff} from "react-diff-view";
 import DiffView from "../../Pages/DiffView";
 import {Alert, AlertTitle, SvgIcon} from "@mui/material";
 import { ReactComponent as GheraldIcon } from '../../../icons/gherald.svg';
+import { Trans } from 'react-i18next';
 
 
 const FileDiff = ({ file, userGroup }) => {
@@ -36,11 +37,17 @@ const FileDiff = ({ file, userGroup }) => {
                 <Alert severity="warning" icon={<SvgIcon component={GheraldIcon} inheritViewBox/>}>
                     {file.priorChanges > 1 ?
                         <span>
-                            FILE: This file has been modified in <b>{file.priorChanges}</b> prior changes.
-                            Among these changes, <b>{file.priorBugs > 1 ? file.priorBugs: "no"}</b> {file.priorBugs > 1 ? " bugs have" : " bug has"} been found in this file.
+                            <Trans i18nKey="gherald_file_info_prior_change_plural" priorChanges={file.priorChanges}>
+                                FILE: This file has been modified in <b>{{priorChanges: file.priorChanges}}</b> prior changes.
+                            </Trans>
+                            <Trans i18nKey="gherald_file_info_prior_bug" priorBugs={file.priorBugs}>
+                                Among these changes, <b>{{priorBugs: file.priorBugs}}</b> bugs have been found in this file.
+                            </Trans>
                         </span> :
                         <span>
-                            FILE: This file has been modified in <b>1</b> prior change and no bug has been found.
+                            <Trans i18nKey="gherald_file_info_prior_change" >
+                                FILE: This file has been modified in <b>1</b> prior change and <b>{{priorBugs: file.priorBugs}}</b> bug has been found.
+                            </Trans>
                         </span>
                     }
                     {/*<AlertTitle>GHERALD file risk: there have been {file.priorBugs} prior bugs among {file.priorChanges} changes in this file</AlertTitle>*/}

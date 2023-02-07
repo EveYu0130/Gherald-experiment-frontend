@@ -30,6 +30,7 @@ import {ReactComponent as GheraldIcon} from "../../../icons/gherald.svg";
 import TaskTips from "../../Molecules/TaskTips";
 import GheraldTips from "../../Molecules/GheraldTips";
 import {Link} from "react-router-dom";
+import { useTranslation, Trans } from 'react-i18next';
 
 
 const backgroundImage = 'https://images.unsplash.com/photo-1482062364825-616fd23b8fc1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80';
@@ -49,7 +50,9 @@ const Background = styled(Box)({
 const tips = [
     (<DialogContent>
         <DialogContentText id="alert-dialog-description" sx={{py: 2}}>
-            You can pause the experiment by clicking on the <b>Pause</b> button if you get a phone call or want to grab a coffee.
+            <Trans i18nKey="tips_task_b_content_p1">
+                You can pause the experiment by clicking on the <b>Pause</b> button if you get a phone call or want to grab a coffee.
+            </Trans>
         </DialogContentText>
         <img src={pauseTip} alt="pauseTip"/>
     </DialogContent>),
@@ -62,21 +65,26 @@ const tips = [
     // </DialogContent>),
     (<DialogContent>
         <DialogContentText id="alert-dialog-description" sx={{py: 2}}>
-            The source code can be accessed by clicking on the <b>Source code</b> <OpenInNewIcon /> button below. Feel free to download it if needed.
+            <Trans i18nKey="tips_task_b_content_p2">
+                The source code can be accessed by clicking on the <b>Source code</b> button below. Feel free to download it if needed.
+            </Trans>
         </DialogContentText>
         <img src={sourcecodeTip} alt="sourcecodeTip"/>
     </DialogContent>),
     (<DialogContent>
         <DialogContentText id="alert-dialog-description" sx={{py: 2}}>
-            If no defect is found during the code review, you can click on the <b>No defect to report</b> button to proceed.
+            <Trans i18nKey="tips_task_b_content_p3">
+                If no defect is found during the code review, you can click on the <b>No defect to report</b> button to proceed.
+            </Trans>
         </DialogContentText>
         <img src={noDefectTip} alt="noDefectTip"/>
     </DialogContent>),
     (<DialogContent>
         <DialogContentText id="alert-dialog-description" sx={{py: 2}}>
-            If any defects are found during the code review, you can click on the <b>Report a defect</b> button to open up the code inspection form and log the defect information (file, line, comment).
-            <br/>
-            If the defect is general and cannot be targeted to a specific line, feel free to leave it as blank and just put the comment.
+            <Trans i18nKey="tips_task_b_content_p4">
+                If any defects are found during the code review, you can click on the <b>Report a defect</b> button to open up the code inspection form and log the defect information (file, line, comment).
+                <p>If the defect is general and cannot be targeted to a specific line, feel free to leave it as blank and just put the comment. </p>
+            </Trans>
         </DialogContentText>
         <img src={reportDefectTip} alt="reportDefectTip"/>
     </DialogContent>),
@@ -100,6 +108,7 @@ function TaskB({practice, onSubmit, setPracticed}) {
     const [ready, setReady] = useState(false);
     const [taskTip, setTaskTip] = useState(practice);
     const [gheraldTip, setGheraldTip] = useState(false);
+    const { t } = useTranslation();
 
     let auth = useAuth();
 
@@ -149,7 +158,7 @@ function TaskB({practice, onSubmit, setPracticed}) {
                 <Box sx={{ width: '100%' }}>
                     <Box sx={{ width: '100%', textAlign: 'center', p: '4%' }}>
                         <Typography variant="h4" component="div" sx={{ fontWeight: '600' }}>
-                            Task B: Conduct Code Reviews
+                            {t('task_b_title')}
                         </Typography>
                     </Box>
                     <Divider />
@@ -158,55 +167,57 @@ function TaskB({practice, onSubmit, setPracticed}) {
                             <Grid container >
                                 <Grid item xs={7}>
                                     <Typography variant="h6">
-                                        Task Description
+                                        {t('task_description')}
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={2}>
                                     <Button variant="outlined" onClick={handleTaskTipOpen}>
                                         <TipsAndUpdatesIcon sx={{mr: '5px'}}/>
-                                        Tips for Task B
+                                        {t('tips_task_b_title')}
                                     </Button>
                                 </Grid>
                                 <Grid item xs={3}>
                                     <Button variant="outlined" onClick={handleGheraldTipOpen}>
                                         <SvgIcon component={GheraldIcon} inheritViewBox sx={{mr: '5px'}}/>
-                                        Tips for Gherald
+                                        {t('tips_gherald_title')}
                                     </Button>
                                 </Grid>
                             </Grid> :
                             <Grid container spacing={2}>
                                 <Grid item xs={10}>
                                     <Typography variant="h6">
-                                        Task Description
+                                        {t('task_description')}
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={2}>
                                     <Button variant="outlined" onClick={handleTaskTipOpen}>
                                         <TipsAndUpdatesIcon sx={{mr: '5px'}}/>
-                                        Tips for Task B
+                                        {t('tips_task_b_title')}
                                     </Button>
                                 </Grid>
                             </Grid>
                         }
                         <Typography component="div"  text-align="center">
+                            <p>{t('task_b_content_p1')}</p>
+                            <p>{t('task_b_content_p2')}</p>
                             <p>
-                                In this task, you will be provided with the same three sets of changes that you saw in task A.
+                                <Trans i18nKey="task_b_content_p3">
+                                    Please focus on identifying <b>only</b> functional defects; please ignore any other flaws you might notice in the code, such as those relating to style or documentation.
+                                </Trans>
                             </p>
-                            <p>
-                                Taking each set one at a time, your job will be to identify as many defects in the commit as you can,
-                                and then log them in a code inspection form.
-                            </p>
-                            <p>
-                                Please focus on identifying <b>only</b> functional defects; please ignore any other flaws you might notice in the code, such as those relating to style or documentation.
-                            </p>
-                            {!ready && <p>To start the task, click on the <b>I'm ready for Task B</b> button below.</p>}
+                            {!ready &&
+                                <p>
+                                    <Trans i18nKey="task_b_content_p4">
+                                        To start the task, click on the <b>I'm ready for Task B</b> button below.
+                                    </Trans>
+                                </p>}
                         </Typography>
                     </Box>
 
                     {!ready ? (
                         <Box sx={{ width: '100%', textAlign: 'center' }}>
                             <Button  variant="contained" sx={{ mx: '2%', my: '1%', width: '200px' }} onClick={handleReadyClick}>
-                                I'm ready for Task B
+                                {t('task_b_ready_btn')}
                             </Button>
                         </Box>
                     ) : (
