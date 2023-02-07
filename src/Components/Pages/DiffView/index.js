@@ -64,6 +64,8 @@ const getWidgets = (hunks, modifiedLines, modifiedMethods, userGroup) => {
                 })
                 multiTokenText = multiTokenText.slice(0,-2);
             }
+            multiTokenText = multiTokenText.replaceAll("<" , "");
+            multiTokenText = multiTokenText.replaceAll(">" , "");
 
             return {
                 ...widgets,
@@ -93,7 +95,7 @@ const getWidgets = (hunks, modifiedLines, modifiedMethods, userGroup) => {
                                 {methods[change.oldLineNumber]["priorChanges"] > 1 ?
                                     <span>
                                         <Trans i18nKey="gherald_method_info_prior_change_plural" priorChanges={methods[change.oldLineNumber]["priorChanges"]}>
-                                            METHOD: This method [<b>{{method: methods[change.oldLineNumber]["name"].split("(")[0].split("::").slice(-1) + "()"}}</b>] has been modified in <b>{{priorChanges: methods[change.oldLineNumber]["priorChanges"]}}</b> prior changes.
+                                            METHOD: This method [<b>{{method: methods[change.oldLineNumber]["name"].split("(")[0] + "()"}}</b>] has been modified in <b>{{priorChanges: methods[change.oldLineNumber]["priorChanges"]}}</b> prior changes.
                                         </Trans>
                                         <Trans i18nKey="gherald_method_info_prior_bug" priorBugs={methods[change.oldLineNumber]["priorBugs"]}>
                                             Among these changes, <b>{{priorBugs: methods[change.oldLineNumber]["priorBugs"]}}</b> bugs have been found in this method.
@@ -113,7 +115,7 @@ const getWidgets = (hunks, modifiedLines, modifiedMethods, userGroup) => {
                                 {methods[change.newLineNumber]["priorChanges"] > 1 ?
                                     <span>
                                         <Trans i18nKey="gherald_method_info_prior_change_plural" priorChanges={methods[change.newLineNumber]["priorChanges"]}>
-                                            METHOD: This method [<b>{{method: methods[change.newLineNumber]["name"].split("(")[0].split("::").slice(-1) + "()"}}</b>] has been modified in <b>{{priorChanges: methods[change.newLineNumber]["priorChanges"]}}</b> prior changes.
+                                            METHOD: This method [<b>{{method: methods[change.newLineNumber]["name"].split("(")[0] + "()"}}</b>] has been modified in <b>{{priorChanges: methods[change.newLineNumber]["priorChanges"]}}</b> prior changes.
                                         </Trans>
                                         <Trans i18nKey="gherald_method_info_prior_bug" priorBugs={methods[change.newLineNumber]["priorBugs"]}>
                                             Among these changes, <b>{{priorBugs: methods[change.newLineNumber]["priorBugs"]}}</b> bugs have been found in this method.

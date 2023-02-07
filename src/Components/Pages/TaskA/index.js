@@ -21,12 +21,13 @@ import {createTheme, ThemeProvider} from "@mui/material/styles";
 import AccessAlarmsIcon from '@mui/icons-material/AccessAlarms';
 import theme from '../../../theme';
 import learnMoreTip from "../../../images/learn-more.png";
-import filesTip from "../../../images/files.png";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import sourcecodeTip from "../../../images/sourcecode.png";
+import learnMoreTipZH from "../../../images/learn-more-zh.png";
 import submitTip from "../../../images/submit.png";
 import skipTip from "../../../images/skip.png";
 import pauseTip from '../../../images/pause-a.png';
+import submitTipZH from "../../../images/submit-zh.png";
+import skipTipZH from "../../../images/skip-zh.png";
+import pauseTipZH from '../../../images/pause-a-zh.png';
 import TipsAndUpdatesIcon from '@mui/icons-material/TipsAndUpdates';
 import GheraldTips from "../../Molecules/GheraldTips";
 import gheraldAuthorTip from "../../../images/gherald-author.png";
@@ -48,46 +49,6 @@ const Background = styled(Box)({
     opacity: 0.1,
 });
 
-const tips = [
-    (<DialogContent>
-        <DialogContentText id="alert-dialog-description" sx={{py: 2}}>
-            <Trans i18nKey="tips_task_a_content_p1">
-                You can examine the details of each change by clicking on the <b>Learn more</b> button.
-            </Trans>
-        </DialogContentText>
-        <img src={learnMoreTip} alt="learnMoreTip"/>
-    </DialogContent>),
-    (<DialogContent>
-        <DialogContentText id="alert-dialog-description" sx={{py: 2}}>
-            <Trans i18nKey="tips_task_a_content_p2">
-                You can pause the experiment by clicking on the <b>Pause</b> button if you get a phone call or want to grab a coffee.
-            </Trans>
-        </DialogContentText>
-        <img src={pauseTip} alt="pauseTip"/>
-    </DialogContent>),
-    (<DialogContent>
-        <DialogContentText id="alert-dialog-description" sx={{py: 2}}>
-            <Trans i18nKey="tips_task_a_content_p3">
-                Once you are happy with your ranking, click on the <b>Submit</b> button.
-            </Trans>
-        </DialogContentText>
-        <img src={submitTip} alt="submitTip"/>
-    </DialogContent>),
-    (<DialogContent>
-        <DialogContentText id="alert-dialog-description" sx={{py: 2}}>
-            <Trans i18nKey="tips_task_a_content_p4">
-                If you feel unable to make a meaningful evaluation, you can click on the <b>Skip</b> button instead, and we'll advance you to the next one.
-            </Trans>
-        </DialogContentText>
-        <img src={skipTip} alt="skipTip"/>
-    </DialogContent>),
-    // (<DialogContent>
-    //     <DialogContentText id="alert-dialog-description">
-    //         Note: Since the functions are truncated into chunks in code diff and are not completely displayed, some lines may be mistakenly highlighted as comments.
-    //         This will be fixed if you expand the code to show the complete function.
-    //     </DialogContentText>
-    // </DialogContent>)
-]
 
 function TaskA({practice, onSubmit}) {
     const [loading, setLoading] = useState(true);
@@ -95,9 +56,62 @@ function TaskA({practice, onSubmit}) {
     const [ready, setReady] = useState(false);
     const [taskTip, setTaskTip] = useState(practice);
     const [gheraldTip, setGheraldTip] = useState(false);
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     let auth = useAuth();
+
+    const tips = [
+        (<DialogContent>
+            <DialogContentText id="alert-dialog-description" sx={{py: 2}}>
+                <Trans i18nKey="tips_task_a_content_p1">
+                    You can examine the details of each change by clicking on the <b>Learn more</b> button.
+                </Trans>
+            </DialogContentText>
+            {i18n.language === "en" ?
+                <img src={learnMoreTip} alt="learnMoreTip"/> :
+                <img src={learnMoreTipZH} alt="learnMoreTipZH"/>
+            }
+        </DialogContent>),
+        (<DialogContent>
+            <DialogContentText id="alert-dialog-description" sx={{py: 2}}>
+                <Trans i18nKey="tips_task_a_content_p2">
+                    You can pause the experiment by clicking on the <b>Pause</b> button if you get a phone call or want to grab a coffee.
+                </Trans>
+            </DialogContentText>
+            {i18n.language === "en" ?
+                <img src={pauseTip} alt="pauseTip"/> :
+                <img src={pauseTipZH} alt="pauseTipZH"/>
+            }
+        </DialogContent>),
+        (<DialogContent>
+            <DialogContentText id="alert-dialog-description" sx={{py: 2}}>
+                <Trans i18nKey="tips_task_a_content_p3">
+                    Once you are happy with your ranking, click on the <b>Submit</b> button.
+                </Trans>
+            </DialogContentText>
+            {i18n.language === "en" ?
+                <img src={submitTip} alt="submitTip"/> :
+                <img src={submitTipZH} alt="submitTipZH"/>
+            }
+        </DialogContent>),
+        (<DialogContent>
+            <DialogContentText id="alert-dialog-description" sx={{py: 2}}>
+                <Trans i18nKey="tips_task_a_content_p4">
+                    If you feel unable to make a meaningful evaluation, you can click on the <b>Skip</b> button instead, and we'll advance you to the next one.
+                </Trans>
+            </DialogContentText>
+            {i18n.language === "en" ?
+                <img src={skipTip} alt="skipTip"/> :
+                <img src={skipTipZH} alt="skipTipZH"/>
+            }
+        </DialogContent>),
+        // (<DialogContent>
+        //     <DialogContentText id="alert-dialog-description">
+        //         Note: Since the functions are truncated into chunks in code diff and are not completely displayed, some lines may be mistakenly highlighted as comments.
+        //         This will be fixed if you expand the code to show the complete function.
+        //     </DialogContentText>
+        // </DialogContent>)
+    ]
 
     useEffect(() => {
         fetch(`/api/participants/${auth.user.id}`)

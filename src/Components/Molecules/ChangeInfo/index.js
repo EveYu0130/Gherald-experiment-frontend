@@ -78,7 +78,7 @@ function ChangeInfo({ change, number }) {
 
     const handleOpenWindow = (e) => {
         e.preventDefault();
-        const url = `https://github.com/${change.repo}/tree/${change.parent}`;
+        const url = change.project === "huawei" ? `https://gitee.com/${change.repo}/tree/${change.parent}` : `https://github.com/${change.repo}/tree/${change.parent}`;
         window.open(url);
     }
 

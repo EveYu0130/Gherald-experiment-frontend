@@ -6,7 +6,7 @@ i18n.use(initReactI18next)
     // .use(HttpApi)
     .init({
     fallbackLng: 'en',
-    lng: 'zh',
+    lng: 'en',
     resources: {
         en: {
             translations: require('./locales/en/translation.json')
