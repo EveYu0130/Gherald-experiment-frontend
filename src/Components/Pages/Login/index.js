@@ -7,6 +7,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useAuth } from "../../../auth";
 import theme from '../../../theme';
+import { useTranslation } from 'react-i18next';
+import LanguageToggleButton from "../../Atoms/LanguageToggleButton";
 
 const backgroundImage = 'https://images.unsplash.com/photo-1482062364825-616fd23b8fc1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80';
 
@@ -31,6 +33,7 @@ function Login() {
     let auth = useAuth();
     let { from } = location.state || { from: { pathname: "/" } };
     const [loading, setLoading] = useState(false);
+    const { t } = useTranslation();
 
     useEffect(() => {
         const loggedInUser = localStorage.getItem("user");
@@ -66,6 +69,7 @@ function Login() {
 
     return (
         <ThemeProvider theme={theme}>
+            <LanguageToggleButton />
             <Container component="main" maxWidth="xs">
                 <Background sx={{
                     backgroundImage: `url(${backgroundImage})`,
@@ -85,7 +89,7 @@ function Login() {
                         <LockOutlinedIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">
-                        Sign in
+                        {t('sign_in')}
                     </Typography>
                     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, width: '100%' }}>
                         <TextField
@@ -93,7 +97,7 @@ function Login() {
                             required
                             fullWidth
                             id="id"
-                            label="Participant ID"
+                            label={t('participant_id')}
                             name="id"
                             autoComplete="id"
                             autoFocus
@@ -105,7 +109,7 @@ function Login() {
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
                         >
-                            Sign In
+                            {t('sign_in')}
                         </Button>
                     </Box>
                 </Box>

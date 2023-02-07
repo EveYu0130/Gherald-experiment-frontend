@@ -4,6 +4,7 @@ import TaskA from "./Components/Pages/TaskA";
 import TaskB from "./Components/Pages/TaskB";
 import Questionnaire from "./Components/Pages/Questionnaire";
 import EndPage from "./Components/Pages/EndPage";
+import LanguageToggleButton from "./Components/Atoms/LanguageToggleButton";
 import {
     Button,
     Dialog,
@@ -11,10 +12,12 @@ import {
     DialogContentText,
     DialogTitle,
 } from "@mui/material";
+import {Trans, useTranslation} from "react-i18next";
 
 const PracticeTimer = () => {
     const [seconds, setSeconds] = useState(0);
     const [alert, setAlert] = useState(false);
+    const { t } = useTranslation();
 
     useEffect(() => {
         if (seconds < 300) {
@@ -45,8 +48,7 @@ const PracticeTimer = () => {
             </DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description" sx={{py: 2}}>
-                    Please note that the practice round is just for getting you familiar with the task workflow, the UI, and the problem space.
-                    Please do not spend too much time in conducting real code reviews and inspecting the code changes.
+                    {t('tips_practice_time_out')}
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
@@ -72,6 +74,7 @@ function StepHandler() {
     const CurrentStepComponent = steps[currentStep];
     return (
         <div>
+            <LanguageToggleButton />
             {practice && !practiced && <PracticeTimer />}
             <CurrentStepComponent
                 onSubmit={()=>{

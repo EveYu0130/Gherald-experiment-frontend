@@ -7,9 +7,11 @@ import gheraldAuthorTip from "../../../images/gherald-author.png";
 import gheraldFileTip from "../../../images/gherald-file.png";
 import gheraldMethodTip from "../../../images/gherald-method.png";
 import gheraldLineTip from "../../../images/gherald-line.png";
+import { useTranslation, Trans } from 'react-i18next';
 
 function TaskTips({tips, tip, setTip, task}) {
     const [currentTip, setCurrentTip] = useState(0);
+    const { t } = useTranslation();
 
     const handleTipClose = () => {
         setTip(false);
@@ -33,15 +35,15 @@ function TaskTips({tips, tip, setTip, task}) {
             aria-describedby="alert-dialog-description"
         >
             <DialogTitle id="alert-dialog-title">
-                Tips for Task {task}
+                <Trans i18nKey="tips_task_title">
+                    Tips for Task {{task}}
+                </Trans>
             </DialogTitle>
             {tips[currentTip]}
             <DialogActions>
-                <Button onClick={handleTipPrevious} disabled={currentTip === 0}>Previous Tip</Button>
-                <Button onClick={handleTipNext} disabled={currentTip === tips.length - 1} autoFocus>Next Tip</Button>
-                <Button onClick={handleTipClose}>
-                    Close
-                </Button>
+                <Button onClick={handleTipPrevious} disabled={currentTip === 0}>{t('tips_previous_btn')}</Button>
+                <Button onClick={handleTipNext} disabled={currentTip === tips.length - 1} autoFocus>{t('tips_next_btn')}</Button>
+                <Button onClick={handleTipClose}>{t('tips_close_btn')}</Button>
             </DialogActions>
         </Dialog>
     );

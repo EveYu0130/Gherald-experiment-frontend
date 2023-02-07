@@ -20,6 +20,7 @@ import InfoPopover from "../../Atoms/InfoPopover";
 import {useAuth} from "../../../auth";
 import WarningIcon from '@mui/icons-material/Warning';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+import { useTranslation } from 'react-i18next';
 
 const StyledRating = styled(Rating)({
     '& .MuiRating-iconFilled': {
@@ -73,10 +74,11 @@ function NewlineText(props) {
 
 function ChangeInfo({ change, number }) {
     let auth = useAuth();
+    const { t } = useTranslation();
 
     const handleOpenWindow = (e) => {
         e.preventDefault();
-        const url = `https://github.com/${change.repo}/tree/${change.parent}`;
+        const url = change.project === "huawei" ? `https://gitee.com/${change.repo}/tree/${change.parent}` : `https://github.com/${change.repo}/tree/${change.parent}`;
         window.open(url);
     }
 
@@ -93,7 +95,7 @@ function ChangeInfo({ change, number }) {
 
             <Box sx={{ pt: 2 }}>
                 <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-                    <Grid item xs={2}>Author</Grid>
+                    <Grid item xs={2}>{t('change_info_author')}</Grid>
                     <Grid item xs={4}>
                         <Item>
                             <Grid container spacing={2}>
@@ -103,19 +105,19 @@ function ChangeInfo({ change, number }) {
 
                     </Grid>
                     <Grid item xs={6} />
-                    <Grid item xs={2}>Repo</Grid>
+                    <Grid item xs={2}>{t('change_info_repo')}</Grid>
                     <Grid item xs={4}>
                         <Item>{change.project}</Item>
                     </Grid>
                     <Grid item xs={6} />
-                    <Grid item xs={2}>Branch</Grid>
+                    <Grid item xs={2}>{t('change_info_branch')}</Grid>
                     <Grid item xs={4}>
                         <Item>{change.branch}</Item>
                     </Grid>
                     <Grid item xs={6} />
-                    <Grid item xs={2}>Created</Grid>
+                    <Grid item xs={2}>{t('change_info_created')}</Grid>
                     <Grid item xs={4}>
-                        <Item>{change.updated.substring(0,19)}</Item>
+                        <Item>{change.updated.substring(0,10)}</Item>
                     </Grid>
                     <Grid item xs={6} />
                     <Grid item xs={6}>
@@ -144,7 +146,7 @@ function ChangeInfo({ change, number }) {
                     <div onClick={handleOpenWindow} align='right'>
                         <Typography variant="button" xs="auto">
                             {/*parent {change.parent.substring(0,7)}*/}
-                            source code
+                            {t('change_info_source_code')}
                         </Typography>
                         <IconButton aria-label="open" size="small">
                             <OpenInNewIcon />
@@ -156,13 +158,13 @@ function ChangeInfo({ change, number }) {
                     <AppBar position="static" color='secondary'>
                         <Toolbar>
                             <Typography component="div" sx={{ width: '77%', flexShrink: 0, fontWeight: 'Medium' }}>
-                                File
+                                {t('change_info_file')}
                             </Typography>
                             <Typography component="div" sx={{ width: '10%', flexShrink: 0, fontWeight: 'Medium' }}>
-                                Additions
+                                {t('change_info_additions')}
                             </Typography>
                             <Typography component="div" sx={{ width: '13%', flexShrink: 0, fontWeight: 'Medium' }}>
-                                Deletions
+                                {t('change_info_deletions')}
                             </Typography>
                         </Toolbar>
                     </AppBar>

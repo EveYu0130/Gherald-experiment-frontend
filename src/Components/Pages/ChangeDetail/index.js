@@ -18,6 +18,7 @@ import 'react-diff-view/style/index.css';
 import {ThemeProvider} from "@mui/material/styles";
 import ChangeInfo from "../../Molecules/ChangeInfo";
 import theme from '../../../theme';
+import LanguageToggleButton from "../../Atoms/LanguageToggleButton";
 
 
 function ChangeDetail() {
@@ -46,7 +47,10 @@ function ChangeDetail() {
                         <CircularProgress size={100} />
                     </Box>
                 ) : (
-                    <ChangeInfo change={change}/>
+                    <div>
+                        <LanguageToggleButton />
+                        <ChangeInfo change={change}/>
+                    </div>
                 )}
             </Box>
         </ThemeProvider>

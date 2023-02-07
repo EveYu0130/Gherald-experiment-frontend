@@ -6,6 +6,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import styled from "styled-components";
 import theme from '../../../theme';
 import {useAuth} from "../../../auth";
+import { useTranslation } from 'react-i18next';
 
 const backgroundImage = 'https://images.unsplash.com/photo-1482062364825-616fd23b8fc1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80';
 
@@ -23,6 +24,7 @@ const Background = styled(Box)({
 
 function EndPage() {
     let auth = useAuth();
+    const { t } = useTranslation();
 
     useEffect(() => {
         localStorage.clear();
@@ -45,10 +47,10 @@ function EndPage() {
                         <ThumbUpAltIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">
-                        This is the end of experiment.
+                        {t('endpage_p1')}
                     </Typography>
                     <Typography component="h1" variant="h5">
-                        Thanks for your participation!
+                        {t('endpage_p2')}
                     </Typography>
                 </Box>
                 {/*<Typography variant="h6" component="div"  text-align="center">*/}
