@@ -78,7 +78,15 @@ function ChangeInfo({ change, number }) {
 
     const handleOpenWindow = (e) => {
         e.preventDefault();
-        const url = change.project === "huawei" ? `https://gitee.com/${change.repo}/tree/${change.parent}` : `https://github.com/${change.repo}/tree/${change.parent}`;
+        let url = '';
+        if (change.project === "huawei") {
+            url = `https://gitee.com/${change.repo}/tree/${change.parent}`;
+        } else if (change.project === "gerrit") {
+            url = `https://github.com/GerritCodeReview/${change.repo}/tree/${change.parent}`;
+        } else {
+            url = `https://github.com/${change.repo}/tree/${change.parent}`;
+        }
+        // const url = change.project === "huawei" ? `https://gitee.com/${change.repo}/tree/${change.parent}` : `https://github.com/${change.repo}/tree/${change.parent}`;
         window.open(url);
     }
 

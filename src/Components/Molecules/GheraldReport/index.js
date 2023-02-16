@@ -87,9 +87,11 @@ function LinearProgressWithLabel(props) {
                 <BorderLinearProgress classes={{ root: classes.root, bar: classes.bar }} variant="determinate" {...props} />
             </Box>
             <Box sx={{ minWidth: 35 }}>
-                <Typography variant="body2" color="text.secondary">{`${Math.round(
-                    props.value,
-                )}%`}</Typography>
+                {props.value ?
+                    <Typography variant="body2" color="text.secondary">{`${Math.round(props.value)}%`}</Typography> :
+                    <Typography variant="body2" color="text.secondary">N/A</Typography>
+                }
+
             </Box>
         </Box>
     );
@@ -154,7 +156,7 @@ function GheraldReport({ change }) {
                             <Typography variant="body2">{t('gherald_report_author_risk')}</Typography>
                         </Grid>
                         <Grid item xs={7}>
-                            <ProgressWithLabel value={change.authorRiskScore * 100} theme={theme}/>
+                            <ProgressWithLabel value={change.authorRiskScore < 1 ? change.authorRiskScore * 100 : 99} theme={theme}/>
                         </Grid>
                         <Grid item xs={1}>
                             <AuthorPopover author={change.author} change={change} />
@@ -163,7 +165,7 @@ function GheraldReport({ change }) {
                             <Typography variant="body2">{t('gherald_report_file_risk')}</Typography>
                         </Grid>
                         <Grid item xs={7}>
-                            <ProgressWithLabel value={change.fileRiskScore * 100} theme={theme}/>
+                            <ProgressWithLabel value={change.fileRiskScore < 1 ? change.fileRiskScore * 100 : 99} theme={theme}/>
                         </Grid>
                         <Grid item xs={1}>
                             <InfoPopover text1={t('gherald_report_file_risk_msg')}/>
@@ -172,7 +174,7 @@ function GheraldReport({ change }) {
                             <Typography variant="body2">{t('gherald_report_method_risk')}</Typography>
                         </Grid>
                         <Grid item xs={7}>
-                            <ProgressWithLabel value={change.methodRiskScore * 100} theme={theme}/>
+                            <ProgressWithLabel value={change.methodRiskScore < 1 ? change.methodRiskScore * 100 : 99} theme={theme}/>
                         </Grid>
                         <Grid item xs={1}>
                             <InfoPopover text1={t('gherald_report_method_risk_msg')}/>
