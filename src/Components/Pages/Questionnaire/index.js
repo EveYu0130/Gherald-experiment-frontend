@@ -53,7 +53,7 @@ function Questionnaire({onSubmit}) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        fetch('/api/questionnaire', {
+        fetch('https://gherald-backend.herokuapp.com/api/questionnaire', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -63,7 +63,6 @@ function Questionnaire({onSubmit}) {
             if  (response.status === 200) {
                 onSubmit();
             }
-            console.log(response);
         }).catch(error => {
             console.log(error);
         });

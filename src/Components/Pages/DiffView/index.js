@@ -211,7 +211,6 @@ const ExpandDownAll = ({start, end, onClick}) => {
 const renderToken = (token, defaultRender, i) => {
     switch (token.type) {
         case 'space':
-            console.log(token);
             return (
                 <span key={i} className="space">
                     {token.children && token.children.map((token, i) => renderToken(token, defaultRender, i))}

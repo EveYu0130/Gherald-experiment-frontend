@@ -98,7 +98,7 @@ function ParticipantList() {
     const [participants, setParticipants] = useState([]);
 
     useEffect(() => {
-        fetch('/api/participants')
+        fetch('https://gherald-backend.herokuapp.com/api/participants')
             .then(results => results.json())
             .then(data => {
                 setLoading(false);

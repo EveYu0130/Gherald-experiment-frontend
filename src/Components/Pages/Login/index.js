@@ -39,7 +39,6 @@ function Login() {
         const loggedInUser = localStorage.getItem("user");
         if (loggedInUser) {
             const foundUser = JSON.parse(loggedInUser);
-            console.log(foundUser);
             auth.setUser({
                 id: foundUser.id,
                 group: foundUser.tool,
@@ -53,9 +52,6 @@ function Login() {
         const data = new FormData(e.currentTarget);
         setLoading(true);
         auth.signin(data.get('id'));
-        console.log({
-            id: data.get('id')
-        });
     };
 
     if (loading) {
