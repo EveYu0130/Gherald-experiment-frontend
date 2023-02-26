@@ -21,7 +21,7 @@ const ExpandButton = styled(Box)({
     }
 });
 
-const getWidgets = (hunks, modifiedLines, modifiedMethods, userGroup) => {
+const getWidgets = (hunks, modifiedLines, modifiedMethods, userGroup, project) => {
     const lines = Object.assign({}, ...modifiedLines.map((x) => ({[x.lineNumber]: {...x}})));
 
     const changes = hunks.reduce((result, {changes}) => [...result, ...changes], []);
@@ -49,10 +49,16 @@ const getWidgets = (hunks, modifiedLines, modifiedMethods, userGroup) => {
     })
     methods = Object.assign({}, ...methods.map((x) => ({[x.labelled_line]: {...x}})));
     const warning = userGroup != "gherald" ? [] :
-        changes.filter((change) =>
-            (change.type === "insert" && change.lineNumber in lines && lines[change.lineNumber]["riskScore"] > 10)
-            || (change.type === "normal" && change.newLineNumber in methods && !methods[change.newLineNumber]["delete_only"] && methods[change.newLineNumber]["priorChanges"] > 0)
-            || (change.type === "normal" && change.oldLineNumber in methods && methods[change.oldLineNumber]["delete_only"] && methods[change.oldLineNumber]["priorChanges"] > 0));
+        changes.filter((change) => (project === "apache" || "huawei") ? (
+                (change.type === "insert" && change.lineNumber in lines && lines[change.lineNumber]["riskScore"] > 10)
+                || (change.type === "normal" && change.newLineNumber in methods && !methods[change.newLineNumber]["delete_only"] && methods[change.newLineNumber]["priorChanges"] > 0)
+                || (change.type === "normal" && change.oldLineNumber in methods && methods[change.oldLineNumber]["delete_only"] && methods[change.oldLineNumber]["priorChanges"] > 0)
+            ) : (
+                (change.type === "insert" && change.lineNumber in lines && lines[change.lineNumber]["riskScore"] > 10)
+                || (change.type === "normal" && change.newLineNumber in methods && methods[change.newLineNumber]["insert_only"] && methods[change.newLineNumber]["priorChanges"] > 0)
+                || (change.type === "normal" && change.oldLineNumber in methods && !methods[change.oldLineNumber]["insert_only"] && methods[change.oldLineNumber]["priorChanges"] > 0)
+            )
+            );
     return warning.reduce(
         (widgets, change) => {
             const changeKey = getChangeKey(change);
@@ -90,7 +96,7 @@ const getWidgets = (hunks, modifiedLines, modifiedMethods, userGroup) => {
                             {/*LINE {change.lineNumber}: the tokens in this line were contained in more than 10 prior buggy lines.*/}
                         </Alert>
                         :
-                        (change.oldLineNumber in methods && methods[change.oldLineNumber]["delete_only"]) ?
+                        (change.oldLineNumber in methods && ((project === "apache" || "huawei") && (methods[change.oldLineNumber]["delete_only"]) || ((project === "qt" || "gerrit") && !methods[change.oldLineNumber]["insert_only"]))) ?
                             <Alert severity="warning" icon={<SvgIcon component={GheraldIcon} inheritViewBox/>}>
                                 {methods[change.oldLineNumber]["priorChanges"] > 1 ?
                                     <span>
@@ -342,7 +348,7 @@ const DiffView = ({hunks, oldSource, linesCount, modifiedLines, modifiedMethods,
     };
 
     return (
-        <Diff className={"diff-view"} hunks={renderingHunks} diffType="modify" viewType="split" tokens={tokens} widgets={getWidgets(renderingHunks, modifiedLines, modifiedMethods, userGroup)}>
+        <Diff className={"diff-view"} hunks={renderingHunks} diffType="modify" viewType="split" tokens={tokens} widgets={getWidgets(renderingHunks, modifiedLines, modifiedMethods, userGroup, project)}>
             {hunks => hunks.reduce(renderHunk, [])}
         </Diff>
     );
