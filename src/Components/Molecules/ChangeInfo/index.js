@@ -179,7 +179,7 @@ function ChangeInfo({ change, number }) {
                 </Box>
                 <div>
                     {change.files.map((file, index) => (
-                        <FileDiff key={'file-' + index} file={file} userGroup={auth.user.group} />
+                        <FileDiff key={'file-' + index} file={file} userGroup={auth.user.group} project={change.project} changeId={change.id}/>
                     ))}
                 </div>
             </Box>

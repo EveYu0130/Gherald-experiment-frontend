@@ -51,8 +51,8 @@ const getWidgets = (hunks, modifiedLines, modifiedMethods, userGroup) => {
     const warning = userGroup != "gherald" ? [] :
         changes.filter((change) =>
             (change.type === "insert" && change.lineNumber in lines && lines[change.lineNumber]["riskScore"] > 10)
-            || (change.type === "normal" && change.newLineNumber in methods && methods[change.newLineNumber]["insert_only"] && methods[change.newLineNumber]["priorChanges"] > 0)
-            || (change.type === "normal" && change.oldLineNumber in methods && !methods[change.oldLineNumber]["insert_only"] && methods[change.oldLineNumber]["priorChanges"] > 0));
+            || (change.type === "normal" && change.newLineNumber in methods && !methods[change.newLineNumber]["delete_only"] && methods[change.newLineNumber]["priorChanges"] > 0)
+            || (change.type === "normal" && change.oldLineNumber in methods && methods[change.oldLineNumber]["delete_only"] && methods[change.oldLineNumber]["priorChanges"] > 0));
     return warning.reduce(
         (widgets, change) => {
             const changeKey = getChangeKey(change);
@@ -90,7 +90,7 @@ const getWidgets = (hunks, modifiedLines, modifiedMethods, userGroup) => {
                             {/*LINE {change.lineNumber}: the tokens in this line were contained in more than 10 prior buggy lines.*/}
                         </Alert>
                         :
-                        (change.oldLineNumber in methods && !methods[change.oldLineNumber]["insert_only"]) ?
+                        (change.oldLineNumber in methods && methods[change.oldLineNumber]["delete_only"]) ?
                             <Alert severity="warning" icon={<SvgIcon component={GheraldIcon} inheritViewBox/>}>
                                 {methods[change.oldLineNumber]["priorChanges"] > 1 ?
                                     <span>
@@ -222,14 +222,14 @@ const renderToken = (token, defaultRender, i) => {
     }
 };
 
-const DiffView = ({hunks, oldSource, linesCount, modifiedLines, modifiedMethods, userGroup}) => {
+const DiffView = ({hunks, oldSource, linesCount, modifiedLines, modifiedMethods, userGroup, project}) => {
     const [renderingHunks, expandRange] = useSourceExpansion(hunks, oldSource);
     const options = {
         refractor: refractor,
         highlight: true,
         // oldSource: oldSource,
         // apache: language: 'cpp',
-        language: 'cpp',
+        language: project === "apache" ? 'java' : 'cpp',
         enhancers: [
             markEdits(renderingHunks)
             // markEdits(renderingHunks, {type: 'block'})

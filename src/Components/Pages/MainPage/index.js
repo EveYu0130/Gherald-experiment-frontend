@@ -60,8 +60,8 @@ function MainPage({practiced, onSubmit, setPractice}) {
     let rectY = innerHeight;
     if (document.getElementById('gherald-info')) {
         rectY = document.getElementById('gherald-info').getBoundingClientRect().y;
-        console.log(innerHeight);
-        console.log(rectY);
+        // console.log(innerHeight);
+        // console.log(rectY);
         if (!practiced && rectY < innerHeight / 3 && !tipShown) {
             setTip(true);
             setTipShown(true);
@@ -194,7 +194,7 @@ function MainPage({practiced, onSubmit, setPractice}) {
                                 <Card sx={{ display: 'flex', height: '100%' }}>
                                     <CardContent sx={{ flex: 1 }}>
                                         <Typography component="h2" variant="h6">
-                                            {t('home_task_b_title')}
+                                            {auth.user.project === "huawei" ? t('home_task_b_title') : t('home_task_b_title2')}
                                         </Typography>
                                         <Typography variant="subtitle1" color="text.secondary">
                                             {t('home_task_b_subtitle')}
