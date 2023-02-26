@@ -50,15 +50,15 @@ export default function AuthorPopover({author, change}) {
                     <Grid container spacing={2} sx={{ p: 2, width: 400}} >
                         <Grid item xs={6}>{t('gherald_report_author_risk_project_exp')}</Grid>
                         <Grid item xs={6}>
-                            <Rating name="read-only" value={change.authorPriorChangeScore * 5} readOnly precision={0.05}/>
+                            <Rating name="read-only" value={change.authorPriorChangeScore * 5} readOnly precision={0.1}/>
                         </Grid>
                         <Grid item xs={6}>{t('gherald_report_author_risk_recent_activity')}</Grid>
                         <Grid item xs={6}>
-                            <Rating name="read-only" value={change.authorRecentChangeScore * 5} readOnly precision={0.05}/>
+                            <Rating name="read-only" value={change.authorRecentChangeScore * 5} readOnly precision={0.1}/>
                         </Grid>
                         <Grid item xs={6}>{t('gherald_report_author_risk_file_expertise')}</Grid>
                         <Grid item xs={6}>
-                            <Rating name="read-only" value={change.authorFileAwareness * 5} readOnly precision={0.05}/>
+                            <Rating name="read-only" value={change.authorFileAwareness * 5} readOnly precision={0.1}/>
                         </Grid>
                     </Grid>
                     {/*<Typography component="legend">Author prior changes</Typography>*/}

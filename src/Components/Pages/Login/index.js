@@ -42,7 +42,8 @@ function Login() {
             console.log(foundUser);
             auth.setUser({
                 id: foundUser.id,
-                group: foundUser.tool
+                group: foundUser.tool,
+                project: foundUser.project
             });
         }
     }, []);
