@@ -49,7 +49,7 @@ const getWidgets = (hunks, modifiedLines, modifiedMethods, userGroup, project) =
     })
     methods = Object.assign({}, ...methods.map((x) => ({[x.labelled_line]: {...x}})));
     const warning = userGroup != "gherald" ? [] :
-        changes.filter((change) => (project === "apache" || "huawei") ? (
+        changes.filter((change) => (project === "apache" || project === "huawei") ? (
                 (change.type === "insert" && change.lineNumber in lines && lines[change.lineNumber]["riskScore"] > 10)
                 || (change.type === "normal" && change.newLineNumber in methods && !methods[change.newLineNumber]["delete_only"] && methods[change.newLineNumber]["priorChanges"] > 0)
                 || (change.type === "normal" && change.oldLineNumber in methods && methods[change.oldLineNumber]["delete_only"] && methods[change.oldLineNumber]["priorChanges"] > 0)
@@ -96,7 +96,7 @@ const getWidgets = (hunks, modifiedLines, modifiedMethods, userGroup, project) =
                             {/*LINE {change.lineNumber}: the tokens in this line were contained in more than 10 prior buggy lines.*/}
                         </Alert>
                         :
-                        (change.oldLineNumber in methods && ((project === "apache" || "huawei") && (methods[change.oldLineNumber]["delete_only"]) || ((project === "qt" || "gerrit") && !methods[change.oldLineNumber]["insert_only"]))) ?
+                        (change.oldLineNumber in methods && ((project === "apache" || project === "huawei") && (methods[change.oldLineNumber]["delete_only"]) || ((project === "qt" || "gerrit") && !methods[change.oldLineNumber]["insert_only"]))) ?
                             <Alert severity="warning" icon={<SvgIcon component={GheraldIcon} inheritViewBox/>}>
                                 {methods[change.oldLineNumber]["priorChanges"] > 1 ?
                                     <span>
