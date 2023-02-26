@@ -27,6 +27,7 @@ import pauseTipZH from '../../../images/pause-b-zh.png';
 import sourcecodeTipZH from '../../../images/sourcecode-zh.png';
 import noDefectTipZH from '../../../images/no-defect-zh.png';
 import reportDefectTipZH from '../../../images/report-defect-zh.png';
+import filesTip from '../../../images/files.png';
 import TipsAndUpdatesIcon from "@mui/icons-material/TipsAndUpdates";
 import {ReactComponent as GheraldIcon} from "../../../icons/gherald.svg";
 import TaskTips from "../../Molecules/TaskTips";
@@ -64,7 +65,7 @@ function TaskB({practice, onSubmit, setPracticed}) {
     let auth = useAuth();
 
 
-    const tips = [
+    let tips = [
         (<DialogContent>
             <DialogContentText id="alert-dialog-description" sx={{py: 2}}>
                 <Trans i18nKey="tips_task_b_content_p1">
@@ -76,13 +77,6 @@ function TaskB({practice, onSubmit, setPracticed}) {
                 <img src={pauseTipZH} alt="pauseTipZH"/>
             }
         </DialogContent>),
-        // (<DialogContent>
-        //     <DialogContentText id="alert-dialog-description" sx={{py: 2}}>
-        //         For the completeness of comprehension, we provide all types of files (e.g., <b>*.xml</b>, <b>*Test.java</b>) that have been modified in the commit.
-        //         However, you <b>only</b> need to identify defects in the main functional files (<b>*.java</b>).
-        //     </DialogContentText>
-        //     <img src={filesTip} alt="filesTip"/>
-        // </DialogContent>),
         (<DialogContent>
             <DialogContentText id="alert-dialog-description" sx={{py: 2}}>
                 <Trans i18nKey="tips_task_b_content_p2">
@@ -130,6 +124,17 @@ function TaskB({practice, onSubmit, setPracticed}) {
         //     <img src={highlightTip} alt="highlightTip"/>
         // </DialogContent>)
     ]
+    if (auth.user.project === "apache") {
+        tips.push(
+            (<DialogContent>
+                <DialogContentText id="alert-dialog-description" sx={{py: 2}}>
+                    For the completeness of comprehension, we provide all types of files (e.g., <b>*.xml</b>, <b>*Test.java</b>) that have been modified in the commit.
+                    However, you <b>only</b> need to identify defects in the main functional files (<b>*.java</b>).
+                </DialogContentText>
+                <img src={filesTip} alt="filesTip"/>
+            </DialogContent>)
+        );
+    }
 
     useEffect(() => {
         fetch(`https://gherald-backend.herokuapp.com/api/participants/${auth.user.id}`)

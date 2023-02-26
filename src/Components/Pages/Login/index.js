@@ -41,7 +41,8 @@ function Login() {
             const foundUser = JSON.parse(loggedInUser);
             auth.setUser({
                 id: foundUser.id,
-                group: foundUser.tool
+                group: foundUser.tool,
+                project: foundUser.project
             });
         }
     }, []);

@@ -47,9 +47,11 @@ function useProvideAuth() {
             }
             setUser({
                 id: data.id,
-                group: data.tool
+                group: data.tool,
+                project: data.project
             })
             localStorage.setItem("user", JSON.stringify(data));
+            // console.log(JSON.stringify(data));
         }).catch(error => {
             console.log(error);
             setError(error);

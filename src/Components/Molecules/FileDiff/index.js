@@ -12,11 +12,19 @@ import { ReactComponent as GheraldIcon } from '../../../icons/gherald.svg';
 import { Trans } from 'react-i18next';
 
 
-const FileDiff = ({ file, userGroup }) => {
+const FileDiff = ({ file, userGroup, project, changeId }) => {
     const [fileDiff] = file.diff ? parseDiff(file.diff, {nearbySequences: 'zip'}) : parseDiff(formatLines(diffLines(file.codeA, file.codeB), {context: 3}), {nearbySequences: 'zip'});
     const linesCount = file.codeA ? file.codeA.split('\n').length : 0;
+
+    const [expanded, setExpanded] = useState(false);
+
+    const handleChange =
+        (panel) => (event, isExpanded) => {
+            setExpanded(isExpanded ? panel : false);
+        };
+
     return (
-        <Accordion key={file.filename} TransitionProps={{ unmountOnExit: true }}>
+        <Accordion key={file.filename} TransitionProps={{ unmountOnExit: true }} expanded={expanded === changeId + file.filename} onChange={handleChange(changeId + file.filename)}>
             <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls={file.filename + "-content"}
@@ -55,7 +63,7 @@ const FileDiff = ({ file, userGroup }) => {
                 </Alert>
             }
             <AccordionDetails>
-                <DiffView hunks={fileDiff.hunks} oldSource={file.codeA} linesCount={linesCount} modifiedLines={file.lines} modifiedMethods={file.methods} userGroup={userGroup} />
+                <DiffView hunks={fileDiff.hunks} oldSource={file.codeA} linesCount={linesCount} modifiedLines={file.lines} modifiedMethods={file.methods} userGroup={userGroup} project={project}/>
             </AccordionDetails>
         </Accordion>
     );
