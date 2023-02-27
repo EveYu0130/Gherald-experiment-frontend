@@ -231,7 +231,7 @@ function TaskB({practice, onSubmit, setPracticed}) {
                             </p>
                             {auth.user.project === "apache" && (
                                 <p>
-                                    For the completeness of comprehension, we provide all types of files (e.g., *.xml, *.java, *Test.java) that have been modified in the commit.
+                                    For the completeness of comprehension, we provide all types of files (e.g., *.java, *Test.java, *.xml) that have been modified in the commit.
                                     However, you <b>only</b> need to identify defects in the main functional files (*.java). You don't need to check the test cases, if any.
                                 </p>
                             )}
