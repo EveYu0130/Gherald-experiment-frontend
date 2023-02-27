@@ -231,7 +231,7 @@ function TaskB({practice, onSubmit, setPracticed}) {
                             </p>
                             {auth.user.project === "apache" && (
                                 <p>
-                                    Please focus on identifying defects in the main functional files (*.java); you do not need to check the completeness of test cases in the test files (*Test.java), if any.
+                                    Please focus on identifying defects in the main functional files (*.java) <b>only</b>; you do not need to check the completeness of test cases in the test files (*Test.java), if any.
                                 </p>
                             )}
                             {!ready &&
