@@ -124,17 +124,17 @@ function TaskB({practice, onSubmit, setPracticed}) {
         //     <img src={highlightTip} alt="highlightTip"/>
         // </DialogContent>)
     ]
-    if (auth.user.project === "apache") {
-        tips.push(
-            (<DialogContent>
-                <DialogContentText id="alert-dialog-description" sx={{py: 2}}>
-                    For the completeness of comprehension, we provide all types of files (e.g., <b>*.xml</b>, <b>*Test.java</b>) that have been modified in the commit.
-                    However, you <b>only</b> need to identify defects in the main functional files (<b>*.java</b>).
-                </DialogContentText>
-                <img src={filesTip} alt="filesTip"/>
-            </DialogContent>)
-        );
-    }
+    // if (auth.user.project === "apache") {
+    //     tips.push(
+    //         (<DialogContent>
+    //             <DialogContentText id="alert-dialog-description" sx={{py: 2}}>
+    //                 For the completeness of comprehension, we provide all types of files (e.g., <b>*.xml</b>, <b>*Test.java</b>) that have been modified in the commit.
+    //                 However, you <b>only</b> need to identify defects in the main functional files (<b>*.java</b>).
+    //             </DialogContentText>
+    //             <img src={filesTip} alt="filesTip"/>
+    //         </DialogContent>)
+    //     );
+    // }
 
     useEffect(() => {
         fetch(`https://gherald-backend.herokuapp.com/api/participants/${auth.user.id}`)
@@ -229,6 +229,12 @@ function TaskB({practice, onSubmit, setPracticed}) {
                                     Please focus on identifying <b>only</b> functional defects; please ignore any other flaws you might notice in the code, such as those relating to style or documentation.
                                 </Trans>
                             </p>
+                            {auth.user.project === "apache" && (
+                                <p>
+                                    For the completeness of comprehension, we provide all types of files (e.g., *.java, *Test.java, *.xml) that have been modified in the commit.
+                                    However, you <b>only</b> need to identify defects in the main functional files (*.java). You don't need to check the test cases, if any.
+                                </p>
+                            )}
                             {!ready &&
                                 <p>
                                     <Trans i18nKey="task_b_content_p4">
