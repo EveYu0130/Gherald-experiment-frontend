@@ -119,7 +119,7 @@ function Questionnaire({onSubmit}) {
                                         <FormControlLabel value="Easy" control={<Radio />} label={t('questionnaire_q2_a1')} />
                                     </Box>
                                     <Box sx={{ width: 200, height: 30}}>
-                                        <FormControlLabel value="Moderate" control={<Radio />} label={t('questionnaire_q2_a1')} />
+                                        <FormControlLabel value="Moderate" control={<Radio />} label={t('questionnaire_q2_a2')} />
                                     </Box>
                                     <Box sx={{ width: 200, height: 30}}>
                                         <FormControlLabel value="Very hard" control={<Radio />} label={t('questionnaire_q2_a3')} />
