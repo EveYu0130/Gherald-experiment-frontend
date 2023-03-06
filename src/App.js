@@ -17,7 +17,7 @@ import { datadogLogs } from '@datadog/browser-logs';
 import { datadogRum } from '@datadog/browser-rum';
 
 datadogLogs.init({
-    clientToken: 'pub4c7353fef78e5352305fd18e7c6d23b3',
+    clientToken: 'pub7dae0b6c3863c812027015af41ac22bd',
     site: 'datadoghq.com',
     forwardErrorsToLogs: true,
     sessionSampleRate: 100,
@@ -32,7 +32,7 @@ datadogRum.init({
     // Specify a version number to identify the deployed version of your application in Datadog
     // version: '1.0.0',
     sessionSampleRate: 100,
-    sessionReplaySampleRate: 20,
+    sessionReplaySampleRate: 100,
     trackUserInteractions: true,
     trackResources: true,
     trackLongTasks: true,

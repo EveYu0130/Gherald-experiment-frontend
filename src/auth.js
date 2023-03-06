@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
 import { useTranslation } from 'react-i18next';
+import { datadogLogs } from '@datadog/browser-logs';
 
 // export const Auth = {
 //     isAuthenticated: false,
@@ -51,6 +52,7 @@ function useProvideAuth() {
                 project: data.project
             })
             localStorage.setItem("user", JSON.stringify(data));
+            datadogLogs.logger.info('Logged In', { name: 'login', id: data.id })
             // console.log(JSON.stringify(data));
         }).catch(error => {
             console.log(error);
