@@ -22,6 +22,24 @@ datadogLogs.init({
     sessionSampleRate: 100,
 })
 
+datadogRum.init({
+    applicationId: 'c403d18c-66d7-4a1b-8c42-38cc706496b8',
+    clientToken: 'pub7dae0b6c3863c812027015af41ac22bd',
+    site: 'datadoghq.com',
+    service:'gherald',
+
+    // Specify a version number to identify the deployed version of your application in Datadog
+    // version: '1.0.0',
+    sessionSampleRate: 100,
+    sessionReplaySampleRate: 20,
+    trackUserInteractions: true,
+    trackResources: true,
+    trackLongTasks: true,
+    defaultPrivacyLevel:'mask-user-input'
+});
+
+datadogRum.startSessionReplayRecording();
+
 function App() {
   return (
       <ProvideAuth>
