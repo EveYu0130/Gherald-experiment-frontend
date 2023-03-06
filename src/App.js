@@ -13,8 +13,14 @@ import EndPage from "./Components/Pages/EndPage";
 import ChangeDetail from "./Components/Pages/ChangeDetail";
 import Practice from "./Components/Pages/Practice";
 import StepHandler from "./stepHandler";
+import { datadogLogs } from '@datadog/browser-logs'
 
-
+datadogLogs.init({
+    clientToken: 'pub4c7353fef78e5352305fd18e7c6d23b3',
+    site: 'datadoghq.com',
+    forwardErrorsToLogs: true,
+    sessionSampleRate: 100,
+})
 
 function App() {
   return (
