@@ -54,7 +54,7 @@ function useProvideAuth() {
             })
             localStorage.setItem("user", JSON.stringify(data));
             datadogRum.setUser({
-                participantId: foundUser.id
+                participantId: data.id
             })
             // console.log(JSON.stringify(data));
         }).catch(error => {
