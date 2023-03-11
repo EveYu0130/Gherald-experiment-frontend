@@ -117,8 +117,8 @@ function TaskA({practice, onSubmit}) {
         fetch(`/api/participants/${auth.user.id}`)
             .then(results => results.json())
             .then(data => {
-                setLoading(false);
                 setData(data);
+                setLoading(false);
             })
     }, [])
 
