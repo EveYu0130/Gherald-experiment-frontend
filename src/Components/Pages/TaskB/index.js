@@ -157,8 +157,8 @@ function TaskB({practice, onSubmit, setPracticed}) {
                         experimentReviews.sort((a,b) => b.riskLevel - a.riskLevel);
                     }
                 }
-                setLoading(false);
                 setReviews(practice ? practiceReviews : experimentReviews);
+                setLoading(false);
             })
     }, [])
 
